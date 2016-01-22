@@ -6,7 +6,7 @@
 var eddystone = require('../lib/eddystone');
 var Emitter = require('events');
 
-var debug = 0 ? console.log.bind(console, '[Bluetooth]') : function() {};
+var debug = 1 ? console.log.bind(console, '[Bluetooth]') : function() {};
 
 /**
  * Exports
@@ -38,11 +38,16 @@ Bluetooth.prototype.enable = function(done) {
   this.ble.enable(done);
 };
 
+window.buffers = [];
+
 Bluetooth.prototype.startScan = function() {
   debug('start scan ...');
   this.ble.startScan([], function(device) {
     debug('found', device);
-    var url = eddystone.decode(new Uint8Array(device.advertising));
+    var advertising = device.advertising;
+    window.buffers.push(advertising);
+    var url = eddystone.decode(new Uint8Array(advertising));
+    console.log(url);
     this.emit('found', url);
   }.bind(this));
 };

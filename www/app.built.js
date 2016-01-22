@@ -103,7 +103,7 @@
 
 	
 	var Bluetooth = __webpack_require__(3);
-	var Emitter = __webpack_require__(4);
+	var Emitter = __webpack_require__(5);
 	var MDNS = __webpack_require__(6);
 
 	/**
@@ -157,10 +157,10 @@
 	 * Dependencies
 	 */
 
-	var eddystone = __webpack_require__(21);
-	var Emitter = __webpack_require__(4);
+	var eddystone = __webpack_require__(4);
+	var Emitter = __webpack_require__(5);
 
-	var debug = 0 ? console.log.bind(console, '[Bluetooth]') : function() {};
+	var debug = 1 ? console.log.bind(console, '[Bluetooth]') : function() {};
 
 	/**
 	 * Exports
@@ -199,10 +199,8 @@
 	  this.ble.startScan([], function(device) {
 	    debug('found', device);
 	    var advertising = device.advertising;
-	    window.buffers.push(advertising);
-	    console.log(advertising);
-	    // var url = eddystone.decode(new Uint8Array(advertising));
-	    // this.emit('found', url);
+	    var decoded = eddystone.decode(new Uint8Array(advertising));
+	    this.emit('found', decoded.url);
 	  }.bind(this));
 	};
 
@@ -217,6 +215,80 @@
 
 /***/ },
 /* 4 */
+/***/ function(module, exports) {
+
+	
+	var prefixes = [
+	  'http://www.',
+	  'https://www.',
+	  'http://',
+	  'https://'
+	];
+
+	var suffixes = [
+	  '.com/',
+	  '.org/',
+	  '.edu/',
+	  '.net/',
+	  '.info/',
+	  '.biz/',
+	  '.gov/',
+	  '.com',
+	  '.org',
+	  '.edu',
+	  '.net',
+	  '.info',
+	  '.biz',
+	  '.gov'
+	];
+
+	exports.decode = function(data) {
+	  var end = data[0];
+	  var i = 0;
+	  var url = '';
+	  var result = {};
+
+	  // Flags:
+
+	  while (i++ < end) {}
+
+	  // Complete service list (UUIDs):
+
+	  end = i + data[i];
+	  while (i++ < end) {}
+
+	  // Service Data:
+
+	  end = i + data[i];
+	  result.serviceDataLength = data[i++];
+	  result.serviceDataTypeValue = data[i++];
+	  result.eddystoneUUI = [data[i++], data[i++]];
+	  result.eddystoneFrameType = data[i++];
+	  result.txPower = data[i++];
+	  result.prefix = prefixes[data[i]];
+
+	  // URI:
+
+	  while (i++ < end) {
+	    url += data[i] < suffixes.length
+	      ? suffixes[i]
+	      : String.fromCharCode(data[i]);
+	  }
+
+	  // prepend prefix
+	  result.url = result.prefix + url;
+
+	  return result;
+	};
+
+	// var test1 = new Uint8Array([2, 1, 4, 3, 3, 216, 254, 19, 22, 216, 254, 0, 242, 3, 103, 111, 111, 46, 103, 108, 47, 104, 113, 66, 88, 69, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+	// var test2 = new Uint8Array([2, 1, 4, 3, 3, 216, 254, 22, 22, 216, 254, 0, 242, 2, 116, 97, 108, 116, 111, 110, 109, 105, 108, 108, 46, 99, 111, 46, 117, 107, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+
+	// exports.decode(test1);
+
+
+/***/ },
+/* 5 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -520,7 +592,6 @@
 
 
 /***/ },
-/* 5 */,
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -530,7 +601,7 @@
 	 */
 
 	var zeroconf = __webpack_require__(7);
-	var Emitter = __webpack_require__(4);
+	var Emitter = __webpack_require__(5);
 
 	var debug = 0 ? console.log.bind(console, '[MDNS]') : function() {};
 
@@ -592,73 +663,6 @@
 /***/ function(module, exports) {
 
 	module.exports = window.ZeroConf;
-
-/***/ },
-/* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */,
-/* 12 */,
-/* 13 */,
-/* 14 */,
-/* 15 */,
-/* 16 */,
-/* 17 */,
-/* 18 */,
-/* 19 */,
-/* 20 */,
-/* 21 */
-/***/ function(module, exports) {
-
-	
-	var prefixes = [
-	  'http://www.',
-	  'https://www.',
-	  'http://',
-	  'https://'
-	];
-
-	var suffixes = [
-	  '.com/',
-	  '.org/',
-	  '.edu/',
-	  '.net/',
-	  '.info/',
-	  '.biz/',
-	  '.gov/',
-	  '.com',
-	  '.org',
-	  '.edu',
-	  '.net',
-	  '.info',
-	  '.biz',
-	  '.gov'
-	];
-
-	exports.decode = function(data) {
-	  var prefix = data[0];
-	  if (prefix > prefixes.length) {
-	    throw new Error('"data" does not seem to be an encoded Eddystone URL');
-	  }
-
-	  return prefixes[prefix] + decode(data);
-	};
-
-	function decode(data) {
-	  console.log(data);
-	  var url = '';
-
-	  for (var i = 0; i < data.length; i++) {
-	    var s = String.fromCharCode(data[i]);
-	    url +=
-	      (data[i] < suffixes.length)
-	        ? suffixes[data[i]]
-	        : s;
-	  }
-
-	  return url;
-	}
-
 
 /***/ }
 /******/ ]);
