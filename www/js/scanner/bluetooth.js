@@ -31,29 +31,19 @@ Bluetooth.prototype.start = function() {
 };
 
 Bluetooth.prototype.stop = function() {
-
+  this.ble.stopScan();
 };
 
 Bluetooth.prototype.enable = function(done) {
   this.ble.enable(done);
 };
 
-window.buffers = [];
-
 Bluetooth.prototype.startScan = function() {
-  debug('start scan ...');
+  debug('start scanning');
   this.ble.startScan([], function(device) {
     debug('found', device);
     var advertising = device.advertising;
     var decoded = eddystone.decode(new Uint8Array(advertising));
-    this.emit('found', decoded.url);
+    if (decoded) this.emit('found', decoded.url);
   }.bind(this));
 };
-
-/**
- * Utils
- */
-
-function bytesToString(buffer) {
-  return String.fromCharCode.apply(null, new Uint8Array(buffer));
-}
