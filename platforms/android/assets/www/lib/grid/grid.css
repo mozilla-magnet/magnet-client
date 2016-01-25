@@ -1,0 +1,56 @@
+
+/*.grid-app {
+  display: block;
+  width: 128px;
+  float: left;
+}*/
+
+.grid {
+  box-sizing: border-box;
+  flex-flow: row wrap;
+  display: flex;
+  margin: 0;
+  padding: 7px;
+  width: 100%;
+
+  list-style: none;
+}
+
+.grid-app {
+  display: flex;
+  flex: 0 0 33%;
+  justify-content: center;
+  transition: opacity 200ms;
+}
+
+.grid-app > .inner {
+  flex: 0 1 auto;
+  display: block;
+  width: 100px;
+  padding: 8px;
+
+  color: inherit;
+  text-decoration: none;
+}
+
+.grid-app-icon {
+  width: 100%;
+  padding-bottom: 100%;
+  border-radius: 50%;
+  background: #eee;
+}
+
+.grid-app-title {
+  margin: 0;
+  overflow: hidden;
+
+  font-size: 13px;
+  font-style: italic;
+  font-weight: normal;
+  text-align: center;
+  line-height: 2.6em;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #555;
+}

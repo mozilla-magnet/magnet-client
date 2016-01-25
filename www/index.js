@@ -1,6 +1,7 @@
 
-var App = require('./js/app');
+var App = require('./lib/app');
 
 document.addEventListener('deviceready', function() {
-  window.app = new App();
+  var el = document.querySelector('.app');
+  window.app = new App(el);
 });
