@@ -24,7 +24,7 @@ function request(body) {
     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     xhr.send(data);
     xhr.onload = function() {
-      debug('response', xhr.responseText);
+      debug('response');
       resolve(JSON.parse(xhr.responseText)[0]);
     };
   });

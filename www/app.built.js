@@ -205,8 +205,8 @@
 	Header.prototype.render = function() {
 	  this.el.innerHTML =
 	    '<h1>Magnet</h1>' +
-	    '<button class="grid-button"><svg class="icon icon-view_module"><use xlink:href="#icon-view_module"></use></svg></button>' +
-	    '<button class="tiles-button"><svg class="icon icon-view_stream"><use xlink:href="#icon-view_stream"></use></svg></button>';
+	    '<button class="grid-button icon-grid" hidden></button>' +
+	    '<button class="tiles-button icon-stop"></button>';
 	};
 
 	Header.prototype.toggleButton = function(grid) {
@@ -558,7 +558,7 @@
 
 
 	// module
-	exports.push([module.id, "\n.app-header {\n  position: relative;\n  height: 50px;\n  will-change: transform; /* stop flickering */\n  color: #999;\n}\n\n.app-header h1 {\n  margin: 0;\n  text-align: center;\n  font-size: 21px;\n  line-height: 50px;\n  font-weight: lighter;\n  font-style: italic;\n}\n\n.app-header button {\n  position: absolute;\n  right: 0;\n  top: 0;\n\n  display: flex;\n  height: 100%;\n  padding: 0 14px;\n  border: 0;\n\n  background: none;\n  border-radius: 0;\n  outline: 0;\n  color: #4C92E2;\n}\n\n.app-header button[hidden] {\n  opacity: 0;\n  visibility: hidden;\n}\n", ""]);
+	exports.push([module.id, "\n.app-header {\n  position: relative;\n  height: 50px;\n  will-change: transform; /* stop flickering */\n  color: #999;\n}\n\n.app-header h1 {\n  margin: 0;\n  text-align: center;\n  font-size: 21px;\n  line-height: 50px;\n  font-weight: lighter;\n  font-style: italic;\n}\n\n.app-header button {\n  position: absolute;\n  right: 0;\n  top: 0;\n\n  display: flex;\n  height: 100%;\n  padding: 0 14px;\n  border: 0;\n\n  font-size: 22px;\n  background: none;\n  border-radius: 0;\n  outline: 0;\n  color: #4C92E2;\n}\n\n.app-header button[hidden] {\n  opacity: 0;\n  visibility: hidden;\n}\n", ""]);
 
 	// exports
 
@@ -972,6 +972,9 @@
 	    this.emit('found', 'http://taltonmill.co.uk');
 	    this.emit('found', 'https://play.google.com/store/apps/details?id=com.whatsapp');
 	    this.emit('found', 'https://play.google.com/store/apps/details?id=jp.naver.line.android');
+	    this.emit('found', 'https://www.youtube.com/watch?v=YHSyySIECGE');
+	    this.emit('found', 'https://vimeo.com/120344821');
+	    this.emit('found', 'http://www.bbc.co.uk/news/business-35416812');
 	  }.bind(this));
 
 	  debug('started');
@@ -1173,7 +1176,7 @@
 	    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
 	    xhr.send(data);
 	    xhr.onload = function() {
-	      debug('response', xhr.responseText);
+	      debug('response');
 	      resolve(JSON.parse(xhr.responseText)[0]);
 	    };
 	  });
@@ -1619,6 +1622,7 @@
 
 	var registry = {
 	  website: __webpack_require__(38),
+	  // video: require('./video'),
 	  android: __webpack_require__(31),
 	  twitter: __webpack_require__(39)
 	};
@@ -2009,7 +2013,7 @@
 
 
 	// module
-	exports.push([module.id, "\n\n.grid-icon {\n  display: flex;\n  flex: 0 0 33%;\n  justify-content: center;\n  transition: opacity 200ms;\n}\n\n.grid-icon > .inner {\n  flex: 0 1 auto;\n  display: block;\n  width: 100px;\n  padding: 8px;\n\n  color: inherit;\n  text-decoration: none;\n}\n\n.grid-icon-image {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100px;\n  height: 100px;\n  border-radius: 50%;\n  background: #ddd;\n}\n\n.grid-icon-image > img {\n  max-width: 100%;\n}\n\n.grid-icon-title {\n  margin: 0;\n  overflow: hidden;\n\n  font-size: 13px;\n  font-style: italic;\n  font-weight: normal;\n  text-align: center;\n  line-height: 2.6em;\n\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: #555;\n}\n", ""]);
+	exports.push([module.id, "\n\n.grid-icon {\n  display: flex;\n  flex: 0 0 33%;\n  justify-content: center;\n  transition:\n    opacity 200ms 400ms,\n    transform 200ms 400ms;\n}\n\n.grid-icon:active {\n  transition-delay: 0ms;\n  transform: scale(0.95);\n  opacity: 0.7;\n}\n\n.grid-icon > .inner {\n  flex: 0 1 auto;\n  display: block;\n  width: 100px;\n  padding: 8px;\n\n  color: inherit;\n  text-decoration: none;\n}\n\n.grid-icon-image {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100px;\n  height: 100px;\n  border-radius: 50%;\n  background: #ddd;\n}\n\n.grid-icon-image > img {\n  max-width: 100%;\n}\n\n.grid-icon-title {\n  margin: 0;\n  overflow: hidden;\n\n  font-size: 13px;\n  font-style: italic;\n  font-weight: normal;\n  text-align: center;\n  line-height: 2.6em;\n\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: #555;\n}\n", ""]);
 
 	// exports
 
