@@ -1,0 +1,47 @@
+
+
+.grid-icon {
+  display: flex;
+  flex: 0 0 33%;
+  justify-content: center;
+  transition: opacity 200ms;
+}
+
+.grid-icon > .inner {
+  flex: 0 1 auto;
+  display: block;
+  width: 100px;
+  padding: 8px;
+
+  color: inherit;
+  text-decoration: none;
+}
+
+.grid-icon-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: #ddd;
+}
+
+.grid-icon-image > img {
+  max-width: 100%;
+}
+
+.grid-icon-title {
+  margin: 0;
+  overflow: hidden;
+
+  font-size: 13px;
+  font-style: italic;
+  font-weight: normal;
+  text-align: center;
+  line-height: 2.6em;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #555;
+}

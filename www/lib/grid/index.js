@@ -5,6 +5,12 @@
 
 require('./grid.css');
 
+var registry = {
+  website: require('./website'),
+  android: require('./android-app'),
+  twitter: require('./twitter')
+};
+
 /**
  * Logger
  *
@@ -21,44 +27,46 @@ module.exports = GridView;
 function GridView() {
   this.el = document.createElement('div');
   this.el.className = 'grid';
+  this.icons = {};
+  this.els = {};
+  this.render();
 }
 
 GridView.prototype = {
+  render: function() {
+    this.els.inner = document.createElement('div');
+    this.els.inner.className = 'inner';
+    this.el.appendChild(this.els.inner);
+  },
+
   add: function(id, data) {
     debug('add', id, data);
 
-    var el = document.createElement('li');
-    var link = document.createElement('a');
-    var icon = document.createElement('div');
-    var title = document.createElement('h3');
+    if (!data) return;
+    if (this.icons[id]) return debug('already exists');
 
-    // outer
-    el.className = 'grid-app';
-    el.id = 'grid-app-' + id;
+    // Shim, remove once types are implemented
+    if (data.twitter) data.type = 'twitter';
+    if (data.android) data.type = 'android';
 
-    // inner
-    link.href = data.url;
-    link.className = 'inner';
-    el.appendChild(link);
+    var type = data.type || 'website';
+    var Icon = registry[type];
+    if (!Icon) return debug('unknown type', type);
 
-    // icon
-    icon.className = 'grid-app-icon';
-    link.appendChild(icon);
+    var icon = new Icon(data);
+    this.icons[id] = icon;
+    this.els.inner.appendChild(icon.el);
+  },
 
-    // title
-    title.className = 'grid-app-title';
-    title.textContent = data.title;
-    link.appendChild(title);
-
-    // attach to dom
-    this.el.appendChild(el);
+  toggle: function(value) {
+    if (value) this.el.classList.remove('hidden');
+    else this.el.classList.add('hidden');
   },
 
   remove: function(id) {
     debug('remove', id);
-    var item = this.el.querySelector('#grid-app-' + id);
-    if (!item) return;
-    item.remove();
+    var tile = this.tiles[id];
+    if (tile) tile.remove();
   },
 
   appendTo: function(parent) {
@@ -66,3 +74,14 @@ GridView.prototype = {
     return this;
   }
 };
+
+/**
+ * Utils
+ */
+
+function el(tag, className, parent) {
+  var result = document.createElement(tag);
+  result.className = className || '';
+  if (parent) parent.appendChild(result);
+  return result;
+}

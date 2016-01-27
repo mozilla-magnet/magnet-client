@@ -19,6 +19,10 @@
                         {
                             "xml": "<feature name=\"InAppBrowser\"><param name=\"android-package\" value=\"org.apache.cordova.inappbrowser.InAppBrowser\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"startApp\"><param name=\"android-package\" value=\"com.lampa.startapp.startApp\" /></feature>",
+                            "count": 1
                         }
                     ],
                     "/widget": [
@@ -70,6 +74,9 @@
         },
         "cordova-plugin-inappbrowser": {
             "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "com.lampa.startapp": {
+            "PACKAGE_NAME": "com.phonegap.helloworld"
         }
     },
     "dependent_plugins": {},
@@ -104,12 +111,21 @@
                 "cordova.InAppBrowser.open",
                 "window.open"
             ]
+        },
+        {
+            "file": "plugins/com.lampa.startapp/www/startApp.js",
+            "id": "com.lampa.startapp.startapp",
+            "pluginId": "com.lampa.startapp",
+            "merges": [
+                "navigator.startApp"
+            ]
         }
     ],
     "plugin_metadata": {
         "cordova-plugin-whitelist": "1.2.1",
         "cordova-plugin-ble-central": "1.0.4",
         "cordova-zeroconf-plugin": "1.2.0",
-        "cordova-plugin-inappbrowser": "1.2.0"
+        "cordova-plugin-inappbrowser": "1.2.0",
+        "com.lampa.startapp": "0.0.6"
     }
 }

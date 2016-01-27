@@ -27,7 +27,16 @@ function Bluetooth() {
 }
 
 Bluetooth.prototype.start = function() {
-  this.enable(this.startScan.bind(this));
+  // this.enable(this.startScan.bind(this));
+
+  setTimeout(function() {
+    this.emit('found', 'http://twitter.com/wilsonpage');
+    this.emit('found', 'http://twitter.com/mepartoconmigo');
+    this.emit('found', 'http://taltonmill.co.uk');
+    this.emit('found', 'https://play.google.com/store/apps/details?id=com.whatsapp');
+    this.emit('found', 'https://play.google.com/store/apps/details?id=jp.naver.line.android');
+  }.bind(this));
+
   debug('started');
 };
 

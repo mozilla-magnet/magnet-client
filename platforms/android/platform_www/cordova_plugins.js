@@ -30,6 +30,14 @@ module.exports = [
             "cordova.InAppBrowser.open",
             "window.open"
         ]
+    },
+    {
+        "file": "plugins/com.lampa.startapp/www/startApp.js",
+        "id": "com.lampa.startapp.startapp",
+        "pluginId": "com.lampa.startapp",
+        "merges": [
+            "navigator.startApp"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -38,7 +46,8 @@ module.exports.metadata =
     "cordova-plugin-whitelist": "1.2.1",
     "cordova-plugin-ble-central": "1.0.4",
     "cordova-zeroconf-plugin": "1.2.0",
-    "cordova-plugin-inappbrowser": "1.2.0"
+    "cordova-plugin-inappbrowser": "1.2.0",
+    "com.lampa.startapp": "0.0.6"
 }
 // BOTTOM OF METADATA
 });

@@ -5,6 +5,7 @@
 
 var HeaderView = require('./header');
 var Scanner = require('./scanner');
+var TilesView = require('./tiles');
 var GridView = require('./grid');
 
 require('./app.css');
@@ -24,29 +25,52 @@ module.exports = App;
 
 function App(el) {
   this.el = el;
-  this.els = {
-    icons: []
-  };
+  this.els = {};
 
   document.body.addEventListener('click', this.onClick.bind(this));
+  this.gridView = true;
 
   this.scanner = new Scanner();
   this.scanner.on('found', this.onFound.bind(this));
   this.scanner.on('lost', this.onLost.bind(this));
   this.scanner.start();
 
-  this.header = new HeaderView().appendTo(this.el);
-  this.grid = new GridView().appendTo(this.el);
-  // this.tiles = new TilesView().appendTo(this.el);
+  this.render();
+  this.bindEvents();
+
+  // this.toggleView();
 }
 
 App.prototype = {
+  render: function() {
+    var content = document.createElement('div');
+    content.className = 'content';
+
+    this.grid = new GridView().appendTo(content);
+    this.tiles = new TilesView().appendTo(content);
+
+    // attach to document
+    this.header = new HeaderView().appendTo(this.el);
+    this.el.appendChild(content);
+  },
+
+  bindEvents: function() {
+    this.header.on('buttonclick', this.toggleView.bind(this));
+  },
+
   start: function() {
     this.scanner.start();
   },
 
   stop: function() {
     this.scanner.stop();
+  },
+
+  toggleView: function() {
+    this.gridView = !this.gridView;
+    this.grid.toggle(this.gridView);
+    this.tiles.toggle(!this.gridView);
+    this.header.toggleButton(this.gridView);
   },
 
   /**
@@ -64,6 +88,7 @@ App.prototype = {
 
   onFound: function(url, data) {
     debug('found', url);
+    this.tiles.add(url, data);
     this.grid.add(url, data);
   },
 
