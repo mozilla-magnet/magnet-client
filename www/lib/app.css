@@ -6,6 +6,7 @@
 html {
   height: 100%;
   background: #f2f2f2;
+  overflow: hidden;
 }
 
 body {
@@ -21,6 +22,7 @@ body {
   font-size: 12px;
   font-family: sans-serif;
   color: #444;
+  overflow: hidden;
 }
 
 .icon {
@@ -37,9 +39,7 @@ body {
   overflow: hidden;
 }
 
-.app > .header {
-
-}
+.app > .header {}
 
 .app > .content {
   position: relative;

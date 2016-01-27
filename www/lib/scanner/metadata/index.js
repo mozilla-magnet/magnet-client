@@ -16,16 +16,19 @@ module.exports = function(url) {
 };
 
 function request(body) {
-  return new Promise(function(resolve) {
-    debug('request', body);
+  return new Promise(function(resolve, reject) {
     var xhr = new XMLHttpRequest();
     var data = JSON.stringify(body);
+
     xhr.open('POST', endpoint + '/api/v1/metadata', true);
     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-    xhr.send(data);
+    xhr.onerror = reject;
     xhr.onload = function() {
       debug('response');
       resolve(JSON.parse(xhr.responseText)[0]);
     };
+
+    xhr.send(data);
+    debug('request sent', body);
   });
 }

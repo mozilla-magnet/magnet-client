@@ -17,7 +17,7 @@ var registry = {
  *
  * @return {Function}
  */
-var debug = 1 ? console.log.bind(console, '[grid-view]') : function() {};
+var debug = 0 ? console.log.bind(console, '[grid-view]') : function() {};
 
 /**
  * Exports

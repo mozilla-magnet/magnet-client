@@ -14,7 +14,6 @@
   opacity: 0;
 
   will-change: transform;
-
   animation: grid-zoom-in 240ms 120ms;
   animation-fill-mode: forwards;
 }
@@ -57,6 +56,6 @@
 
   100% {
     opacity: 0;
-    transform: scale(0);
+    transform: scale(0.01);
   }
 }

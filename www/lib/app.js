@@ -15,7 +15,7 @@ require('./app.css');
  *
  * @return {Function}
  */
-var debug = 1 ? console.log.bind(console, '[App]') : function() {};
+var debug = 0 ? console.log.bind(console, '[App]') : function() {};
 
 /**
  * Exports

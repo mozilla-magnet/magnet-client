@@ -7,6 +7,13 @@ var Icon = require('./icon');
 require('./website.css');
 
 /**
+ * Logger
+ *
+ * @return {Function}
+ */
+var debug = 1 ? console.log.bind(console, '[website-icon]') : function() {};
+
+/**
  * Exports
  */
 
@@ -25,9 +32,20 @@ function WebsiteIconView(data) {
 
 WebsiteIconView.prototype.render = function(data) {
   Icon.prototype.render.apply(this, arguments); // super
-  // populateIcon(this.els.icon, data);
-  this.els.imageNode.src = data.icon;
+  var self = this;
   this.els.title.textContent = data.title;
+
+  if (!data.icon) {
+    this.el.classList.add('no-icon');
+    return;
+  }
+
+  this.els.imageNode.src = data.icon;
+  this.els.imageNode.addEventListener('load', function(e) {
+    var area = this.naturalWidth * this.naturalHeight;
+    debug('icon loaded', area);
+    if (area < (80 * 80)) self.el.classList.add('no-icon');
+  });
 };
 
 /**

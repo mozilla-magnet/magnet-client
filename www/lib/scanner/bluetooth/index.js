@@ -38,6 +38,7 @@ Bluetooth.prototype.start = function() {
     this.emit('found', 'https://www.youtube.com/watch?v=YHSyySIECGE');
     this.emit('found', 'https://vimeo.com/120344821');
     this.emit('found', 'http://www.bbc.co.uk/news/business-35416812');
+    this.emit('found', 'https://twitter.com/wheresrhys/status/692416923720650754');
   }.bind(this));
 
   debug('started');

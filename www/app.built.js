@@ -74,7 +74,7 @@
 	 *
 	 * @return {Function}
 	 */
-	var debug = 1 ? console.log.bind(console, '[App]') : function() {};
+	var debug = 0 ? console.log.bind(console, '[App]') : function() {};
 
 	/**
 	 * Exports
@@ -923,7 +923,10 @@
 	Scanner.prototype.onFound = function(item) {
 	  metadata(item).then(function(data) {
 	    this.emit('found', item, data);
-	  }.bind(this));
+	  }.bind(this))
+	  .catch(function(err) {
+	    console.error(err);
+	  });
 	};
 
 	Scanner.prototype.onLost = function(item) {
@@ -975,6 +978,7 @@
 	    this.emit('found', 'https://www.youtube.com/watch?v=YHSyySIECGE');
 	    this.emit('found', 'https://vimeo.com/120344821');
 	    this.emit('found', 'http://www.bbc.co.uk/news/business-35416812');
+	    this.emit('found', 'https://twitter.com/wheresrhys/status/692416923720650754');
 	  }.bind(this));
 
 	  debug('started');
@@ -1168,17 +1172,20 @@
 	};
 
 	function request(body) {
-	  return new Promise(function(resolve) {
-	    debug('request', body);
+	  return new Promise(function(resolve, reject) {
 	    var xhr = new XMLHttpRequest();
 	    var data = JSON.stringify(body);
+
 	    xhr.open('POST', endpoint + '/api/v1/metadata', true);
 	    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-	    xhr.send(data);
+	    xhr.onerror = reject;
 	    xhr.onload = function() {
 	      debug('response');
 	      resolve(JSON.parse(xhr.responseText)[0]);
 	    };
+
+	    xhr.send(data);
+	    debug('request sent', body);
 	  });
 	}
 
@@ -1271,7 +1278,7 @@
 	 *
 	 * @return {Function}
 	 */
-	var debug = 1 ? console.log.bind(console, '[tiles-view]') : function() {};
+	var debug = 0 ? console.log.bind(console, '[tiles-view]') : function() {};
 
 	/**
 	 * Exports
@@ -1604,7 +1611,7 @@
 
 
 	// module
-	exports.push([module.id, "\n.tiles {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  width: 100%;\n  height: 100%;\n  overflow-y: scroll;\n  overflow-x: hidden;\n\n  transition:\n    opacity 180ms 130ms,\n    transform 180ms 130ms;\n}\n\n.tiles.hidden {\n  opacity: 0;\n  transform: scale(0.90);\n\n  transition:\n    opacity 180ms,\n    transform 180ms;\n}\n", ""]);
+	exports.push([module.id, "\n.tiles {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  width: 100%;\n  height: 100%;\n  overflow-y: scroll;\n  overflow-x: hidden;\n\n  will-change: transform;\n\n  transition:\n    opacity 180ms 130ms,\n    transform 180ms 130ms;\n}\n\n.tiles.hidden {\n  opacity: 0;\n  transform: scale(0.90);\n\n  transition:\n    opacity 180ms,\n    transform 180ms;\n}\n", ""]);
 
 	// exports
 
@@ -1632,7 +1639,7 @@
 	 *
 	 * @return {Function}
 	 */
-	var debug = 1 ? console.log.bind(console, '[grid-view]') : function() {};
+	var debug = 0 ? console.log.bind(console, '[grid-view]') : function() {};
 
 	/**
 	 * Exports
@@ -1738,7 +1745,7 @@
 
 
 	// module
-	exports.push([module.id, "\n.grid {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 1;\n\n  margin: 0;\n  width: 100%;\n  height: 100%;\n  overflow-y: scroll;\n  overflow-x: hidden;\n  list-style: none;\n  opacity: 0;\n\n  will-change: transform;\n\n  animation: grid-zoom-in 240ms 120ms;\n  animation-fill-mode: forwards;\n}\n\n.grid.hidden {\n  animation: grid-zoom-out 160ms;\n  animation-fill-mode: forwards;\n}\n\n.grid > .inner {\n  box-sizing: border-box;\n  flex-flow: row wrap;\n  display: flex;\n  padding: 7px;\n  width: 100%;\n}\n\n@keyframes grid-zoom-in {\n  0% {\n    opacity: 0;\n    transform: scale(1.3);\n  }\n\n  100% {\n    opacity: 1;\n    transform: scale(1);\n  }\n}\n\n@keyframes grid-zoom-out {\n  0% {\n    opacity: 1;\n    transform: scale(1);\n  }\n\n  99% {\n    opacity: 0;\n    transform: scale(1.3);\n  }\n\n  100% {\n    opacity: 0;\n    transform: scale(0);\n  }\n}\n", ""]);
+	exports.push([module.id, "\n.grid {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 1;\n\n  margin: 0;\n  width: 100%;\n  height: 100%;\n  overflow-y: scroll;\n  overflow-x: hidden;\n  list-style: none;\n  opacity: 0;\n\n  will-change: transform;\n  animation: grid-zoom-in 240ms 120ms;\n  animation-fill-mode: forwards;\n}\n\n.grid.hidden {\n  animation: grid-zoom-out 160ms;\n  animation-fill-mode: forwards;\n}\n\n.grid > .inner {\n  box-sizing: border-box;\n  flex-flow: row wrap;\n  display: flex;\n  padding: 7px;\n  width: 100%;\n}\n\n@keyframes grid-zoom-in {\n  0% {\n    opacity: 0;\n    transform: scale(1.3);\n  }\n\n  100% {\n    opacity: 1;\n    transform: scale(1);\n  }\n}\n\n@keyframes grid-zoom-out {\n  0% {\n    opacity: 1;\n    transform: scale(1);\n  }\n\n  99% {\n    opacity: 0;\n    transform: scale(1.3);\n  }\n\n  100% {\n    opacity: 0;\n    transform: scale(0.01);\n  }\n}\n", ""]);
 
 	// exports
 
@@ -1778,7 +1785,7 @@
 
 
 	// module
-	exports.push([module.id, "\n* {\n  -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */\n}\n\nhtml {\n  height: 100%;\n  background: #f2f2f2;\n}\n\nbody {\n  -webkit-touch-callout: none; /* prevent callout to copy image, etc when tap to hold */\n  -webkit-text-size-adjust: none; /* prevent webkit from resizing text to fit */\n  -webkit-user-select: none; /* prevent copy paste, to allow, change 'none' to 'text' */\n\n  height: 100%;\n  width: 100%;\n  margin: 0;\n  padding: 0;\n\n  font-size: 12px;\n  font-family: sans-serif;\n  color: #444;\n}\n\n.icon {\n  display: inline-block;\n  width: 30px;\n  height: 30px;\n  fill: currentColor;\n}\n\n.app {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  overflow: hidden;\n}\n\n.app > .header {\n\n}\n\n.app > .content {\n  position: relative;\n  flex: 1;\n}\n", ""]);
+	exports.push([module.id, "\n* {\n  -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */\n}\n\nhtml {\n  height: 100%;\n  background: #f2f2f2;\n  overflow: hidden;\n}\n\nbody {\n  -webkit-touch-callout: none; /* prevent callout to copy image, etc when tap to hold */\n  -webkit-text-size-adjust: none; /* prevent webkit from resizing text to fit */\n  -webkit-user-select: none; /* prevent copy paste, to allow, change 'none' to 'text' */\n\n  height: 100%;\n  width: 100%;\n  margin: 0;\n  padding: 0;\n\n  font-size: 12px;\n  font-family: sans-serif;\n  color: #444;\n  overflow: hidden;\n}\n\n.icon {\n  display: inline-block;\n  width: 30px;\n  height: 30px;\n  fill: currentColor;\n}\n\n.app {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  overflow: hidden;\n}\n\n.app > .header {}\n\n.app > .content {\n  position: relative;\n  flex: 1;\n}\n", ""]);
 
 	// exports
 
@@ -2013,7 +2020,7 @@
 
 
 	// module
-	exports.push([module.id, "\n\n.grid-icon {\n  display: flex;\n  flex: 0 0 33%;\n  justify-content: center;\n  transition:\n    opacity 200ms 400ms,\n    transform 200ms 400ms;\n}\n\n.grid-icon:active {\n  transition-delay: 0ms;\n  transform: scale(0.95);\n  opacity: 0.7;\n}\n\n.grid-icon > .inner {\n  flex: 0 1 auto;\n  display: block;\n  width: 100px;\n  padding: 8px;\n\n  color: inherit;\n  text-decoration: none;\n}\n\n.grid-icon-image {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100px;\n  height: 100px;\n  border-radius: 50%;\n  background: #ddd;\n}\n\n.grid-icon-image > img {\n  max-width: 100%;\n}\n\n.grid-icon-title {\n  margin: 0;\n  overflow: hidden;\n\n  font-size: 13px;\n  font-style: italic;\n  font-weight: normal;\n  text-align: center;\n  line-height: 2.6em;\n\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: #555;\n}\n", ""]);
+	exports.push([module.id, "\n\n.grid-icon {\n  display: flex;\n  flex: 0 0 33%;\n  justify-content: center;\n  transition:\n    opacity 200ms 400ms,\n    transform 200ms 400ms;\n}\n\n.grid-icon:active {\n  transition-delay: 0ms;\n  transform: scale(0.95);\n  opacity: 0.7;\n}\n\n.grid-icon > .inner {\n  flex: 0 1 auto;\n  display: block;\n  width: 100px;\n  padding: 8px;\n\n  color: inherit;\n  text-decoration: none;\n}\n\n.grid-icon-image {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100px;\n  height: 100px;\n  border-radius: 6px;\n  background: #ddd;\n  font-family: magnet;\n  font-size: 70px;\n  color: #bbb;\n  overflow: hidden;\n}\n\n.grid-icon-image > img {\n  max-width: 100%;\n}\n\n.no-icon .grid-icon-image > img {\n  display: none;\n}\n\n.grid-icon-title {\n  margin: 0;\n  overflow: hidden;\n\n  font-size: 13px;\n  font-style: italic;\n  font-weight: normal;\n  text-align: center;\n  line-height: 2.6em;\n\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: #555;\n}\n", ""]);
 
 	// exports
 
@@ -2053,7 +2060,7 @@
 
 
 	// module
-	exports.push([module.id, "", ""]);
+	exports.push([module.id, "\n.grid-icon-website {}\n\n.grid-icon-website.no-icon .grid-icon-image::before {\n  content: '\\E078';\n}\n", ""]);
 
 	// exports
 
@@ -2111,6 +2118,13 @@
 	__webpack_require__(34);
 
 	/**
+	 * Logger
+	 *
+	 * @return {Function}
+	 */
+	var debug = 1 ? console.log.bind(console, '[website-icon]') : function() {};
+
+	/**
 	 * Exports
 	 */
 
@@ -2129,9 +2143,20 @@
 
 	WebsiteIconView.prototype.render = function(data) {
 	  Icon.prototype.render.apply(this, arguments); // super
-	  // populateIcon(this.els.icon, data);
-	  this.els.imageNode.src = data.icon;
+	  var self = this;
 	  this.els.title.textContent = data.title;
+
+	  if (!data.icon) {
+	    this.el.classList.add('no-icon');
+	    return;
+	  }
+
+	  this.els.imageNode.src = data.icon;
+	  this.els.imageNode.addEventListener('load', function(e) {
+	    var area = this.naturalWidth * this.naturalHeight;
+	    debug('icon loaded', area);
+	    if (area < (80 * 80)) self.el.classList.add('no-icon');
+	  });
 	};
 
 	/**

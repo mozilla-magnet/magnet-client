@@ -16,7 +16,7 @@ require('./tiles.css');
  *
  * @return {Function}
  */
-var debug = 1 ? console.log.bind(console, '[tiles-view]') : function() {};
+var debug = 0 ? console.log.bind(console, '[tiles-view]') : function() {};
 
 /**
  * Exports

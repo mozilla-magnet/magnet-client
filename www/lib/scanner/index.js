@@ -44,7 +44,10 @@ Scanner.prototype.stop =function() {
 Scanner.prototype.onFound = function(item) {
   metadata(item).then(function(data) {
     this.emit('found', item, data);
-  }.bind(this));
+  }.bind(this))
+  .catch(function(err) {
+    console.error(err);
+  });
 };
 
 Scanner.prototype.onLost = function(item) {
