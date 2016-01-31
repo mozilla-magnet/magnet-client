@@ -34,8 +34,8 @@ Header.prototype = Object.create(Emitter.prototype);
 Header.prototype.render = function() {
   this.el.innerHTML =
     '<h1>Magnet</h1>' +
-    '<button class="grid-button icon-grid"><svg class="icon icon-view_module"></button>' +
-    '<button class="tiles-button icon-stop"><svg class="icon icon-view_stream"></button>';
+    '<button class="grid-button icon-grid" hidden></button>' +
+    '<button class="tiles-button icon-stop"></button>';
 };
 
 Header.prototype.toggleButton = function(grid) {

@@ -11,7 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "eddystone-url-encoding": "^1.0.1",
-    "events": "^1.1.0"
+    "events": "^1.1.0",
+    "fxos-font": "^1.0.1"
   },
   "devDependencies": {
     "css-loader": "^0.23.1",

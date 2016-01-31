@@ -7,6 +7,13 @@ var Emitter = require('events');
 require('./tile.css');
 
 /**
+ * Logger
+ *
+ * @return {Function}
+ */
+var debug = 1 ? console.log.bind(console, '[tile-view]') : function() {};
+
+/**
  * Exports
  */
 
@@ -24,6 +31,7 @@ function TileView(data) {
   this.el.href = data.url;
   this.els = {};
   this.render(data);
+  debug('initialized', data);
 }
 
 TileView.prototype.render = function(data) {

@@ -31,12 +31,20 @@
   align-items: center;
   width: 100px;
   height: 100px;
-  border-radius: 50%;
+  border-radius: 6px;
   background: #ddd;
+  font-family: magnet;
+  font-size: 70px;
+  color: #bbb;
+  overflow: hidden;
 }
 
 .grid-icon-image > img {
   max-width: 100%;
+}
+
+.no-icon .grid-icon-image > img {
+  display: none;
 }
 
 .grid-icon-title {

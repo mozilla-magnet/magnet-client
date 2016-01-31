@@ -46,15 +46,9 @@ GridView.prototype = {
     if (!data) return;
     if (this.icons[id]) return debug('already exists');
 
-    // Shim, remove once types are implemented
-    if (data.twitter) data.type = 'twitter';
-    if (data.android) data.type = 'android';
-
-    var type = data.type || 'website';
-    var Icon = registry[type];
-    if (!Icon) return debug('unknown type', type);
-
+    var Icon = registry[data.type] || registry.website;
     var icon = new Icon(data);
+
     this.icons[id] = icon;
     this.els.inner.appendChild(icon.el);
   },

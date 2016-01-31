@@ -4,9 +4,10 @@
  */
 
 var registry = {
-  website: require('./tile'),
+  website: require('./website'),
   twitter: require('./twitter'),
-  android: require('./android-app')
+  android: require('./android-app'),
+  video: require('./video')
 };
 
 require('./tiles.css');
@@ -36,16 +37,9 @@ TilesView.prototype = {
     if (!data) return;
     if (this.tiles[id]) return debug('already exists');
 
-    // Shim, remove once types are implemented
-    if (data.twitter) data.type = 'twitter';
-    if (data.android) data.type = 'android';
-
-    var type = data.type || 'website';
-    var Tile = registry[type];
-
-    if (!Tile) return debug('unknown type', type);
-
+    var Tile = registry[data.type] || registry.website;
     var tile = new Tile(data);
+
     this.tiles[id] = tile;
     this.el.appendChild(tile.el);
   },

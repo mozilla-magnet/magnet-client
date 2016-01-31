@@ -2,7 +2,6 @@
 .app-header {
   position: relative;
   height: 50px;
-  will-change: transform; /* stop flickering */
   color: #999;
 }
 
@@ -11,8 +10,9 @@
   text-align: center;
   font-size: 21px;
   line-height: 50px;
-  font-weight: lighter;
+  font-weight: normal;
   font-style: italic;
+  letter-spacing: -0.5px;
 }
 
 .app-header button {

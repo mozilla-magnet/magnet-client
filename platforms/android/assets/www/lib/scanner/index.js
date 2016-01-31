@@ -42,9 +42,10 @@ Scanner.prototype.stop =function() {
 };
 
 Scanner.prototype.onFound = function(item) {
-  metadata(item).then(function(data) {
+  metadata.get(item).then(function(data) {
     this.emit('found', item, data);
-  }.bind(this));
+  }.bind(this))
+  .catch(console.error.bind(console));
 };
 
 Scanner.prototype.onLost = function(item) {

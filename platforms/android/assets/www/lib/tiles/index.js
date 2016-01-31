@@ -6,7 +6,8 @@
 var registry = {
   website: require('./tile'),
   twitter: require('./twitter'),
-  android: require('./android-app')
+  android: require('./android-app'),
+  video: require('./video')
 };
 
 require('./tiles.css');
@@ -16,7 +17,7 @@ require('./tiles.css');
  *
  * @return {Function}
  */
-var debug = 1 ? console.log.bind(console, '[tiles-view]') : function() {};
+var debug = 0 ? console.log.bind(console, '[tiles-view]') : function() {};
 
 /**
  * Exports
@@ -36,16 +37,9 @@ TilesView.prototype = {
     if (!data) return;
     if (this.tiles[id]) return debug('already exists');
 
-    // Shim, remove once types are implemented
-    if (data.twitter) data.type = 'twitter';
-    if (data.android) data.type = 'android';
-
-    var type = data.type || 'website';
-    var Tile = registry[type];
-
-    if (!Tile) return debug('unknown type', type);
-
+    var Tile = registry[data.type] || registry.website;
     var tile = new Tile(data);
+
     this.tiles[id] = tile;
     this.el.appendChild(tile.el);
   },
