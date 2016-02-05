@@ -65,9 +65,9 @@
 	var HeaderView = __webpack_require__(2);
 	var Scanner = __webpack_require__(8);
 	var TilesView = __webpack_require__(13);
-	var GridView = __webpack_require__(48);
+	var GridView = __webpack_require__(44);
 
-	__webpack_require__(68);
+	__webpack_require__(64);
 
 	/**
 	 * Logger
@@ -105,7 +105,7 @@
 
 	    this.grid = new GridView();
 	    this.tiles = new TilesView();
-	    this.header = new HeaderView({ title: 'Magnet' });
+	    this.header = new HeaderView({ title: 'magnet' });
 
 	    content.appendChild(this.grid.el);
 	    content.appendChild(this.tiles.el);
@@ -1213,16 +1213,17 @@
 
 	function normalize(data) {
 	  var normalized = {
+	    url: data.url,
 	    type: data.type || 'website',
-	    title: data.title,
+	    title: data.title || data.url,
 	    description: data.description,
 	    icon: data.icon,
 	    embed: data.embed
 	  };
 
 	  if (data.og_data) normalizeOg(normalized, data.og_data);
-	  if (data.twitter) normalizeTwitter(normalized, data);
-	  if (data.android) normalizeAndroid(normalized, data);
+	  if (data.twitter) normalizeTwitter(normalized, data.twitter);
+	  if (data.android) normalizeAndroid(normalized, data.android);
 
 	  return normalized;
 	}
@@ -1230,6 +1231,7 @@
 	function normalizeOg(result, og) {
 	  if (og.description) result.description = og.description;
 	  if (og.title) result.title = og.title;
+	  if (og.image) result.image = og.image;
 	  result.data = og;
 	}
 
@@ -1238,7 +1240,8 @@
 	  if (twitter.description) result.description = twitter.bio;
 	  if (twitter.avatar.alt) result.title = twitter.avatar.alt;
 	  if (twitter.user_id) result.title2 = twitter.user_id;
-	  if (twitter.avatar.src) result.image = twitter.avatar.src;
+	  // if (twitter.avatar.src) result.image = twitter.avatar.src;
+	  if (twitter.avatar.src) result.icon = twitter.avatar.src;
 	  twitter.type = 'twitter';
 	  result.data = twitter;
 	}
@@ -1354,14 +1357,11 @@
 
 	var registry = {
 	  website: __webpack_require__(14),
-	  profile: __webpack_require__(27),
-	  video: __webpack_require__(33),
-	  image: __webpack_require__(36),
-	  audio: __webpack_require__(39),
-	  calendar: __webpack_require__(43)
+	  embed: __webpack_require__(66)
 	};
 
-	__webpack_require__(46);
+
+	__webpack_require__(42);
 
 	/**
 	 * Logger
@@ -1388,7 +1388,7 @@
 	    if (!data) return;
 	    if (this.tiles[id]) return debug('already exists');
 
-	    var Tile = registry[data.type] || registry.website;
+	    var Tile = registry.website;
 	    var tile = new Tile(data);
 
 	    this.tiles[id] = tile;
@@ -1422,58 +1422,74 @@
 	 * Dependencies
 	 */
 
-	var WebsiteEmbed = __webpack_require__(15);
-	var Website = __webpack_require__(24);
+	var Tile = __webpack_require__(15);
+	__webpack_require__(20);
+
+	/**
+	 * Logger
+	 *
+	 * @return {Function}
+	 */
+	var debug = 1 ? console.log.bind(console, '[website-tile]') : function() {};
 
 	/**
 	 * Exports
 	 */
 
-	module.exports = function(data) {
-	  if (data.embed) return new WebsiteEmbed(data);
-	  else return new Website(data);
-	};
-
-
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Dependencies
-	 */
-
-	var debug = __webpack_require__(16)('tile-website-embed', 1);
-	var Tile = __webpack_require__(17);
-	__webpack_require__(22);
-
-	/**
-	 * Exports
-	 */
-
-	module.exports = WebsiteEmbedTile;
+	module.exports = WebsiteTile;
 
 	/**
 	 * Extends `Emitter`
 	 */
 
-	WebsiteEmbedTile.prototype = Object.create(Tile.prototype);
+	WebsiteTile.prototype = Object.create(Tile.prototype);
 
-	function WebsiteEmbedTile(data) {
+	function WebsiteTile(data) {
 	  Tile.apply(this, arguments);
-	  this.el.className += ' tile-website-embed';
+	  this.el.className += ' tile-website';
 	  debug('initialized', data);
 	}
 
-	WebsiteEmbedTile.prototype.render = function(data) {
+	WebsiteTile.prototype.render = function(data) {
 	  Tile.prototype.render.apply(this, arguments);
-	  var embed = data.embed;
-	  var aspect = (embed.height / embed.width) * 100;
-	  this.els.embed = el('div', 'tile-website-embed-embed', this.els.inner);
-	  this.els.embed.style.paddingBottom = aspect + '%';
-	  this.els.embed.innerHTML = embed.html;
-	  debug('rendered');
+
+	  if (data.image) this.renderImage(data.image);
+
+	  var main = el('div', 'tile-website-main', this.els.inner);
+	  var icon = el('div', 'tile-website-icon', main);
+	  var iconInner = el('div', 'inner', icon);
+	  var title = el('h3', 'tile-website-title', main);
+	  var self = this;
+
+	  title.textContent = data.title;
+
+	  if (data.description) {
+	    var desc = el('p', 'tile-website-desc', main);
+	    desc.textContent = data.description;
+	  }
+
+	  if (!data.icon) {
+	    this.el.classList.add('no-icon');
+	    return;
+	  }
+
+	  var imageNode = el('img', '', iconInner);
+	  imageNode.src = data.icon;
+	  imageNode.onload = function(e) {
+	    var area = this.naturalWidth * this.naturalHeight;
+	    if (area < (80 * 80)) self.el.classList.add('no-icon');
+	  };
+	};
+
+	WebsiteTile.prototype.renderImage = function(src) {
+	  var image = el('div', 'tile-website-image', this.els.inner);
+	  var inner = el('div', 'inner', image);
+	  var node = el('img', '', inner);
+
+	  node.src = src;
+	  node.onload = function() {
+	    image.classList.add('loaded');
+	  };
 	};
 
 	/**
@@ -1489,17 +1505,7 @@
 
 
 /***/ },
-/* 16 */
-/***/ function(module, exports) {
-
-	
-	module.exports = function(name, on) {
-	 return on ? console.log.bind(console, '[' + name + ']') : function() {};
-	};
-
-
-/***/ },
-/* 17 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -1507,10 +1513,10 @@
 	 * Dependencies
 	 */
 
-	var fastdom = __webpack_require__(18);
-	var DetailView = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../detail\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var fastdom = __webpack_require__(16);
+	// var DetailView = require('../detail');
 	var Emitter = __webpack_require__(3);
-	__webpack_require__(20);
+	__webpack_require__(18);
 
 	/**
 	 * Logger
@@ -1537,7 +1543,7 @@
 	  this.els = {};
 	  this.data = data;
 	  this.render(data);
-	  fastdom.on(this.el, 'click', this.onClick.bind(this));
+	  // fastdom.on(this.el, 'click', this.onClick.bind(this));
 	  debug('initialized', data);
 	}
 
@@ -1547,12 +1553,12 @@
 	  this.els.inner = el('div', 'inner', this.el);
 	};
 
-	TileView.prototype.onClick = function(data) {
-	  var detail = new DetailView({
-	    parent: this.els.inner,
-	    data: this.data
-	  });
-	};
+	// TileView.prototype.onClick = function(data) {
+	//   var detail = new DetailView({
+	//     parent: this.els.inner,
+	//     data: this.data
+	//   });
+	// };
 
 	/**
 	 * Utils
@@ -1567,12 +1573,12 @@
 
 
 /***/ },
-/* 18 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
 		if(true)
-			module.exports = factory(__webpack_require__(19));
+			module.exports = factory(__webpack_require__(17));
 		else if(typeof define === 'function' && define.amd)
 			define(["fastdom"], factory);
 		else if(typeof exports === 'object')
@@ -2290,7 +2296,7 @@
 	;
 
 /***/ },
-/* 19 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;!(function(win) {
@@ -2538,13 +2544,13 @@
 
 
 /***/ },
-/* 20 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(21);
+	var content = __webpack_require__(19);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(7)(content, {});
@@ -2564,7 +2570,7 @@
 	}
 
 /***/ },
-/* 21 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(6)();
@@ -2578,13 +2584,13 @@
 
 
 /***/ },
-/* 22 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(23);
+	var content = __webpack_require__(21);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(7)(content, {});
@@ -2593,8 +2599,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./website-embed.css", function() {
-				var newContent = require("!!./../../../../node_modules/css-loader/index.js!./website-embed.css");
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./website.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./website.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -2604,7 +2610,7 @@
 	}
 
 /***/ },
-/* 23 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(6)();
@@ -2612,791 +2618,48 @@
 
 
 	// module
-	exports.push([module.id, "\n.tile-website-embed {\n\n}\n\n.tile-website-embed-embed {\n  position: relative;\n}\n\n.tile-website-embed-embed > iframe {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  width: 100%;\n  height: 100%;\n  border: 0;\n}\n", ""]);
+	exports.push([module.id, "\n.tile-website-image {\n  position: relative;\n  padding-bottom: 53.25%;\n  background: #999;\n}\n\n.tile-website-image > .inner {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  width: 100%;\n  height: 100%;\n\n  opacity: 0;\n  transition: opacity 300ms;\n}\n\n.tile-website-image.loaded > .inner {\n  opacity: 1;\n}\n\n.tile-website-image img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n\n.tile-website-main {\n  position: relative;\n\n  display: flex;\n  box-sizing: border-box;\n  min-height: 114px;\n  padding: 21px;\n  padding-left: 114px;\n\n  flex-direction: column;\n  justify-content: center;\n}\n\n.tile-website-main > * {\n  margin-bottom: 14px;\n}\n\n.tile-website-main > :last-child {\n  margin-bottom: 0;\n}\n\n.tile-website-icon {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  display: flex;\n  box-sizing: border-box;\n  width: 114px;\n  height: 114px;\n  margin: 0;\n\n  align-items: center;\n  justify-content: center;\n}\n\n.tile-website-icon > .inner {\n  width: 68px;\n  height: 68px;\n  overflow: hidden;\n  border-radius: 4px;\n  font-family: magnet;\n}\n\n.no-icon .tile-website-icon > .inner::before {\n  content: '\\E078';\n  display: block;\n  margin-top: -2px;\n  font-size: 68px;\n  color: #bbb;\n}\n\n.tile-website-icon img {\n  width: 100%;\n}\n\n.no-icon .tile-website-icon img {\n  display: none;\n}\n\n.tile:first-child .tile-website-text {\n  border: 0;\n}\n\n.tile-website-title {\n  font-size: 21px;\n  line-height: 1.19em;\n  font-weight: bold;\n}\n\n.tile-website-desc {\n  width: 100%;\n  max-height: calc(1.35em * 5);\n  overflow: hidden;\n\n  line-height: 1.45em;\n  font-size: 12px;\n  color: hsl(0, 0%, 60%);\n}\n\n.tile-website-footer {\n  display: flex;\n  height: 46px;\n  background: hsl(0, 0%, 74%);\n  font-size: 17px;\n  font-weight: bold;\n  color: #fff;\n}\n\n.tile-website-footer > a {\n  display: flex;\n  flex: 1;\n  padding: 7px;\n  align-items: center;\n  justify-content: center;\n  color: inherit;\n  text-decoration: none;\n}\n\n.tile-website-footer > a:not(:first-child) {\n  border-left: solid 1px hsl(0, 0%, 82%);\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Dependencies
-	 */
-
-	var Tile = __webpack_require__(17);
-	__webpack_require__(25);
-
-	/**
-	 * Logger
-	 *
-	 * @return {Function}
-	 */
-	var debug = 1 ? console.log.bind(console, '[website-tile]') : function() {};
-
-	/**
-	 * Exports
-	 */
-
-	module.exports = WebsiteTile;
-
-	/**
-	 * Extends `Emitter`
-	 */
-
-	WebsiteTile.prototype = Object.create(Tile.prototype);
-
-	function WebsiteTile(data) {
-	  Tile.apply(this, arguments);
-	  this.el.className += ' website-tile';
-	  debug('initialized', data);
-	}
-
-	WebsiteTile.prototype.render = function(data) {
-	  Tile.prototype.render.apply(this, arguments);
-	  var icon = el('div', 'website-tile-icon', this.els.inner);
-	  var title = el('h3', 'website-tile-title', this.els.inner);
-	  var self = this;
-
-	  title.textContent = data.title;
-
-	  if (data.description) {
-	    var desc = el('p', 'website-tile-desc', this.els.inner);
-	    desc.textContent = data.description;
-	  }
-
-	  if (!data.icon) {
-	    this.el.classList.add('no-icon');
-	    return;
-	  }
-
-	  var imageNode = el('img', '', icon);
-	  imageNode.src = data.icon;
-	  imageNode.onload = function(e) {
-	    var area = this.naturalWidth * this.naturalHeight;
-	    if (area < (80 * 80)) self.el.classList.add('no-icon');
-	  };
-	};
-
-	/**
-	 * Utils
-	 */
-
-	function el(tag, className, parent) {
-	  var result = document.createElement(tag);
-	  result.className = className || '';
-	  if (parent) parent.appendChild(result);
-	  return result;
-	}
-
-
-/***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(26);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(7)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./website.css", function() {
-				var newContent = require("!!./../../../../node_modules/css-loader/index.js!./website.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(6)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "\n.website-tile > .inner {\n  box-sizing: border-box;\n  min-height: 100px;\n  padding: 21px;\n  padding-left: 100px;\n}\n\n.website-tile > .inner > * {\n  margin-bottom: 14px;\n}\n\n.website-tile > .inner > :last-child {\n  margin-bottom: 0;\n}\n\n.website-tile-icon {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  display: flex;\n  width: 100px;\n  height: 100px;\n  margin: 0;\n  overflow: hidden;\n\n  align-items: center;\n  justify-content: center;\n  border-radius: 4px;\n  font-family: magnet;\n}\n\n.no-icon .website-tile-icon::before {\n  content: '\\E078';\n  font-size: 70px;\n  color: #bbb;\n}\n\n.no-icon .website-tile-icon > img {\n  display: none;\n}\n\n.tile:first-child .website-tile-text {\n  border: 0;\n}\n\n.website-tile-title {\n  font-size: 21px;\n  line-height: 1.19em;\n  font-weight: bold;\n}\n\n.website-tile-desc {\n  width: 100%;\n  max-height: calc(1.35em * 5);\n  overflow: hidden;\n\n  line-height: 1.35em;\n  font-size: 12px;\n  color: hsl(0, 0%, 60%);\n}\n\n.website-tile-footer {\n  display: flex;\n  height: 46px;\n  background: hsl(0, 0%, 74%);\n  font-size: 17px;\n  font-weight: bold;\n  color: #fff;\n}\n\n.website-tile-footer > a {\n  display: flex;\n  flex: 1;\n  padding: 7px;\n  align-items: center;\n  justify-content: center;\n  color: inherit;\n  text-decoration: none;\n}\n\n.website-tile-footer > a:not(:first-child) {\n  border-left: solid 1px hsl(0, 0%, 82%);\n}\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 27 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Dependencies
-	 */
-
-	var ProfileTwitter = __webpack_require__(28);
-	var ProfileAndroid = __webpack_require__(32);
-	var Profile = __webpack_require__(29);
-
-	/**
-	 * Exports
-	 */
-
-	module.exports = function(data) {
-	  if (data.twitter) return new ProfileTwitter(data);
-	  else if (data.android) return new ProfileAndroid(data);
-	  else return new Profile(data);
-	};
-
-
-/***/ },
-/* 28 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Dependencies
-	 */
-
-	var TileProfile = __webpack_require__(29);
-
-	/**
-	 * Exports
-	 */
-
-	module.exports = TileProfileTwitter;
-
-	/**
-	 * Extends `Tile`
-	 */
-	TileProfileTwitter.prototype = Object.create(TileProfile.prototype);
-
-	function TileProfileTwitter() {
-	  TileProfile.apply(this, arguments);
-	  this.el.className += ' tile-profile-twitter';
-	}
-
-	TileProfileTwitter.prototype.render = function(data) {
-	  TileProfile.prototype.render.apply(this, arguments);
-	  this.els.imageNode.src = data.twitter.avatar.src;
-	  this.els.title.textContent = data.twitter.avatar.alt;
-	  this.els.desc.textContent = data.twitter.bio;
-	  this.els.handle = el('h4', 'tile-profile-twitter-handle');
-	  this.els.inner.insertBefore(this.els.handle, this.els.desc);
-	  this.els.handle.textContent = '@' + data.twitter.user_id;
-	};
-
-	/**
-	 * Utils
-	 */
-
-	function el(tag, className, parent) {
-	  var result = document.createElement(tag);
-	  result.className = className || '';
-	  if (parent) parent.appendChild(result);
-	  return result;
-	}
-
-
-/***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Dependencies
-	 */
-
-	var Tile = __webpack_require__(17);
-	__webpack_require__(30);
-
-	/**
-	 * Exports
-	 */
-
-	module.exports = ProfileAppTile;
-
-	/**
-	 * Extends `Tile`
-	 */
-
-	ProfileAppTile.prototype = Object.create(Tile.prototype);
-
-	function ProfileAppTile() {
-	  Tile.apply(this, arguments);
-	  this.el.className += ' tile-profile';
-	}
-
-	ProfileAppTile.prototype.render = function(data) {
-	  Tile.prototype.render.apply(this, arguments);
-	  this.els.icon = el('div', 'tile-profile-icon', this.els.inner);
-	  this.els.imageNode = el('img', '', this.els.icon);
-	  this.els.title = el('h3', 'tile-profile-title', this.els.inner);
-	  this.els.desc = el('p', 'tile-profile-desc', this.els.inner);
-	};
-
-	/**
-	 * Utils
-	 */
-
-	function el(tag, className, parent) {
-	  var result = document.createElement(tag);
-	  result.className = className || '';
-	  if (parent) parent.appendChild(result);
-	  return result;
-	}
-
-
-/***/ },
-/* 30 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(31);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(7)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./profile.css", function() {
-				var newContent = require("!!./../../../../node_modules/css-loader/index.js!./profile.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 31 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(6)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "\n.tile-profile > .inner {\n  box-sizing: border-box;\n  min-height: 100px;\n  padding: 21px;\n  padding-left: 114px;\n}\n\n.tile-profile > .inner > * {\n  margin-top: 14px;\n}\n\n.tile-profile > .inner > :first-child {\n  margin-top: 0;\n}\n\n.tile-profile-icon {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  box-sizing: border-box;\n  display: flex;\n  width: 114px;\n  height: 114px;\n  padding: 21px;\n  margin: 0;\n  overflow: hidden;\n\n  align-items: center;\n  justify-content: center;\n}\n\n.tile-profile-icon > img {\n  width: 100%;\n}\n\n.tile-profile-title {\n  margin-top: 0 !important;\n  margin-bottom: -0.19em;\n  font-size: 21px;\n  line-height: 1.19em;\n  font-weight: bold;\n}\n\n.tile-profile-twitter-handle {\n  font-weight: normal;\n  color: hsl(0, 0%, 80%);\n}\n\n.tile-profile-desc {\n  width: 100%;\n  max-height: calc(1.35em * 5);\n  overflow: hidden;\n\n  line-height: 1.35em;\n  font-size: 12px;\n  color: hsl(0, 0%, 60%);\n}\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 32 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Dependencies
-	 */
-
-	var TileProfile = __webpack_require__(29);
-
-	/**
-	 * Exports
-	 */
-
-	module.exports = TileProfileAndroid;
-
-	/**
-	 * Extends `Tile`
-	 */
-	TileProfileAndroid.prototype = Object.create(TileProfile.prototype);
-
-	function TileProfileAndroid() {
-	  TileProfile.apply(this, arguments);
-	  this.el.className += ' tile-profile-android';
-	}
-
-	TileProfileAndroid.prototype.render = function(data) {
-	  TileProfile.prototype.render.apply(this, arguments);
-	  this.els.imageNode.src = data.android.icon;
-	  this.els.title = data.android.name;
-	  this.els.desc = data.description;
-	};
-
-
-/***/ },
-/* 33 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Dependencies
-	 */
-
-	var Tile = __webpack_require__(17);
-	__webpack_require__(34);
-
-	/**
-	 * Logger
-	 *
-	 * @return {Function}
-	 */
-	var debug = 1 ? console.log.bind(console, '[video-tile]') : function() {};
-
-	/**
-	 * Exports
-	 */
-
-	module.exports = VideoTile;
-
-	/**
-	 * Extends `Tile`
-	 */
-
-	VideoTile.prototype = Object.create(Tile.prototype);
-
-	function VideoTile(data) {
-	  this.embed = data.embed;
-	  this.data = data;
-
-	  Tile.apply(this, arguments);
-	  this.el.className += ' video-tile';
-	  this.el.addEventListener('click', this.onClick.bind(this));
-	}
-
-	VideoTile.prototype.render = function(data) {
-	  Tile.prototype.render.apply(this, arguments);
-	  var imageSrc = data.og_data && data.og_data.image;
-	  var self = this;
-
-	  if (this.embed) {
-	    var aspect = (this.embed.height / this.embed.width) * 100;
-	    this.els.inner.style.paddingBottom = aspect + '%';
-	    this.els.inner.classList.add('fixed-aspect');
-	  }
-
-	  if (imageSrc) {
-	    this.els.poster = el('div', 'video-tile-poster', this.els.inner);
-	    this.els.title = el('h3', 'video-tile-title', this.els.poster);
-	    this.els.title.textContent = data.og_data.title;
-	    var imageNode = el('img', 'video-tile-image', this.els.poster);
-	    imageNode.src = imageSrc;
-	    imageNode.onload = function() {
-	      self.els.poster.classList.add('loaded');
-	    };
-	  }
-	};
-
-	VideoTile.prototype.onClick = function(e) {
-	  var embed = this.data.embed;
-	  if (!embed) return;
-	  debug('embedding', embed);
-	  var container = el('div', 'video-tile-embed');
-	  container.innerHTML = embed.html;
-
-	  var iframe = container.querySelector('iframe');
-	  if (iframe) {
-	    var hasQuery = !!~iframe.src.indexOf('?');
-	    iframe.src += (!hasQuery ? '?' : '&') + 'autoplay=1&rel=0&controls=0&showinfo=0&title=0&portrait=0&badge=0&modestbranding=1&byline=0';
-	    iframe.onload = function() {
-	      this.el.classList.add('embed-active');
-	    }.bind(this);
-	  }
-
-	  this.els.inner.appendChild(container);
-	};
-
-	/**
-	 * Utils
-	 */
-
-	function el(tag, className, parent) {
-	  var result = document.createElement(tag);
-	  result.className = className || '';
-	  if (parent) parent.appendChild(result);
-	  return result;
-	}
-
-
-/***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(35);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(7)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./video.css", function() {
-				var newContent = require("!!./../../../../node_modules/css-loader/index.js!./video.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
+/* 22 */,
+/* 23 */,
+/* 24 */,
+/* 25 */,
+/* 26 */,
+/* 27 */,
+/* 28 */,
+/* 29 */,
+/* 30 */,
+/* 31 */,
+/* 32 */,
+/* 33 */,
+/* 34 */,
 /* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(6)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "\n.video-tile-poster {\n  position: relative;\n  overflow: hidden;\n}\n\n.embed-active .video-tile-poster {\n  opacity: 0;\n}\n\n.fixed-aspect > .video-tile-poster,\n.fixed-aspect > .video-tile-embed {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n\n  transition: opacity 200ms;\n}\n\n.video-tile-poster > img {\n  display: block;\n  height: 100%;\n  width: 100.5%;\n\n  object-fit: cover;\n  opacity: 0;\n  transition: opacity 400ms;\n}\n\n.video-tile-poster.loaded > img {\n  opacity: 1;\n}\n\n.video-tile-title {\n  position: absolute;\n  left: 0;\n  bottom: 0;\n\n  box-sizing: border-box;\n  width: 100%;\n  padding: 30px 14px 10px;\n  margin: 0;\n\n  font-weight: normal;\n  text-align: center;\n  color: #fff;\n  background: linear-gradient(\n    to bottom,\n    rgba(0,0,0,0) 0%,\n    rgba(0,0,0,0.3) 100%);\n  text-shadow: 0 1px 1px rgba(0,0,0,0.5);\n  font-size: 15px;\n}\n\n.video-tile-embed {\n  position: relative;\n  opacity: 0;\n}\n\n.embed-active .video-tile-embed {\n  opacity: 1;\n}\n\n.video-tile-embed > iframe {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  display: block;\n  width: 100.5%;\n  height: 100.5%;\n  border: 0;\n}\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Dependencies
-	 */
-
-	var Tile = __webpack_require__(17);
-	__webpack_require__(37);
-
-	/**
-	 * Logger
-	 *
-	 * @return {Function}
-	 */
-	var debug = 1 ? console.log.bind(console, '[image-tile]') : function() {};
-
-	/**
-	 * Exports
-	 */
-
-	module.exports = ImageTile;
-
-	/**
-	 * Extends `Tile`
-	 */
-
-	ImageTile.prototype = Object.create(Tile.prototype);
-
-	function ImageTile(data) {
-	  this.embed = data.embed;
-	  this.data = data;
-
-	  Tile.apply(this, arguments);
-	  this.el.className += ' image-tile';
-	  this.el.addEventListener('click', this.onClick.bind(this));
-	}
-
-/***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(38);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(7)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./image.css", function() {
-				var newContent = require("!!./../../../../node_modules/css-loader/index.js!./image.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 38 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(6)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "", ""]);
-
-	// exports
-
-
-/***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Dependencies
-	 */
-
-	var debug = __webpack_require__(16)('tile-audio', 1);
-	var el = __webpack_require__(40);
-	var Tile = __webpack_require__(17);
-	__webpack_require__(41);
-
-	/**
-	 * Logger
-	 *
-	 * @return {Function}
-	 */
-
-	/**
-	 * Exports
-	 */
-
-	module.exports = AudioTile;
-
-	/**
-	 * Extends `Tile`
-	 */
-
-	AudioTile.prototype = Object.create(Tile.prototype);
-
-	function AudioTile(data) {
-	  Tile.apply(this, arguments); // super
-	  this.el.className += ' tile-audio';
-	}
-
-	AudioTile.prototype.render = function(data) {
-	  Tile.prototype.render.apply(this, arguments);
-	  debug('render', data);
-	  this.data = data;
-	  this.els.image = el('div', 'tile-audio-image', this.els.inner);
-	  this.els.loading = el('div', 'tile-audio-loading', this.els.inner);
-	  this.els.imageNode = el('img', '', this.els.image);
-	  this.els.imageNode.src = data.og_data.image;
-	  this.els.image.addEventListener('click', this.onClick.bind(this));
-	};
-
-	AudioTile.prototype.onClick = function(e) {
-	  var embed = this.data.embed;
-	  debug('embedding', embed);
-	  if (!embed) return;
-	  var container = el('div', 'tile-audio-embed');
-	  container.innerHTML = cleanHtml(embed.html);
-
-	  var iframe = container.querySelector('iframe');
-	  if (iframe) {
-	    this.el.classList.add('loading');
-	    iframe.onload = function() {
-	      this.el.classList.add('embed-active');
-	      this.el.classList.remove('loading');
-	    }.bind(this);
-	  }
-
-	  this.els.inner.appendChild(container);
-	};
-
-	function cleanHtml(html) {
-	  return html.replace(/<\!\[CDATA\[(.+)\]\]>/, '$1');
-	}
-
-
-/***/ },
-/* 40 */
 /***/ function(module, exports) {
 
 	
-	module.exports = function(tag, className, parent) {
-	  var result = document.createElement(tag);
-	  result.className = className || '';
-	  if (parent) parent.appendChild(result);
-	  return result;
+	module.exports = function(name, on) {
+	 return on ? console.log.bind(console, '[' + name + ']') : function() {};
 	};
 
 
 /***/ },
-/* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(42);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(7)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./audio.css", function() {
-				var newContent = require("!!./../../../../node_modules/css-loader/index.js!./audio.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
+/* 36 */,
+/* 37 */,
+/* 38 */,
+/* 39 */,
+/* 40 */,
+/* 41 */,
 /* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(6)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "\n.tile-audio > .inner {\n  position: relative;\n  padding-bottom: 100%;\n}\n\n.tile-audio-image,\n.tile-audio-embed,\n.tile-audio-loading {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  width: 100%;\n  height: 100%;\n\n  transition: opacity 200ms;\n}\n\n.embed-active .tile-audio-image {\n  opacity: 0;\n}\n\n.tile-audio-image > img {\n  display: block;\n  width: 100%;\n}\n\n.tile-audio-loading {\n  z-index: 1;\n  opacity: 0;\n  pointer-events: none;\n  background: rgba(0,0,0,0.3);\n}\n\n.tile-audio-loading::after {\n  content: 'loading ...';\n}\n\n.tile-audio.loading .tile-audio-loading {\n  opacity: 1;\n}\n\n.tile-audio-embed {\n  opacity: 0;\n}\n\n.embed-active .tile-audio-embed {\n  opacity: 1;\n}\n\n.tile-audio-embed > iframe {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  display: block;\n  width: 100.5%;\n  height: 100.5%;\n  border: 0;\n}\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Dependencies
-	 */
-
-	var el = __webpack_require__(40);
-	var Tile = __webpack_require__(17);
-	__webpack_require__(44);
-
-	/**
-	 * Exports
-	 */
-
-	module.exports = CalendarTile;
-
-	/**
-	 * Extends `Tile`
-	 */
-
-	CalendarTile.prototype = Object.create(Tile.prototype);
-
-	function CalendarTile() {
-	  Tile.apply(this, arguments);
-	  this.el.className += ' tile-calendar';
-	}
-
-	CalendarTile.prototype.render = function(data) {
-	  Tile.prototype.render.apply(this, arguments);
-	  this.els.icon = el('div', 'tile-calenar-icon', this.els.inner);
-	  this.els.imageNode = el('img', '', this.els.icon);
-	  this.els.title = el('h3', 'tile-calendar-title', this.els.inner);
-	  this.els.list = el('ul', 'tile-calendar-list', this.els.inner);
-
-	  data.calendar
-	    .slice(0, 5)
-	    .forEach(function(event) {
-	      var li = el('li', 'tile-calendar-item', this.els.list);
-	      var time = el('time', 'tile-calendar-item-time', li);
-	      var summary = el('h4', 'tile-calendar-item-summary', li);
-	      var start = new Date(event.start * 1000);
-	      var end = new Date(event.end * 1000);
-
-	      summary.textContent = event.summary;
-	      time.textContent = [
-	        format(start, '%A'),
-	        start.getDate(),
-	        format(start, '%b'),
-	        pad(start.getHours()) + ':' + pad(start.getMinutes()),
-	        '-',
-	        pad(end.getHours()) + ':' + pad(end.getMinutes()),
-	      ].join(' ');
-	    }, this);
-	};
-
-	/**
-	 * Utils
-	 */
-
-	function format(date, token) {
-	  var strings = {
-	    days: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
-	    months: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-	  };
-
-	  switch (token) {
-	    case '%b': return strings.months[date.getMonth()];
-	    case '%A': return strings.days[date.getDay()];
-	    case '%Y': return String(date.getFullYear());
-	    case '%d': return String(date.getDate());
-	  }
-	}
-
-	function pad(n) {
-	  return n > 9 ? n : '0' + n;
-	}
-
-
-/***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
-
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(45);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(7)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./calendar.css", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./calendar.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(6)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "\n.tile-calendar {}\n\n.tile-calendar-list {\n  margin: 0;\n  padding: 0;\n\n  list-style: none;\n}\n\n.tile-calendar-item {\n  padding: 21px;\n  border-top: solid 1px #eee;\n}\n\n.tile-calendar-item:first-child {\n  border-top: 0;\n}\n\n.tile-calendar-item > *:not(:first-child) {\n  margin-top: 4px;\n}\n\n.tile-calendar-item-time {\n  font-size: 15px;\n  color: #999;\n}\n\n.tile-calendar-item-summary {\n  font-size: 18px;\n}\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(47);
+	var content = __webpack_require__(43);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(7)(content, {});
@@ -3416,7 +2679,7 @@
 	}
 
 /***/ },
-/* 47 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(6)();
@@ -3430,7 +2693,7 @@
 
 
 /***/ },
-/* 48 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -3438,14 +2701,14 @@
 	 * Dependencies
 	 */
 
-	__webpack_require__(49);
+	__webpack_require__(45);
 
 	var registry = {
-	  website: __webpack_require__(51),
-	  profile: __webpack_require__(57),
-	  image: __webpack_require__(63),
-	  video: __webpack_require__(64),
-	  audio: __webpack_require__(67)
+	  website: __webpack_require__(47),
+	  profile: __webpack_require__(53),
+	  image: __webpack_require__(59),
+	  video: __webpack_require__(60),
+	  audio: __webpack_require__(63)
 	};
 
 	/**
@@ -3519,13 +2782,13 @@
 
 
 /***/ },
-/* 49 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(50);
+	var content = __webpack_require__(46);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(7)(content, {});
@@ -3545,7 +2808,7 @@
 	}
 
 /***/ },
-/* 50 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(6)();
@@ -3559,7 +2822,7 @@
 
 
 /***/ },
-/* 51 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -3567,8 +2830,8 @@
 	 * Dependencies
 	 */
 
-	var Icon = __webpack_require__(52);
-	__webpack_require__(55);
+	var Icon = __webpack_require__(48);
+	__webpack_require__(51);
 
 	/**
 	 * Logger
@@ -3601,7 +2864,7 @@
 
 
 /***/ },
-/* 52 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -3610,7 +2873,7 @@
 	 */
 
 	var Emitter = __webpack_require__(3);
-	__webpack_require__(53);
+	__webpack_require__(49);
 
 	/**
 	 * Exports
@@ -3663,13 +2926,13 @@
 
 
 /***/ },
-/* 53 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(54);
+	var content = __webpack_require__(50);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(7)(content, {});
@@ -3689,7 +2952,7 @@
 	}
 
 /***/ },
-/* 54 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(6)();
@@ -3703,13 +2966,13 @@
 
 
 /***/ },
-/* 55 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(56);
+	var content = __webpack_require__(52);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(7)(content, {});
@@ -3729,7 +2992,7 @@
 	}
 
 /***/ },
-/* 56 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(6)();
@@ -3743,7 +3006,7 @@
 
 
 /***/ },
-/* 57 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -3751,9 +3014,9 @@
 	 * Dependencies
 	 */
 
-	var ProfileTwitter = __webpack_require__(58);
-	var ProfileAndroid = __webpack_require__(60);
-	var Profile = __webpack_require__(59);
+	var ProfileTwitter = __webpack_require__(54);
+	var ProfileAndroid = __webpack_require__(56);
+	var Profile = __webpack_require__(55);
 
 	/**
 	 * Exports
@@ -3767,7 +3030,7 @@
 
 
 /***/ },
-/* 58 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -3775,7 +3038,7 @@
 	 * Dependencies
 	 */
 
-	var Profile = __webpack_require__(59);
+	var Profile = __webpack_require__(55);
 
 	/**
 	 * Logger
@@ -3810,7 +3073,7 @@
 
 
 /***/ },
-/* 59 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -3818,7 +3081,7 @@
 	 * Dependencies
 	 */
 
-	var Icon = __webpack_require__(52);
+	var Icon = __webpack_require__(48);
 
 	/**
 	 * Exports
@@ -3839,7 +3102,7 @@
 
 
 /***/ },
-/* 60 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -3847,8 +3110,8 @@
 	 * Dependencies
 	 */
 
-	var Profile = __webpack_require__(59);
-	__webpack_require__(61);
+	var Profile = __webpack_require__(55);
+	__webpack_require__(57);
 
 	var debug = 1 ? console.log.bind(console, '[icon-android]') : function() {};
 
@@ -3904,13 +3167,13 @@
 
 
 /***/ },
-/* 61 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(62);
+	var content = __webpack_require__(58);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(7)(content, {});
@@ -3930,7 +3193,7 @@
 	}
 
 /***/ },
-/* 62 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(6)();
@@ -3944,7 +3207,7 @@
 
 
 /***/ },
-/* 63 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -3952,7 +3215,7 @@
 	 * Dependencies
 	 */
 
-	var Icon = __webpack_require__(52);
+	var Icon = __webpack_require__(48);
 
 	/**
 	 * Exports
@@ -3973,7 +3236,7 @@
 
 
 /***/ },
-/* 64 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -3981,8 +3244,8 @@
 	 * Dependencies
 	 */
 
-	var Icon = __webpack_require__(52);
-	__webpack_require__(65);
+	var Icon = __webpack_require__(48);
+	__webpack_require__(61);
 
 	/**
 	 * Exports
@@ -4007,13 +3270,13 @@
 
 
 /***/ },
-/* 65 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(66);
+	var content = __webpack_require__(62);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(7)(content, {});
@@ -4033,7 +3296,7 @@
 	}
 
 /***/ },
-/* 66 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(6)();
@@ -4047,7 +3310,7 @@
 
 
 /***/ },
-/* 67 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -4055,7 +3318,7 @@
 	 * Dependencies
 	 */
 
-	var Icon = __webpack_require__(52);
+	var Icon = __webpack_require__(48);
 
 	/**
 	 * Exports
@@ -4076,13 +3339,13 @@
 
 
 /***/ },
-/* 68 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(69);
+	var content = __webpack_require__(65);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(7)(content, {});
@@ -4102,7 +3365,7 @@
 	}
 
 /***/ },
-/* 69 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(6)();
@@ -4113,6 +3376,58 @@
 	exports.push([module.id, "\n* {\n  -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */\n  margin: 0;\n}\n\nhtml {\n  height: 100%;\n  overflow: hidden;\n\n  font-size: 12px;\n  font-family: FiraSans;\n  background: #f2f2f2;\n}\n\nbody {\n  -webkit-touch-callout: none; /* prevent callout to copy image, etc when tap to hold */\n  -webkit-text-size-adjust: none; /* prevent webkit from resizing text to fit */\n  -webkit-user-select: none; /* prevent copy paste, to allow, change 'none' to 'text' */\n\n  height: 100%;\n  width: 100%;\n  margin: 0;\n  padding: 0;\n\n  color: #444;\n  overflow: hidden;\n}\n\n.app {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  overflow: hidden;\n}\n\n.app > .header {}\n\n.app > .content {\n  position: relative;\n  flex: 1;\n}\n", ""]);
 
 	// exports
+
+
+/***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * Dependencies
+	 */
+
+	var debug = __webpack_require__(35)('tile-website-embed', 1);
+	var Tile = __webpack_require__(15);
+
+	/**
+	 * Exports
+	 */
+
+	module.exports = WebsiteEmbedTile;
+
+	/**
+	 * Extends `Emitter`
+	 */
+
+	WebsiteEmbedTile.prototype = Object.create(Tile.prototype);
+
+	function WebsiteEmbedTile(data) {
+	  Tile.apply(this, arguments);
+	  this.el.className += ' tile-embed';
+	  debug('initialized', data);
+	}
+
+	WebsiteEmbedTile.prototype.render = function(data) {
+	  Tile.prototype.render.apply(this, arguments);
+	  var embed = data.embed;
+	  var aspect = (embed.height / embed.width) * 100;
+	  this.els.embed = el('div', 'tile-website-embed-embed', this.els.inner);
+	  this.els.embed.style.paddingBottom = aspect + '%';
+	  this.els.embed.innerHTML = embed.html;
+	  debug('rendered');
+	};
+
+	/**
+	 * Utils
+	 */
+
+	function el(tag, className, parent) {
+	  var result = document.createElement(tag);
+	  result.className = className || '';
+	  if (parent) parent.appendChild(result);
+	  return result;
+	}
 
 
 /***/ }

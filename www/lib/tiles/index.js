@@ -5,12 +5,9 @@
 
 var registry = {
   website: require('./website'),
-  profile: require('./profile'),
-  video: require('./media/video'),
-  image: require('./media/image'),
-  audio: require('./media/audio'),
-  calendar: require('./calendar')
+  embed: require('./embed')
 };
+
 
 require('./tiles.css');
 
@@ -39,7 +36,7 @@ TilesView.prototype = {
     if (!data) return;
     if (this.tiles[id]) return debug('already exists');
 
-    var Tile = registry[data.type] || registry.website;
+    var Tile = registry.website;
     var tile = new Tile(data);
 
     this.tiles[id] = tile;

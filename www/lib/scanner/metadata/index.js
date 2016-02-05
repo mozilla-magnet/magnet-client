@@ -56,16 +56,17 @@ module.exports = new Metadata();
 
 function normalize(data) {
   var normalized = {
+    url: data.url,
     type: data.type || 'website',
-    title: data.title,
+    title: data.title || data.url,
     description: data.description,
     icon: data.icon,
     embed: data.embed
   };
 
   if (data.og_data) normalizeOg(normalized, data.og_data);
-  if (data.twitter) normalizeTwitter(normalized, data);
-  if (data.android) normalizeAndroid(normalized, data);
+  if (data.twitter) normalizeTwitter(normalized, data.twitter);
+  if (data.android) normalizeAndroid(normalized, data.android);
 
   return normalized;
 }
@@ -73,6 +74,7 @@ function normalize(data) {
 function normalizeOg(result, og) {
   if (og.description) result.description = og.description;
   if (og.title) result.title = og.title;
+  if (og.image) result.image = og.image;
   result.data = og;
 }
 
@@ -81,7 +83,8 @@ function normalizeTwitter(result, twitter) {
   if (twitter.description) result.description = twitter.bio;
   if (twitter.avatar.alt) result.title = twitter.avatar.alt;
   if (twitter.user_id) result.title2 = twitter.user_id;
-  if (twitter.avatar.src) result.image = twitter.avatar.src;
+  // if (twitter.avatar.src) result.image = twitter.avatar.src;
+  if (twitter.avatar.src) result.icon = twitter.avatar.src;
   twitter.type = 'twitter';
   result.data = twitter;
 }
