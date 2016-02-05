@@ -1,0 +1,12 @@
+
+.detail-panel {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.detail-panel > .inner {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+}

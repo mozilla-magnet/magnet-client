@@ -25,6 +25,4 @@ function VideoIcon(data) {
 
 VideoIcon.prototype.render = function(data) {
   Icon.prototype.render.apply(this, arguments); // super
-  this.els.imageNode.src = 'images/twitter.png';
-  this.els.title.textContent = data.twitter.avatar.alt;
 };

@@ -1,0 +1,59 @@
+
+.tile-profile > .inner {
+  box-sizing: border-box;
+  min-height: 100px;
+  padding: 21px;
+  padding-left: 114px;
+}
+
+.tile-profile > .inner > * {
+  margin-top: 14px;
+}
+
+.tile-profile > .inner > :first-child {
+  margin-top: 0;
+}
+
+.tile-profile-icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  box-sizing: border-box;
+  display: flex;
+  width: 114px;
+  height: 114px;
+  padding: 21px;
+  margin: 0;
+  overflow: hidden;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.tile-profile-icon > img {
+  width: 100%;
+}
+
+.tile-profile-title {
+  margin-top: 0 !important;
+  margin-bottom: -0.19em;
+  font-size: 21px;
+  line-height: 1.19em;
+  font-weight: bold;
+}
+
+.tile-profile-twitter-handle {
+  font-weight: normal;
+  color: hsl(0, 0%, 80%);
+}
+
+.tile-profile-desc {
+  width: 100%;
+  max-height: calc(1.35em * 5);
+  overflow: hidden;
+
+  line-height: 1.35em;
+  font-size: 12px;
+  color: hsl(0, 0%, 60%);
+}

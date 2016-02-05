@@ -9,7 +9,7 @@
     font-style: normal;
 }
 
-[class^="icon-"], [class*=" icon-"] {
+[class^="icn-"], [class*=" icn-"] {
     /* use !important to prevent issues with browser extensions that change fonts */
     font-family: 'magnet' !important;
     speak: none;
@@ -33,18 +33,18 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-camera:before {
+.icn-camera:before {
     content: "\e017";
 }
-.icon-paper:before {
+.icn-paper:before {
     content: "\e034";
 }
-.icon-stop:before {
+.icn-stop:before {
     content: "\e054";
 }
-.icon-globe:before {
+.icn-globe:before {
     content: "\e078";
 }
-.icon-grid:before {
+.icn-grid:before {
     content: "\e102";
 }

@@ -32,18 +32,5 @@ function WebsiteIconView(data) {
 
 WebsiteIconView.prototype.render = function(data) {
   Icon.prototype.render.apply(this, arguments); // super
-  var self = this;
-  this.els.title.textContent = data.title;
-
-  if (!data.icon) {
-    this.el.classList.add('no-icon');
-    return;
-  }
-
-  this.els.imageNode.src = data.icon;
-  this.els.imageNode.addEventListener('load', function(e) {
-    debug('icon loaded');
-    var area = this.naturalWidth * this.naturalHeight;
-    if (area < (80 * 80)) self.el.classList.add('no-icon');
-  });
+  this.els.title.textContent = data.title || data.url;
 };

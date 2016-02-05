@@ -5,12 +5,12 @@ require('./header.css');
 
 module.exports = Header;
 
-function Header() {
+function Header(options) {
   Emitter.call(this); // super
 
   this.el = document.createElement('header');
   this.el.className = 'app-header';
-  this.render();
+  this.render(options);
   this.els = {
     gridButton: this.el.querySelector('.grid-button'),
     tilesButton: this.el.querySelector('.tiles-button')
@@ -31,11 +31,11 @@ function Header() {
 
 Header.prototype = Object.create(Emitter.prototype);
 
-Header.prototype.render = function() {
+Header.prototype.render = function(data) {
   this.el.innerHTML =
-    '<h1>Magnet</h1>' +
-    '<button class="grid-button icon-grid" hidden></button>' +
-    '<button class="tiles-button icon-stop"></button>';
+    '<h1>' + data.title + '</h1>' +
+    '<button class="grid-button icn-grid" hidden></button>' +
+    '<button class="tiles-button icn-stop"></button>';
 };
 
 Header.prototype.toggleButton = function(grid) {

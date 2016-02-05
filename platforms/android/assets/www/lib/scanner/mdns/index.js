@@ -5,7 +5,7 @@
 
 var Emitter = require('events');
 
-var debug = 0 ? console.log.bind(console, '[MDNS]') : function() {};
+var debug = 1 ? console.log.bind(console, '[MDNS]') : function() {};
 
 /**
  * Exports

@@ -37,8 +37,6 @@ function App(el) {
 
   this.render();
   this.bindEvents();
-
-  // this.toggleView();
 }
 
 App.prototype = {
@@ -46,11 +44,13 @@ App.prototype = {
     var content = document.createElement('div');
     content.className = 'content';
 
-    this.grid = new GridView().appendTo(content);
-    this.tiles = new TilesView().appendTo(content);
+    this.grid = new GridView();
+    this.tiles = new TilesView();
+    this.header = new HeaderView({ title: 'Magnet' });
 
-    // attach to document
-    this.header = new HeaderView().appendTo(this.el);
+    content.appendChild(this.grid.el);
+    content.appendChild(this.tiles.el);
+    this.el.appendChild(this.header.el);
     this.el.appendChild(content);
   },
 

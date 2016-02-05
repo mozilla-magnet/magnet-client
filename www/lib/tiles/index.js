@@ -5,9 +5,11 @@
 
 var registry = {
   website: require('./website'),
-  twitter: require('./twitter'),
-  android: require('./android-app'),
-  video: require('./video')
+  profile: require('./profile'),
+  video: require('./media/video'),
+  image: require('./media/image'),
+  audio: require('./media/audio'),
+  calendar: require('./calendar')
 };
 
 require('./tiles.css');

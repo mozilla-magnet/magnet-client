@@ -1,0 +1,6 @@
+**/*.
+bower.json
+webpack.config.js
+node_modules
+examples
+test

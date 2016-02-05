@@ -32,11 +32,14 @@
   width: 100px;
   height: 100px;
   border-radius: 6px;
-  background: #ddd;
   font-family: magnet;
   font-size: 70px;
   color: #bbb;
   overflow: hidden;
+}
+
+.no-icon .grid-icon-image {
+  background: #ddd;
 }
 
 .grid-icon-image > img {

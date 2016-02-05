@@ -4,10 +4,12 @@
  */
 
 var registry = {
-  website: require('./tile'),
-  twitter: require('./twitter'),
-  android: require('./android-app'),
-  video: require('./video')
+  website: require('./website'),
+  profile: require('./profile'),
+  video: require('./media/video'),
+  image: require('./media/image'),
+  audio: require('./media/audio'),
+  calendar: require('./calendar')
 };
 
 require('./tiles.css');

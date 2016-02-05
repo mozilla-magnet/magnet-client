@@ -3,6 +3,8 @@
  * Dependencies
  */
 
+var fastdom = require('fastdom-sequencer');
+var DetailView = require('../detail');
 var Emitter = require('events');
 require('./tile.css');
 
@@ -28,23 +30,24 @@ TileView.prototype = Object.create(Emitter.prototype);
 function TileView(data) {
   Emitter.call(this);
   this.el = el('li', 'tile');
-  this.el.href = data.url;
   this.els = {};
+  this.data = data;
   this.render(data);
+  fastdom.on(this.el, 'click', this.onClick.bind(this));
   debug('initialized', data);
 }
 
 TileView.prototype.render = function(data) {
-  this.els.text = el('div', 'tile-text', this.el);
-  var title = el('h3', 'tile-title', this.els.text);
-  var desc = el('p', 'tile-desc', this.els.text);
-  this.els.footer = el('footer', 'tile-footer', this.el);
-  var a = el('a', 'tile-action-link', this.els.footer);
+  this.els.url = el('h4', 'tile-url', this.el);
+  this.els.url.textContent = data.url;
+  this.els.inner = el('div', 'inner', this.el);
+};
 
-  a.textContent = 'Visit';
-  a.href = data.url;
-  title.textContent = data.title;
-  desc.textContent = data.description;
+TileView.prototype.onClick = function(data) {
+  var detail = new DetailView({
+    parent: this.els.inner,
+    data: this.data
+  });
 };
 
 /**

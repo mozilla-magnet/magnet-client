@@ -4,7 +4,7 @@
  *
  * @return {Function}
  */
-var debug = 0 ? console.log.bind(console, '[metadata]') : function() {};
+var debug = 1 ? console.log.bind(console, '[metadata]') : function() {};
 
 var endpoint = 'http://10.246.27.23:3030'; // endpoint of metadata service
 
@@ -21,14 +21,10 @@ Metadata.prototype = {
       .then(function(response) {
         debug('response', response);
         var item = response[index];
-
-        // Shim, remove once types are implemented
-        if (item.twitter) item.type = 'twitter';
-        if (item.android) item.type = 'android';
-        if (item.og_data) item.type = item.og_data.type;
+        if (!item) return debug('null response', url);
 
         // fallback
-        item.type = item.type || 'website';
+        item.type = getType(item);
 
         return item;
       }).catch(console.error.bind(console));
@@ -61,6 +57,56 @@ module.exports = new Metadata();
 /**
  * Utils
  */
+
+function getType(data) {
+  switch(true) {
+    case !!data.twitter:
+    case !!data.android: return 'profile';
+    case !!data.og_data: return data.og_data.type;
+    default: return data.type || 'website';
+  }
+}
+
+function normalize(data) {
+  var normalized = {
+    type: getType(data),
+    title: data.title,
+    description: data.description,
+    icon: data.icon,
+    embed: data.embed
+  };
+
+  if (data.og_data) normalizeOg(normalized, data.og_data);
+  if (data.twitter) normalizeTwitter(normalized, data);
+  if (data.android) normalizeAndroid(normalized, data);
+
+  return normalized;
+}
+
+function normalizeOg(result, og) {
+  if (og.description) result.description = og.description;
+  if (og.title) result.title = og.title;
+}
+
+function normalizeTwitter(result, twitter) {
+  if (twitter.description) result.description = twitter.bio;
+  if (twitter.avatar.alt) result.title = twitter.avatar.alt;
+  if (twitter.user_id) result.title2 = twitter.user_id;
+  if (twitter.avatar.src) result.image = twitter.avatar.src;
+}
+
+function normalizeAndroid(data) {
+  var og = data.og_data;
+
+  return {
+    type: getType(data),
+    title: (og && og.title) || data.title,
+    description: (og && og.description) || data.description,
+    icon: data.icon,
+    image: (og && og.image) || data.image,
+    embed: data.embed
+  };
+}
 
 function request(body) {
   return new Promise(function(resolve, reject) {

@@ -1,19 +1,10 @@
 {
-  "name": "local-apps",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "magnet",
   "scripts": {
     "build": "webpack",
     "watch": "webpack -w"
   },
-  "author": "",
   "license": "ISC",
-  "dependencies": {
-    "eddystone-url-encoding": "^1.0.1",
-    "events": "^1.1.0",
-    "fxos-font": "^1.0.1"
-  },
   "devDependencies": {
     "css-loader": "^0.23.1",
     "style-loader": "^0.13.0",

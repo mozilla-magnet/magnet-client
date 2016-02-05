@@ -7,9 +7,10 @@ require('./grid.css');
 
 var registry = {
   website: require('./website'),
-  // video: require('./video'),
-  android: require('./android-app'),
-  twitter: require('./twitter')
+  profile: require('./profile'),
+  image: require('./image'),
+  video: require('./video'),
+  audio: require('./audio')
 };
 
 /**

@@ -1,0 +1,402 @@
+BEGIN:VCALENDAR
+PRODID:-//Google Inc//Google Calendar 70.9054//EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:FxOS - Public Project Calendar
+X-WR-TIMEZONE:America/Los_Angeles
+BEGIN:VTIMEZONE
+TZID:America/Los_Angeles
+X-LIC-LOCATION:America/Los_Angeles
+BEGIN:DAYLIGHT
+TZOFFSETFROM:-0800
+TZOFFSETTO:-0700
+TZNAME:PDT
+DTSTART:19700308T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:-0700
+TZOFFSETTO:-0800
+TZNAME:PST
+DTSTART:19701101T020000
+RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTART:20150415T160000Z
+DTEND:20150415T170000Z
+DTSTAMP:20160203T154237Z
+ORGANIZER;CN=tinoradenkov@gmail.com:mailto:tinoradenkov@gmail.com
+UID:vcu5t5ji9ssp9o8jgjn841fljk@google.com
+ATTENDEE;CUTYPE=RESOURCE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;CN=FxOS
+  - Public Project Calendar;X-NUM-GUESTS=0:mailto:mozilla.com_2d363835313734
+ 3333373332@resource.calendar.google.com
+CREATED:20160126T042707Z
+DESCRIPTION:Wilson Page will host a kick-off meeting on the subject of web 
+ app bridge at this meeting.  Web app bridge is a set of APIs that supports 
+ the bridge concept in the new Gaia architecture.  For information on the ne
+ w architecture and its validation plan\\\, please see\n\nhttps://wiki.mozil
+ la.org/Gaia/Architecture_Proposal \n\nand \n\nhttps://wiki.mozilla.org/Gaia
+ /Architecture_Transition_Validation\n\nSMS and Music apps are in the proces
+ s of refactoring code to separate the front-end (possibly several views) fr
+ om the back-end.  The bridge APIs play an important role in these efforts. 
+  We are in very early stage of the bridge project but we like to share with
+  everyone our progress\\\, plans\\\, and other findings of interest.\n\nSee
+  you there.
+LAST-MODIFIED:20160126T042707Z
+LOCATION:VidyoRoom - B2G
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:NG Gaia - Web app bridge kick off meeting
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;TZID=America/Los_Angeles:20150714T020000
+DTEND;TZID=America/Los_Angeles:20150714T030000
+RRULE:FREQ=WEEKLY;UNTIL=20150728T065959Z;INTERVAL=2;BYDAY=TU
+DTSTAMP:20160203T154237Z
+ORGANIZER;CN=tinoradenkov@gmail.com:mailto:tinoradenkov@gmail.com
+UID:hqu86v9e1gjc6ofg0kspn8bejs@google.com
+ATTENDEE;CUTYPE=RESOURCE;ROLE=REQ-PARTICIPANT;PARTSTAT=DECLINED;CN=FxOS - P
+ ublic Project Calendar;X-NUM-GUESTS=0:mailto:mozilla.com_2d3638353137343333
+ 373332@resource.calendar.google.com
+CREATED:20160126T042657Z
+DESCRIPTION:This is the weekly Gaia meeting:\n* See the wiki for more infor
+ mation https://wiki.mozilla.org/B2G#Meetings\n* Please add your team status
+  to the Etherpad https://etherpad.mozilla.org/gaia-meeting-notes\n* Meeting
+  minutes are copied to the wiki each week https://wiki.mozilla.org/Gaia/Mee
+ ting_Notes
+LAST-MODIFIED:20160126T042658Z
+LOCATION:VidyoRoom - B2G
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Gaia Weekly Meeting (TPE/EU)
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;TZID=America/Los_Angeles:20160126T020000
+DTEND;TZID=America/Los_Angeles:20160126T030000
+RRULE:FREQ=WEEKLY;INTERVAL=2;BYDAY=TU
+EXDATE;TZID=America/Los_Angeles:20160209T020000
+DTSTAMP:20160203T154237Z
+UID:8eie9mgq7cqmjfknkcussutfdc@google.com
+ATTENDEE;CUTYPE=RESOURCE;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=FxOS - P
+ ublic Project Calendar;X-NUM-GUESTS=0:mailto:mozilla.com_2d3638353137343333
+ 373332@resource.calendar.google.com
+CLASS:PUBLIC
+CREATED:20160112T125426Z
+DESCRIPTION:Meeting notes: https://public.etherpad-mozilla.org/p/gaia-meeti
+ ng-notes\nConnection information: https://wiki.mozilla.org/B2G#Meetings
+LAST-MODIFIED:20160112T125438Z
+LOCATION:VidyoRoom - B2G
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Gaia Weekly Meeting (TPE/EU friendly)
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;TZID=America/Los_Angeles:20160119T090000
+DTEND;TZID=America/Los_Angeles:20160119T100000
+RRULE:FREQ=WEEKLY;INTERVAL=2;BYDAY=TU
+DTSTAMP:20160203T154237Z
+UID:3221cato2muhu76oej8bl9a1mk@google.com
+ATTENDEE;CUTYPE=RESOURCE;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=FxOS - P
+ ublic Project Calendar;X-NUM-GUESTS=0:mailto:mozilla.com_2d3638353137343333
+ 373332@resource.calendar.google.com
+CLASS:PUBLIC
+CREATED:20160112T125151Z
+DESCRIPTION:Meeting notes: https://public.etherpad-mozilla.org/p/gaia-meeti
+ ng-notes\nConnection information: https://wiki.mozilla.org/B2G#Meetings
+LAST-MODIFIED:20160112T125235Z
+LOCATION:VidyoRoom - B2G
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Gaia Weekly Meeting (EU/US friendly)
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160112T023000Z
+DTEND:20160112T033000Z
+DTSTAMP:20160203T154237Z
+UID:gm5rccu0kuim8kukiaafh9pcnk@google.com
+CREATED:20160106T035218Z
+DESCRIPTION:Please place your work here before meeting. thanks!!\nhttps://d
+ rive.google.com/open?id=0B4K8q1qWmtAvY3prT0FKNEIxczQ\n
+LAST-MODIFIED:20160112T022356Z
+LOCATION:TPE4 - 411 Indigo - Conf room - Seats 6
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Next-gen TV Theme optimization meeting
+TRANSP:OPAQUE
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;TZID=America/Los_Angeles:20150714T020000
+DTEND;TZID=America/Los_Angeles:20150714T030000
+EXDATE;TZID=America/Los_Angeles:20150811T020000
+RRULE:FREQ=WEEKLY;UNTIL=20150728T065959Z;INTERVAL=2;BYDAY=TU
+DTSTAMP:20160203T154237Z
+ORGANIZER;CN=hkoka@mozilla.com:mailto:hkoka@mozilla.com
+UID:j7cdh79dhis2k0qse3hnapu3bk@google.com
+ATTENDEE;CUTYPE=RESOURCE;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=FxOS - P
+ ublic Project Calendar;X-NUM-GUESTS=0:mailto:mozilla.com_2d3638353137343333
+ 373332@resource.calendar.google.com
+CREATED:20151230T185534Z
+DESCRIPTION:This is the weekly Gaia meeting:\n* See the wiki for more infor
+ mation https://wiki.mozilla.org/B2G#Meetings\n* Please add your team status
+  to the Etherpad https://etherpad.mozilla.org/gaia-meeting-notes\n* Meeting
+  minutes are copied to the wiki each week https://wiki.mozilla.org/Gaia/Mee
+ ting_Notes
+LAST-MODIFIED:20151230T185534Z
+LOCATION:VidyoRoom - B2G
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Gaia Weekly Meeting (TPE/EU)
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20151103T103000Z
+DTEND:20151103T120000Z
+DTSTAMP:20160203T154237Z
+UID:AD072C35-C78E-408F-B0A1-44EF31B5D012
+CREATED:20151103T095525Z
+DESCRIPTION:
+LAST-MODIFIED:20151103T095617Z
+LOCATION:VidyoRoom - B2G
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:2.6 planning and roadmap 
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20150416T160000Z
+DTEND:20150416T170000Z
+DTSTAMP:20160203T154237Z
+UID:tlo3er7rufj6irf4o1jid1o1t0@google.com
+CREATED:20150416T010237Z
+DESCRIPTION:Francisco will host a kick-off meeting on the subject of servic
+ e worker at this meeting.  For information on the new architecture and its 
+ validation plan\, please see\n\nhttps://wiki.mozilla.org/Gaia/Architecture_
+ Proposal \n\nand \n\nhttps://wiki.mozilla.org/Gaia/Architecture_Transition_
+ Validation\n\nSee you there.
+LAST-MODIFIED:20151018T035742Z
+LOCATION:VidyoRoom - B2G
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:NG Gaia - service worker kick-off meeting
+TRANSP:OPAQUE
+BEGIN:VALARM
+ACTION:NONE
+TRIGGER;VALUE=DATE-TIME:19760401T005545Z
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;TZID=America/Los_Angeles:20150407T180000
+DTEND;TZID=America/Los_Angeles:20150407T190000
+EXDATE;TZID=America/Los_Angeles:20150602T180000
+EXDATE;TZID=America/Los_Angeles:20150616T180000
+EXDATE;TZID=America/Los_Angeles:20150630T180000
+RRULE:FREQ=WEEKLY;UNTIL=20150520T010000Z;INTERVAL=2;BYDAY=TU
+DTSTAMP:20160203T154237Z
+UID:92DD6A1D-BBB4-496D-ADC4-1FD6A7EC200D
+CLASS:PUBLIC
+CREATED:20150407T225835Z
+DESCRIPTION:This is the weekly Gaia meeting:\n* See the wiki for more infor
+ mation https://wiki.mozilla.org/B2G#Meetings\n* Please add your team status
+  to the Etherpad https://etherpad.mozilla.org/gaia-meeting-notes\n* Meeting
+  minutes are copied to the wiki each week https://wiki.mozilla.org/Gaia/Mee
+ ting_Notes
+LAST-MODIFIED:20150707T163718Z
+LOCATION:VidyoRoom - B2G
+SEQUENCE:3
+STATUS:CONFIRMED
+SUMMARY:Gaia Weekly Meeting (late)
+TRANSP:OPAQUE
+BEGIN:VALARM
+ACTION:NONE
+TRIGGER;VALUE=DATE-TIME:19760401T005545Z
+X-WR-ALARMUID:F5FD8A1C-CEAE-476E-9611-9434A37D9E3F
+UID:F5FD8A1C-CEAE-476E-9611-9434A37D9E3F
+ACKNOWLEDGED:20150520T020200Z
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20150625T210000Z
+DTEND:20150625T220000Z
+DTSTAMP:20160203T154237Z
+UID:4336k58drvs34sj8j9kd9o2vjc@google.com
+CREATED:20150624T233658Z
+DESCRIPTION:Borja (TEF) will demo the NGA-converted Contacts app.  This is 
+ a repeat of Wed's demo but with a bit more contents added.\n\nPlease join u
+ s to see NGA in action.
+LAST-MODIFIED:20150624T233658Z
+LOCATION:Westin Alpine D
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:NGA- Contacts Demo (repeat performance)
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20150624T230000Z
+DTEND:20150625T000000Z
+DTSTAMP:20160203T154237Z
+UID:3b1hadv5emef5jksk8d984odvo@google.com
+CREATED:20150623T234547Z
+DESCRIPTION:
+LAST-MODIFIED:20150623T234547Z
+LOCATION:Westin Alpine D
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:NSEC (New Securty Model) - Paul T
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20150624T213000Z
+DTEND:20150624T220000Z
+DTSTAMP:20160203T154237Z
+UID:7n7v2i4j949kcmrld62rancrhs@google.com
+CREATED:20150617T172357Z
+DESCRIPTION:
+LAST-MODIFIED:20150617T174001Z
+LOCATION:Westin Alpine D
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:NGA Navigation demo/talk by Vivien
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20150624T210000Z
+DTEND:20150624T213000Z
+DTSTAMP:20160203T154237Z
+UID:dgm7rmnmq89h7mob61gd7aa6n0@google.com
+CREATED:20150617T172339Z
+DESCRIPTION:
+LAST-MODIFIED:20150617T173955Z
+LOCATION:Westin Alpine D
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:NGA Telemetry demo/talk by Tamara
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20150624T203000Z
+DTEND:20150624T210000Z
+DTSTAMP:20160203T154237Z
+UID:pp9memjpot1rlliksqdn836hmg@google.com
+CREATED:20150617T172259Z
+DESCRIPTION:
+LAST-MODIFIED:20150617T173946Z
+LOCATION:Westin Alpine D
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:NGA Threads.js demo/talk by Wilson
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20150624T200000Z
+DTEND:20150624T203000Z
+DTSTAMP:20160203T154237Z
+UID:qmnl8tv38hs8e5ts2vu4ce0eso@google.com
+CREATED:20150617T172243Z
+DESCRIPTION:
+LAST-MODIFIED:20150617T173938Z
+LOCATION:Westin Alpine D
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:NGA Service Worker demo/talk by Francisco and Salva (TEF)
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20150624T173000Z
+DTEND:20150624T180000Z
+DTSTAMP:20160203T154237Z
+UID:1fmdfcmbo7h7jqlqlc4hdkb338@google.com
+CREATED:20150617T172202Z
+DESCRIPTION:
+LAST-MODIFIED:20150617T173931Z
+LOCATION:Westin Alpine D
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:NGA Contacts app demo/talk by Borja (TEF)
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20150624T170000Z
+DTEND:20150624T173000Z
+DTSTAMP:20160203T154237Z
+UID:2n3e7jnokn0945l6p8gnggra9o@google.com
+CREATED:20150617T172128Z
+DESCRIPTION:
+LAST-MODIFIED:20150617T173923Z
+LOCATION:Westin Alpine D
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:NGA Music app demo/talk by Jim Porter
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20150624T160000Z
+DTEND:20150624T163000Z
+DTSTAMP:20160203T154237Z
+UID:0qi7ejsdqj6ktoktnv2foo4jfk@google.com
+CREATED:20150617T171816Z
+DESCRIPTION:
+LAST-MODIFIED:20150617T173916Z
+LOCATION:Westin Alpine D
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:NGA overview by Francisco
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20150624T163000Z
+DTEND:20150624T170000Z
+DTSTAMP:20160203T154237Z
+UID:n6jkvnlk1m5v8qh0mc8mg2bpkg@google.com
+CREATED:20150617T171847Z
+DESCRIPTION:
+LAST-MODIFIED:20150617T173909Z
+LOCATION:Westin Alpine D
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:NGA SMS app demo/talk by Julien
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20150415T160000Z
+DTEND:20150415T170000Z
+DTSTAMP:20160203T154237Z
+UID:bl2l0f9vfnuon3a2heqrh6svno@google.com
+ATTENDEE;CUTYPE=RESOURCE;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=FxOS - P
+ ublic Project Calendar;X-NUM-GUESTS=0:mailto:mozilla.com_2d3638353137343333
+ 373332@resource.calendar.google.com
+CREATED:20150410T232159Z
+DESCRIPTION:Wilson Page will host a kick-off meeting on the subject of web 
+ app bridge at this meeting.  Web app bridge is a set of APIs that supports 
+ the bridge concept in the new Gaia architecture.  For information on the ne
+ w architecture and its validation plan\, please see\n\nhttps://wiki.mozilla
+ .org/Gaia/Architecture_Proposal \n\nand \n\nhttps://wiki.mozilla.org/Gaia/A
+ rchitecture_Transition_Validation\n\nSMS and Music apps are in the process 
+ of refactoring code to separate the front-end (possibly several views) from
+  the back-end.  The bridge APIs play an important role in these efforts.  W
+ e are in very early stage of the bridge project but we like to share with e
+ veryone our progress\, plans\, and other findings of interest.\n\nSee you t
+ here.
+LAST-MODIFIED:20150415T154807Z
+LOCATION:VidyoRoom - B2G
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:NG Gaia - Web app bridge kick off meeting
+TRANSP:OPAQUE
+BEGIN:VALARM
+ACTION:AUDIO
+TRIGGER:-PT15M
+X-WR-ALARMUID:CBD90C60-9AF9-487A-907E-9FAD4A509713
+UID:CBD90C60-9AF9-487A-907E-9FAD4A509713
+ATTACH;VALUE=URI:Basso
+X-APPLE-DEFAULT-ALARM:TRUE
+ACKNOWLEDGED:20150415T154736Z
+END:VALARM
+END:VEVENT
+END:VCALENDAR
