@@ -4,7 +4,6 @@
  */
 
 var fastdom = require('fastdom-sequencer');
-var DetailView = require('../detail/detail');
 var Emitter = require('events');
 require('./tile.css');
 
@@ -33,7 +32,8 @@ function TileView(data) {
   this.els = {};
   this.data = data;
   this.render(data);
-  fastdom.on(this.el, 'click', this.onClick.bind(this));
+  this.el.addEventListener('click', this.expand.bind(this));
+  this.els.close.addEventListener('click', this.collapse.bind(this));
   debug('initialized', data);
 }
 
@@ -41,16 +41,24 @@ TileView.prototype.render = function(data) {
   this.els.url = el('h4', 'tile-url', this.el);
   this.els.url.textContent = data.url;
   this.els.inner = el('div', 'inner', this.el);
+  this.els.content = el('div', 'tile-content', this.els.inner);
+  this.els.footer = el('footer', 'tile-footer', this.els.inner);
+  this.els.close = el('button', 'tile-close-button', this.els.footer);
+  this.els.open = el('button', 'tile-open-button', this.els.footer);
+  this.els.open.textContent = 'Open';
+  this.els.close.textContent = 'Close';
+  this.els.footer.hidden = true;
 };
 
-TileView.prototype.onClick = function(data) {
-  var detail = new DetailView({
-    parent: this.els.inner,
-    data: this.data
-  });
+TileView.prototype.expand = function() {
+  this.els.footer.hidden = false;
+  this.el.classList.add('expanded');
+};
 
-  document.body.appendChild(detail.el);
-  detail.open();
+TileView.prototype.collapse = function(e) {
+  if (e) e.stopPropagation();
+  this.els.footer.hidden = true;
+  this.el.classList.remove('expanded');
 };
 
 /**

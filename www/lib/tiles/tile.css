@@ -72,23 +72,29 @@
 .tile-footer {
   display: flex;
   height: 46px;
-  /*background: hsl(212, 72%, 68%);*/
   background: hsl(0, 0%, 74%);
   font-size: 17px;
   font-weight: bold;
   color: #fff;
 }
 
-.tile-footer > a {
+.tile-footer[hidden] {
+  display: none;;
+}
+
+.tile-footer > a,
+.tile-footer > button {
   display: flex;
   flex: 1;
   padding: 7px;
+  border: 0;
+  background: none;
   align-items: center;
   justify-content: center;
   color: inherit;
   text-decoration: none;
 }
 
-.tile-footer > a:not(:first-child) {
+.tile-footer > *:not(:first-child) {
   border-left: solid 1px hsl(0, 0%, 82%);
 }

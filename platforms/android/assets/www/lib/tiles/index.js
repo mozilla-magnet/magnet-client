@@ -36,7 +36,7 @@ TilesView.prototype = {
     if (!data) return;
     if (this.tiles[id]) return debug('already exists');
 
-    var Tile = registry.website;
+    var Tile = data.embed ? registry.embed : registry.website;
     var tile = new Tile(data);
 
     this.tiles[id] = tile;

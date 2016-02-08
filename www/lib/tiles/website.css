@@ -41,11 +41,7 @@
 }
 
 .tile-website-main > * {
-  margin-bottom: 14px;
-}
-
-.tile-website-main > :last-child {
-  margin-bottom: 0;
+  margin-top: 14px;
 }
 
 .tile-website-icon {
@@ -92,9 +88,12 @@
 }
 
 .tile-website-title {
-  font-size: 21px;
+  font-size: 23px;
   line-height: 1.19em;
-  font-weight: bold;
+  font-weight: normal;
+  margin-top: 0;
+  margin-bottom: -0.19em;
+  color: #000;
 }
 
 .tile-website-desc {
@@ -103,8 +102,8 @@
   overflow: hidden;
 
   line-height: 1.45em;
-  font-size: 12px;
-  color: hsl(0, 0%, 60%);
+  font-size: 13px;
+  color: hsl(0, 0%, 55%);
 }
 
 .tile-website-footer {

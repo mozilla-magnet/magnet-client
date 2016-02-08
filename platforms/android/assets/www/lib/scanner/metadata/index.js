@@ -6,7 +6,7 @@
  */
 var debug = 1 ? console.log.bind(console, '[metadata]') : function() {};
 
-var endpoint = 'http://192.168.0.5:3030'; // endpoint of metadata service
+var endpoint = 'http://10.246.27.23:3030'; // endpoint of metadata service
 
 function Metadata() {
   this.batch = [];

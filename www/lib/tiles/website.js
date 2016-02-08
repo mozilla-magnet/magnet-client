@@ -31,12 +31,12 @@ function WebsiteTile(data) {
   debug('initialized', data);
 }
 
-WebsiteTile.prototype.render = function(data) {
+WebsiteTile.prototype.render = function(data, options) {
   Tile.prototype.render.apply(this, arguments);
+  var image = (options && options.image) !== false;
+  if (image && data.image) this.renderImage(data.image);
 
-  if (data.image) this.renderImage(data.image);
-
-  var main = el('div', 'tile-website-main', this.els.inner);
+  var main = el('div', 'tile-website-main', this.els.content);
   var icon = el('div', 'tile-website-icon', main);
   var iconInner = el('div', 'inner', icon);
   var title = el('h3', 'tile-website-title', main);
@@ -63,7 +63,7 @@ WebsiteTile.prototype.render = function(data) {
 };
 
 WebsiteTile.prototype.renderImage = function(src) {
-  var image = el('div', 'tile-website-image', this.els.inner);
+  var image = el('div', 'tile-website-image', this.els.content);
   var inner = el('div', 'inner', image);
   var node = el('img', '', inner);
 
