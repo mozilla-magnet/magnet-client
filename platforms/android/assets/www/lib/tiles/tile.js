@@ -4,7 +4,7 @@
  */
 
 var fastdom = require('fastdom-sequencer');
-var DetailView = require('../detail');
+var DetailView = require('../detail/detail');
 var Emitter = require('events');
 require('./tile.css');
 
@@ -48,6 +48,9 @@ TileView.prototype.onClick = function(data) {
     parent: this.els.inner,
     data: this.data
   });
+
+  document.body.appendChild(detail.el);
+  detail.open();
 };
 
 /**

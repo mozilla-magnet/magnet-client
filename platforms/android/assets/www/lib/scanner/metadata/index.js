@@ -6,7 +6,7 @@
  */
 var debug = 1 ? console.log.bind(console, '[metadata]') : function() {};
 
-var endpoint = 'http://10.246.27.23:3030'; // endpoint of metadata service
+var endpoint = 'http://192.168.0.5:3030'; // endpoint of metadata service
 
 function Metadata() {
   this.batch = [];
@@ -22,11 +22,7 @@ Metadata.prototype = {
         debug('response', response);
         var item = response[index];
         if (!item) return debug('null response', url);
-
-        // fallback
-        item.type = getType(item);
-
-        return item;
+        return normalize(item);
       }).catch(console.error.bind(console));
   },
 
@@ -58,27 +54,19 @@ module.exports = new Metadata();
  * Utils
  */
 
-function getType(data) {
-  switch(true) {
-    case !!data.twitter:
-    case !!data.android: return 'profile';
-    case !!data.og_data: return data.og_data.type;
-    default: return data.type || 'website';
-  }
-}
-
 function normalize(data) {
   var normalized = {
-    type: getType(data),
-    title: data.title,
+    url: data.url,
+    type: data.type || 'website',
+    title: data.title || data.url,
     description: data.description,
     icon: data.icon,
     embed: data.embed
   };
 
   if (data.og_data) normalizeOg(normalized, data.og_data);
-  if (data.twitter) normalizeTwitter(normalized, data);
-  if (data.android) normalizeAndroid(normalized, data);
+  if (data.twitter) normalizeTwitter(normalized, data.twitter);
+  if (data.android) normalizeAndroid(normalized, data.android);
 
   return normalized;
 }
@@ -86,26 +74,27 @@ function normalize(data) {
 function normalizeOg(result, og) {
   if (og.description) result.description = og.description;
   if (og.title) result.title = og.title;
+  if (og.image) result.image = og.image;
+  result.data = og;
 }
 
 function normalizeTwitter(result, twitter) {
+  result.type = 'profile';
   if (twitter.description) result.description = twitter.bio;
   if (twitter.avatar.alt) result.title = twitter.avatar.alt;
   if (twitter.user_id) result.title2 = twitter.user_id;
-  if (twitter.avatar.src) result.image = twitter.avatar.src;
+  // if (twitter.avatar.src) result.image = twitter.avatar.src;
+  if (twitter.avatar.src) result.icon = twitter.avatar.src;
+  twitter.type = 'twitter';
+  result.data = twitter;
 }
 
-function normalizeAndroid(data) {
-  var og = data.og_data;
-
-  return {
-    type: getType(data),
-    title: (og && og.title) || data.title,
-    description: (og && og.description) || data.description,
-    icon: data.icon,
-    image: (og && og.image) || data.image,
-    embed: data.embed
-  };
+function normalizeAndroid(result, android) {
+  result.type = 'profile';
+  if (android.icon) result.icon = android.icon;
+  if (android.name) result.title = android.name;
+  android.type = 'android';
+  result.data = android;
 }
 
 function request(body) {

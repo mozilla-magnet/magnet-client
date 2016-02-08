@@ -46,7 +46,7 @@ App.prototype = {
 
     this.grid = new GridView();
     this.tiles = new TilesView();
-    this.header = new HeaderView({ title: 'Magnet' });
+    this.header = new HeaderView({ title: 'magnet' });
 
     content.appendChild(this.grid.el);
     content.appendChild(this.tiles.el);
