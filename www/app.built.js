@@ -558,7 +558,7 @@
 
 
 	// module
-	exports.push([module.id, "\n.app-header {\n  position: relative;\n  height: 50px;\n  color: #999;\n}\n\n.app-header h1 {\n  margin: 0;\n  text-align: center;\n  font-size: 21px;\n  line-height: 50px;\n  font-weight: normal;\n  font-style: italic;\n  letter-spacing: -0.5px;\n}\n\n.app-header button {\n  position: absolute;\n  right: 0;\n  top: 0;\n\n  display: flex;\n  height: 100%;\n  padding: 0 14px;\n  border: 0;\n\n  font-size: 22px;\n  background: none;\n  border-radius: 0;\n  outline: 0;\n  color: #4C92E2;\n}\n\n.app-header button[hidden] {\n  opacity: 0;\n  visibility: hidden;\n}\n", ""]);
+	exports.push([module.id, "\n.app-header {\n  position: relative;\n  height: 50px;\n  color: #999;\n}\n\n.app-header h1 {\n  margin: 0;\n  text-align: center;\n  font-size: 21px;\n  line-height: 50px;\n  font-weight: normal;\n  font-style: italic;\n  letter-spacing: -0.5px;\n}\n\n.app-header button {\n  position: absolute;\n  right: 0;\n  top: 0;\n\n  display: flex;\n  height: 100%;\n  padding: 0 14px;\n  border: 0;\n\n  font-size: 20px;\n  background: none;\n  border-radius: 0;\n  outline: 0;\n  color: #4C92E2;\n}\n\n.app-header button[hidden] {\n  opacity: 0;\n  visibility: hidden;\n}\n", ""]);
 
 	// exports
 
@@ -977,7 +977,8 @@
 	    this.emit('found', 'https://www.youtube.com/watch?v=kh29_SERH0Y');
 	    this.emit('found', 'https://soundcloud.com/imaginedherbalflows/evolve');
 	    this.emit('found', 'https://play.spotify.com/track/2zMNWC0kbjfgjWpieSURja');
-	    this.emit('found', 'https://calendar.google.com/calendar/ical/mozilla.com_2d3638353137343333373332%40resource.calendar.google.com/public/basic.ics');
+	    this.emit('found', 'http://wilsonpage.github.io/magnet-tfl-countdown/?eee');
+	    // this.emit('found', 'https://calendar.google.com/calendar/ical/mozilla.com_2d3638353137343333373332%40resource.calendar.google.com/public/basic.ics');
 	    // this.emit('found', 'http://www.bbc.co.uk/news/business-35416812');
 	    // this.emit('found', 'https://twitter.com/wheresrhys/status/692416923720650754');
 	  }.bind(this));
@@ -1468,6 +1469,9 @@
 	    desc.textContent = data.description;
 	  }
 
+	  var url = el('p', 'tile-website-url', main);
+	  url.textContent = data.url;
+
 	  if (!data.icon) {
 	    this.el.classList.add('no-icon');
 	    return;
@@ -1554,7 +1558,8 @@
 	  this.els.content = el('div', 'tile-content', this.els.inner);
 	  this.els.footer = el('footer', 'tile-footer', this.els.inner);
 	  this.els.close = el('button', 'tile-close-button', this.els.footer);
-	  this.els.open = el('button', 'tile-open-button', this.els.footer);
+	  this.els.open = el('a', 'tile-open-button', this.els.footer);
+	  this.els.open.href = data.url;
 	  this.els.open.textContent = 'Open';
 	  this.els.close.textContent = 'Close';
 	  this.els.footer.hidden = true;
@@ -2589,7 +2594,7 @@
 
 
 	// module
-	exports.push([module.id, "\n.tile {\n  display: block;\n  margin-bottom: 28px;\n\n  color: inherit;\n  text-decoration: none;\n  list-style: none;\n}\n\n.tile-url {\n  overflow: hidden;\n  margin-bottom: 7px;\n\n  text-align: center;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-weight: normal;\n  font-style: italic;\n  color: #bbb;\n}\n\n.tile > .inner {\n  position: relative;\n\n  overflow: hidden;\n  /*border-radius: 3px;*/\n  box-shadow: 0 1px 2px rgba(0,0,0,0.17);\n  background-color: #fff;\n\n  transition: transform 400ms;\n}\n\n.tile-text {\n  display: flex;\n  padding: 21px;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n\n.tile:first-child .tile-text {\n  border: 0;\n}\n\n.tile-text > * {\n  margin: 0 0 14px;\n}\n\n.tile-text > :last-child {\n  margin: 0;\n}\n\n.tile-title {\n  font-size: 21px;\n  font-weight: lighter;\n  text-align: center;\n  padding: 0 6%;\n}\n\n.tile-desc {\n  width: 100%;\n  max-height: calc(1.35em * 5);\n  overflow: hidden;\n\n  text-align: center;\n  line-height: 1.35em;\n  font-size: 12px;\n  color: hsl(0, 0%, 60%);\n}\n\n.tile-footer {\n  display: flex;\n  height: 46px;\n  background: hsl(0, 0%, 74%);\n  font-size: 17px;\n  font-weight: bold;\n  color: #fff;\n}\n\n.tile-footer[hidden] {\n  display: none;;\n}\n\n.tile-footer > a,\n.tile-footer > button {\n  display: flex;\n  flex: 1;\n  padding: 7px;\n  border: 0;\n  background: none;\n  align-items: center;\n  justify-content: center;\n  color: inherit;\n  text-decoration: none;\n}\n\n.tile-footer > *:not(:first-child) {\n  border-left: solid 1px hsl(0, 0%, 82%);\n}\n", ""]);
+	exports.push([module.id, "\n.tile {\n  display: block;\n  margin-bottom: 28px;\n\n  color: inherit;\n  text-decoration: none;\n  list-style: none;\n}\n\n.tile-url {\n  overflow: hidden;\n  margin-bottom: 7px;\n\n  text-align: center;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-weight: normal;\n  font-style: italic;\n  color: #bbb;\n}\n\n.tile > .inner {\n  position: relative;\n\n  overflow: hidden;\n  /*border-radius: 3px;*/\n  box-shadow: 0 1px 2px rgba(0,0,0,0.17);\n  background-color: #fff;\n\n  transition: transform 400ms;\n}\n\n.tile-text {\n  display: flex;\n  padding: 21px;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n\n.tile:first-child .tile-text {\n  border: 0;\n}\n\n.tile-text > * {\n  margin: 0 0 14px;\n}\n\n.tile-text > :last-child {\n  margin: 0;\n}\n\n.tile-title {\n  font-size: 21px;\n  font-weight: lighter;\n  text-align: center;\n  padding: 0 6%;\n}\n\n.tile-desc {\n  width: 100%;\n  max-height: calc(1.35em * 5);\n  overflow: hidden;\n\n  text-align: center;\n  line-height: 1.35em;\n  font-size: 12px;\n  word-break: break-word;\n  color: hsl(0, 0%, 60%);\n}\n\n.tile-footer {\n  display: flex;\n  height: 46px;\n  background: hsl(0, 0%, 74%);\n  font-size: 15px;\n  color: #fff;\n}\n\n.tile-footer[hidden] {\n  display: none;;\n}\n\n.tile-footer > a,\n.tile-footer > button {\n  display: flex;\n  flex: 1;\n  padding: 7px;\n  border: 0;\n  background: none;\n  align-items: center;\n  justify-content: center;\n  color: inherit;\n  text-decoration: none;\n}\n\n.tile-footer > *:not(:first-child) {\n  border-left: solid 1px hsl(0, 0%, 82%);\n}\n", ""]);
 
 	// exports
 
@@ -2629,7 +2634,7 @@
 
 
 	// module
-	exports.push([module.id, "\n.tile-website-image {\n  position: relative;\n  padding-bottom: 53.25%;\n  background: #999;\n}\n\n.tile-website-image > .inner {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  width: 100%;\n  height: 100%;\n\n  opacity: 0;\n  transition: opacity 300ms;\n}\n\n.tile-website-image.loaded > .inner {\n  opacity: 1;\n}\n\n.tile-website-image img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n\n.tile-website-main {\n  position: relative;\n\n  display: flex;\n  box-sizing: border-box;\n  min-height: 114px;\n  padding: 21px;\n  padding-left: 114px;\n\n  flex-direction: column;\n  justify-content: center;\n}\n\n.tile-website-main > * {\n  margin-top: 14px;\n}\n\n.tile-website-icon {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  display: flex;\n  box-sizing: border-box;\n  width: 114px;\n  height: 114px;\n  margin: 0;\n\n  align-items: center;\n  justify-content: center;\n}\n\n.tile-website-icon > .inner {\n  width: 68px;\n  height: 68px;\n  overflow: hidden;\n  border-radius: 4px;\n  font-family: magnet;\n}\n\n.no-icon .tile-website-icon > .inner::before {\n  content: '\\E078';\n  display: block;\n  margin-top: -2px;\n  font-size: 68px;\n  color: #bbb;\n}\n\n.tile-website-icon img {\n  width: 100%;\n}\n\n.no-icon .tile-website-icon img {\n  display: none;\n}\n\n.tile:first-child .tile-website-text {\n  border: 0;\n}\n\n.tile-website-title {\n  font-size: 23px;\n  line-height: 1.19em;\n  font-weight: normal;\n  margin-top: 0;\n  margin-bottom: -0.19em;\n  color: #000;\n}\n\n.tile-website-desc {\n  width: 100%;\n  max-height: calc(1.35em * 5);\n  overflow: hidden;\n\n  line-height: 1.45em;\n  font-size: 13px;\n  color: hsl(0, 0%, 55%);\n}\n\n.tile-website-footer {\n  display: flex;\n  height: 46px;\n  background: hsl(0, 0%, 74%);\n  font-size: 17px;\n  font-weight: bold;\n  color: #fff;\n}\n\n.tile-website-footer > a {\n  display: flex;\n  flex: 1;\n  padding: 7px;\n  align-items: center;\n  justify-content: center;\n  color: inherit;\n  text-decoration: none;\n}\n\n.tile-website-footer > a:not(:first-child) {\n  border-left: solid 1px hsl(0, 0%, 82%);\n}\n", ""]);
+	exports.push([module.id, "\n.tile-website-image {\n  position: relative;\n  padding-bottom: 53.25%;\n  background: #999;\n}\n\n.tile-website-image > .inner {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  width: 100%;\n  height: 100%;\n\n  opacity: 0;\n  transition: opacity 300ms;\n}\n\n.tile-website-image.loaded > .inner {\n  opacity: 1;\n}\n\n.tile-website-image img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n\n.tile-website-main {\n  position: relative;\n\n  display: flex;\n  box-sizing: border-box;\n  min-height: 114px;\n  padding: 21px;\n  padding-left: 114px;\n\n  flex-direction: column;\n  justify-content: center;\n  word-break: break-all;\n}\n\n.tile-website-main > * {\n  margin-top: 16px;\n}\n\n.tile-website-icon {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  display: flex;\n  box-sizing: border-box;\n  width: 114px;\n  height: 114px;\n  margin: 0;\n\n  align-items: center;\n  justify-content: center;\n}\n\n.tile-website-icon > .inner {\n  width: 68px;\n  height: 68px;\n  overflow: hidden;\n  border-radius: 4px;\n  font-family: magnet;\n}\n\n.no-icon .tile-website-icon > .inner::before {\n  content: '\\E078';\n  display: block;\n  margin-top: -2px;\n  font-size: 64px;\n  text-align: center;\n  color: #bbb;\n}\n\n.tile-website-icon img {\n  width: 100%;\n}\n\n.no-icon .tile-website-icon img {\n  display: none;\n}\n\n.tile:first-child .tile-website-text {\n  border: 0;\n}\n\n.tile-website-title {\n  font-size: 23px;\n  line-height: 1.19em;\n  word-break: normal;\n  font-weight: normal;\n  margin-top: 0;\n  margin-bottom: -0.19em;\n  color: #000;\n}\n\n.tile-website-desc {\n  width: 100%;\n  max-height: calc(1.35em * 5);\n  overflow: hidden;\n\n  line-height: 1.45em;\n  font-size: 13px;\n  color: hsl(0, 0%, 50%);\n}\n\n.tile-website-url {\n  display: none;\n  font-style: italic;\n  line-height: 1.35em;\n  color: #bbb;\n  color: #4C92E2;\n}\n\n.expanded .tile-website-url {\n  display: block;\n}\n\n.tile-website-footer {\n  display: flex;\n  height: 46px;\n  background: hsl(0, 0%, 74%);\n  font-size: 17px;\n  font-weight: bold;\n  color: #fff;\n}\n\n.tile-website-footer > a {\n  display: flex;\n  flex: 1;\n  padding: 7px;\n  align-items: center;\n  justify-content: center;\n  color: inherit;\n  text-decoration: none;\n}\n\n.tile-website-footer > a:not(:first-child) {\n  border-left: solid 1px hsl(0, 0%, 82%);\n}\n", ""]);
 
 	// exports
 
@@ -3384,7 +3389,7 @@
 
 
 	// module
-	exports.push([module.id, "\n* {\n  -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */\n  margin: 0;\n}\n\nhtml {\n  height: 100%;\n  overflow: hidden;\n\n  font-size: 12px;\n  font-family: FiraSans;\n  background: #f2f2f2;\n}\n\nbody {\n  -webkit-touch-callout: none; /* prevent callout to copy image, etc when tap to hold */\n  -webkit-text-size-adjust: none; /* prevent webkit from resizing text to fit */\n  -webkit-user-select: none; /* prevent copy paste, to allow, change 'none' to 'text' */\n\n  height: 100%;\n  width: 100%;\n  margin: 0;\n  padding: 0;\n\n  color: #444;\n  overflow: hidden;\n}\n\n.app {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  overflow: hidden;\n}\n\n.app > .header {}\n\n.app > .content {\n  position: relative;\n  flex: 1;\n}\n", ""]);
+	exports.push([module.id, "\n* {\n  -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */\n  margin: 0;\n  font: inherit;\n}\n\na {\n  text-decoration: none;\n  color: inherit;\n}\n\nhtml {\n  height: 100%;\n  overflow: hidden;\n\n  font-size: 12px;\n  font-family: FiraSans;\n  background: #f2f2f2;\n}\n\nbody {\n  -webkit-touch-callout: none; /* prevent callout to copy image, etc when tap to hold */\n  -webkit-text-size-adjust: none; /* prevent webkit from resizing text to fit */\n  -webkit-user-select: none; /* prevent copy paste, to allow, change 'none' to 'text' */\n\n  height: 100%;\n  width: 100%;\n  margin: 0;\n  padding: 0;\n\n  color: #444;\n  overflow: hidden;\n}\n\n.app {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  overflow: hidden;\n}\n\n.app > .header {}\n\n.app > .content {\n  position: relative;\n  flex: 1;\n}\n", ""]);
 
 	// exports
 
@@ -3426,10 +3431,8 @@
 	  WebsiteTile.prototype.render.call(this, data, { image: false });
 
 	  var embed = data.embed;
-	  var aspect = (embed.height / embed.width) * 100;
 	  this.els.frame = el('div', 'tile-embed-frame');
 	  this.els.screen = el('div', 'tile-embed-screen', this.els.frame);
-	  this.els.frame.style.paddingBottom = aspect + '%';
 
 	  if (data.image) this.addImage(data.image);
 	  else this.addEmbed(embed);
@@ -3459,8 +3462,19 @@
 	  this.hideLoading();
 	};
 
+	WebsiteEmbedTile.prototype.setFrameApect = function() {
+	  if (this.aspectSet) return;
+	  var embed = this.data.embed;
+	  var aspect = (embed.height / embed.width) * 100;
+	  this.els.frame.style.paddingBottom = (aspect || 100) + '%';
+	  this.el.classList.add('aspect-set');
+	  this.aspectSet = true;
+	};
+
+
 	WebsiteEmbedTile.prototype.addImage = function(src) {
 	  debug('add image', src);
+	  this.setFrameApect();
 	  this.els.image = el('div', 'tile-embed-image', this.els.frame);
 	  this.els.imageNode = el('img', '', this.els.image);
 	  this.els.imageNode.src = src;
@@ -3483,12 +3497,13 @@
 	    if (this.embedded) return resolve();
 	    debug('embedding', embed);
 
-	    this.showLoading();
 	    this.els.embed = el('div', 'tile-embed-embed');
 	    this.els.embed.innerHTML = cleanHtml(embed.html);
 
 	    var iframe = this.els.embed.querySelector('iframe');
 	    if (iframe) {
+	      this.setFrameApect();
+	      this.showLoading();
 	      var hasQuery = !!~iframe.src.indexOf('?');
 	      iframe.src += (!hasQuery ? '?' : '&') + 'autoplay=1&rel=0&controls=0&showinfo=0&title=0&portrait=0&badge=0&modestbranding=1&byline=0';
 
@@ -3591,7 +3606,7 @@
 
 
 	// module
-	exports.push([module.id, "\n/**\n * 1. Default embed/image space is a square\n *    unless width/height provided.\n */\n\n.tile-embed-frame  {\n  position: relative;\n  padding-bottom: 100%; /* 1 */\n}\n\n.tile-embed-embed {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  width: 100%;\n  height: 100%;\n}\n\n.tile-embed-embed > iframe {\n  position: absolute;\n  left: 0;]\n  top: 0;\n\n  display: block;;\n  width: 100.5%;\n  height: 100.5%;\n  background: #000;\n}\n\n.tile-embed-screen {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 2;\n\n  width: 100%;\n  height: 100%;\n\n  background: rgba(255,255,255,0.05);\n  transition: opacity 200ms;\n}\n\n.tile-embed-screen[hidden] {\n  opacity: 0;\n  pointer-events: none;\n}\n\n.tile-embed-loading {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 2;\n\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n\n  color: rgba(255,255,255,0.6);\n  background: rgba(0,0,0,0.3);\n}\n\n.tile-embed-image {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 1;\n\n  width: 100%;\n  height: 100%;\n}\n\n.tile-embed-image > img {\n  display: block;\n  width: 100.5%;\n  height: 100.5%;\n  object-fit: cover;\n}\n\n.tile-embed .tile-website-main {\n  display: none;\n}\n\n.tile-embed.expanded .tile-website-main {\n  display: block;\n}\n", ""]);
+	exports.push([module.id, "\n.tile-embed-frame  {\n  position: relative;\n}\n\n.aspect-set .tile-embed-embed {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n}\n\n.tile-embed-embed table {\n  width: 100%;\n}\n\n.tile-embed-embed tr {\n  padding: 0 7px;\n}\n\n.tile-embed-embed td {\n  padding: 21px 14px;\n  border-top: solid 1px #f2f2f2;\n  text-align: center;\n  font-size: 18px;\n}\n\n.tile-embed-embed tr:first-child td {\n  border-top: 0;\n}\n\n.tile-embed-embed > iframe {\n  position: absolute;\n  left: 0;]\n  top: 0;\n\n  display: block;;\n  width: 100.5%;\n  height: 100.5%;\n  background: #000;\n}\n\n.tile-embed-screen {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 2;\n\n  width: 100%;\n  height: 100%;\n\n  background: rgba(255,255,255,0.05);\n  transition: opacity 200ms;\n}\n\n.tile-embed-screen[hidden] {\n  opacity: 0;\n  pointer-events: none;\n}\n\n.tile-embed-loading {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 2;\n\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n\n  color: rgba(255,255,255,0.6);\n  background: rgba(0,0,0,0.3);\n}\n\n.tile-embed-image {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 1;\n\n  width: 100%;\n  height: 100%;\n}\n\n.tile-embed-image > img {\n  display: block;\n  width: 100.5%;\n  height: 100.5%;\n  object-fit: cover;\n}\n\n.tile-embed .tile-website-main {\n  display: none;\n  border-top: solid 1px #f2f2f2;\n}\n\n.tile-embed.expanded .tile-website-main {\n  display: block;\n}\n", ""]);
 
 	// exports
 

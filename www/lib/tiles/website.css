@@ -38,10 +38,11 @@
 
   flex-direction: column;
   justify-content: center;
+  word-break: break-all;
 }
 
 .tile-website-main > * {
-  margin-top: 14px;
+  margin-top: 16px;
 }
 
 .tile-website-icon {
@@ -71,7 +72,8 @@
   content: '\e078';
   display: block;
   margin-top: -2px;
-  font-size: 68px;
+  font-size: 64px;
+  text-align: center;
   color: #bbb;
 }
 
@@ -90,6 +92,7 @@
 .tile-website-title {
   font-size: 23px;
   line-height: 1.19em;
+  word-break: normal;
   font-weight: normal;
   margin-top: 0;
   margin-bottom: -0.19em;
@@ -103,7 +106,19 @@
 
   line-height: 1.45em;
   font-size: 13px;
-  color: hsl(0, 0%, 55%);
+  color: hsl(0, 0%, 50%);
+}
+
+.tile-website-url {
+  display: none;
+  font-style: italic;
+  line-height: 1.35em;
+  color: #bbb;
+  color: #4C92E2;
+}
+
+.expanded .tile-website-url {
+  display: block;
 }
 
 .tile-website-footer {

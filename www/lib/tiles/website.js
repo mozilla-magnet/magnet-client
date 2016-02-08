@@ -49,6 +49,9 @@ WebsiteTile.prototype.render = function(data, options) {
     desc.textContent = data.description;
   }
 
+  var url = el('p', 'tile-website-url', main);
+  url.textContent = data.url;
+
   if (!data.icon) {
     this.el.classList.add('no-icon');
     return;

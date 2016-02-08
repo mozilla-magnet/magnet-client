@@ -66,6 +66,7 @@
   text-align: center;
   line-height: 1.35em;
   font-size: 12px;
+  word-break: break-word;
   color: hsl(0, 0%, 60%);
 }
 
@@ -73,8 +74,7 @@
   display: flex;
   height: 46px;
   background: hsl(0, 0%, 74%);
-  font-size: 17px;
-  font-weight: bold;
+  font-size: 15px;
   color: #fff;
 }
 

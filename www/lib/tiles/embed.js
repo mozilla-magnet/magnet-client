@@ -31,10 +31,8 @@ WebsiteEmbedTile.prototype.render = function(data) {
   WebsiteTile.prototype.render.call(this, data, { image: false });
 
   var embed = data.embed;
-  var aspect = (embed.height / embed.width) * 100;
   this.els.frame = el('div', 'tile-embed-frame');
   this.els.screen = el('div', 'tile-embed-screen', this.els.frame);
-  this.els.frame.style.paddingBottom = aspect + '%';
 
   if (data.image) this.addImage(data.image);
   else this.addEmbed(embed);
@@ -64,8 +62,19 @@ WebsiteEmbedTile.prototype.collapse = function() {
   this.hideLoading();
 };
 
+WebsiteEmbedTile.prototype.setFrameApect = function() {
+  if (this.aspectSet) return;
+  var embed = this.data.embed;
+  var aspect = (embed.height / embed.width) * 100;
+  this.els.frame.style.paddingBottom = (aspect || 100) + '%';
+  this.el.classList.add('aspect-set');
+  this.aspectSet = true;
+};
+
+
 WebsiteEmbedTile.prototype.addImage = function(src) {
   debug('add image', src);
+  this.setFrameApect();
   this.els.image = el('div', 'tile-embed-image', this.els.frame);
   this.els.imageNode = el('img', '', this.els.image);
   this.els.imageNode.src = src;
@@ -88,12 +97,13 @@ WebsiteEmbedTile.prototype.addEmbed = function(embed) {
     if (this.embedded) return resolve();
     debug('embedding', embed);
 
-    this.showLoading();
     this.els.embed = el('div', 'tile-embed-embed');
     this.els.embed.innerHTML = cleanHtml(embed.html);
 
     var iframe = this.els.embed.querySelector('iframe');
     if (iframe) {
+      this.setFrameApect();
+      this.showLoading();
       var hasQuery = !!~iframe.src.indexOf('?');
       iframe.src += (!hasQuery ? '?' : '&') + 'autoplay=1&rel=0&controls=0&showinfo=0&title=0&portrait=0&badge=0&modestbranding=1&byline=0';
 
