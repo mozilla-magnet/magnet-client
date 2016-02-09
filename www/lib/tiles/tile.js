@@ -32,8 +32,11 @@ function TileView(data) {
   this.els = {};
   this.data = data;
   this.render(data);
-  this.el.addEventListener('click', this.expand.bind(this));
-  this.els.close.addEventListener('click', this.collapse.bind(this));
+  this.els.close.addEventListener('click', function(e) {
+    e.stopPropagation();
+    this.emit('close');
+  }.bind(this));
+
   debug('initialized', data);
 }
 
@@ -42,24 +45,56 @@ TileView.prototype.render = function(data) {
   this.els.url.textContent = data.url;
   this.els.inner = el('div', 'inner', this.el);
   this.els.content = el('div', 'tile-content', this.els.inner);
-  this.els.footer = el('footer', 'tile-footer', this.els.inner);
+  this.els.collapsed = el('div', 'tile-collpased', this.els.inner);
+  this.els.footer = el('footer', 'tile-footer', this.els.hidden);
   this.els.close = el('button', 'tile-close-button', this.els.footer);
   this.els.open = el('a', 'tile-open-button', this.els.footer);
   this.els.open.href = data.url;
   this.els.open.textContent = 'Open';
   this.els.close.textContent = 'Close';
-  this.els.footer.hidden = true;
 };
 
 TileView.prototype.expand = function() {
-  this.els.footer.hidden = false;
-  this.el.classList.add('expanded');
+  if (this.expanded) return;
+  var inner = this.els.inner;
+
+  return fastdom
+    .measure(function() {
+      return inner.getBoundingClientRect();
+    })
+
+    .animate(inner, function(rect) {
+      var translateY = -(rect.top - 50);
+      debug('animate', rect, translateY);
+      inner.style.transition = 'transform 300ms';
+      inner.style.transform = 'translateY(' + translateY + 'px)';
+    }.bind(this))
+
+    .then(function() {
+      this.el.classList.add('expanded');
+      this.expanded = true;
+    }.bind(this));
 };
 
 TileView.prototype.collapse = function(e) {
   if (e) e.stopPropagation();
-  this.els.footer.hidden = true;
-  this.el.classList.remove('expanded');
+  if (!this.expanded) return;
+  debug('collapsing');
+  this.expanded = false;
+
+  var inner = this.els.inner;
+
+  return fastdom
+    .animate(inner, function() {
+      console.log('12222');
+      inner.style.removeProperty('transform');
+    })
+
+    .then(function() {
+      inner.style.removeProperty('transition');
+      this.el.classList.remove('expanded');
+      debug('collapsed');
+    }.bind(this));
 };
 
 /**

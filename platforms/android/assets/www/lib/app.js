@@ -3,6 +3,7 @@
  * Dependencies
  */
 
+var fastdom = require('fastdom-sequencer');
 var HeaderView = require('./header');
 var Scanner = require('./scanner');
 var TilesView = require('./tiles');
@@ -67,10 +68,12 @@ App.prototype = {
   },
 
   toggleView: function() {
-    this.gridView = !this.gridView;
-    this.grid.toggle(this.gridView);
-    this.tiles.toggle(!this.gridView);
-    this.header.toggleButton(this.gridView);
+    fastdom.animate(this.tiles.el, function() {
+      this.gridView = !this.gridView;
+      this.grid.toggle(this.gridView);
+      this.tiles.toggle(!this.gridView);
+      this.header.toggleButton(this.gridView);
+    }.bind(this));
   },
 
   /**

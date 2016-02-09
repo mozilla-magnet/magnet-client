@@ -36,7 +36,7 @@ WebsiteTile.prototype.render = function(data, options) {
   var image = (options && options.image) !== false;
   if (image && data.image) this.renderImage(data.image);
 
-  var main = el('div', 'tile-website-main', this.els.content);
+  var main = this.els.main = el('div', 'tile-website-main', this.els.content);
   var icon = el('div', 'tile-website-icon', main);
   var iconInner = el('div', 'inner', icon);
   var title = el('h3', 'tile-website-title', main);

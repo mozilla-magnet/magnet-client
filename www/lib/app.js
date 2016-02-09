@@ -3,19 +3,14 @@
  * Dependencies
  */
 
+var debug = require('./utils/debug')('[App]', 1);
+var fastdom = require('fastdom-sequencer');
 var HeaderView = require('./header');
 var Scanner = require('./scanner');
 var TilesView = require('./tiles');
 var GridView = require('./grid');
 
 require('./app.css');
-
-/**
- * Logger
- *
- * @return {Function}
- */
-var debug = 0 ? console.log.bind(console, '[App]') : function() {};
 
 /**
  * Exports
@@ -28,8 +23,9 @@ function App(el) {
   this.els = {};
 
   document.body.addEventListener('click', this.onClick.bind(this));
-  this.gridView = true;
+  document.addEventListener('backbutton', this.onBackButton.bind(this));
 
+  this.gridView = true;
   this.scanner = new Scanner();
   this.scanner.on('found', this.onFound.bind(this));
   this.scanner.on('lost', this.onLost.bind(this));
@@ -67,10 +63,12 @@ App.prototype = {
   },
 
   toggleView: function() {
-    this.gridView = !this.gridView;
-    this.grid.toggle(this.gridView);
-    this.tiles.toggle(!this.gridView);
-    this.header.toggleButton(this.gridView);
+    fastdom.animate(this.tiles.el, function() {
+      this.gridView = !this.gridView;
+      this.grid.toggle(this.gridView);
+      this.tiles.toggle(!this.gridView);
+      this.header.toggleButton(this.gridView);
+    }.bind(this));
   },
 
   /**
@@ -84,6 +82,14 @@ App.prototype = {
     if (!link) return;
     debug('click', link.href);
     window.open(link.href, '_system');
+  },
+
+  onBackButton: function(e) {
+    debug('back button pressed');
+    if (this.tiles.expanded) {
+      e.preventDefault();
+      this.tiles.collapse();
+    }
   },
 
   onFound: function(url, data) {

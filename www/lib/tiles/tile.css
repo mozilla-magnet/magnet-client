@@ -1,12 +1,16 @@
 
 .tile {
   display: block;
-  margin-bottom: 28px;
+  padding: 0 14px;
 
   color: inherit;
   text-decoration: none;
   list-style: none;
 }
+
+/**
+ * 1. Fix animation glitch
+ */
 
 .tile-url {
   overflow: hidden;
@@ -18,37 +22,22 @@
   font-weight: normal;
   font-style: italic;
   color: #bbb;
+
+  will-change: transform; /* 1 */
 }
 
 .tile > .inner {
   position: relative;
+  margin-bottom: 28px;
 
-  overflow: hidden;
-  /*border-radius: 3px;*/
   box-shadow: 0 1px 2px rgba(0,0,0,0.17);
   background-color: #fff;
-
-  transition: transform 400ms;
 }
 
-.tile-text {
-  display: flex;
-  padding: 21px;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.tile:first-child .tile-text {
-  border: 0;
-}
-
-.tile-text > * {
-  margin: 0 0 14px;
-}
-
-.tile-text > :last-child {
-  margin: 0;
+.tile-content {
+  position: relative;
+  z-index: 1;
+  background: #fff;
 }
 
 .tile-title {
@@ -70,16 +59,27 @@
   color: hsl(0, 0%, 60%);
 }
 
+.tile-collapsed {
+  display: none;
+}
+
 .tile-footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+
   display: flex;
+  width: 100%;
   height: 46px;
   background: hsl(0, 0%, 74%);
   font-size: 15px;
   color: #fff;
+
+  transition: transform 200ms;
 }
 
-.tile-footer[hidden] {
-  display: none;;
+.expanded .tile-footer {
+  transform: translateY(100%);
 }
 
 .tile-footer > a,
@@ -88,6 +88,7 @@
   flex: 1;
   padding: 7px;
   border: 0;
+  outline: 0;
   background: none;
   align-items: center;
   justify-content: center;

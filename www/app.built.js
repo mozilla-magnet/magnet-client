@@ -62,19 +62,14 @@
 	 * Dependencies
 	 */
 
+	var debug = __webpack_require__(35)('[App]', 1);
+	var fastdom = __webpack_require__(16);
 	var HeaderView = __webpack_require__(2);
 	var Scanner = __webpack_require__(8);
 	var TilesView = __webpack_require__(13);
 	var GridView = __webpack_require__(44);
 
 	__webpack_require__(64);
-
-	/**
-	 * Logger
-	 *
-	 * @return {Function}
-	 */
-	var debug = 0 ? console.log.bind(console, '[App]') : function() {};
 
 	/**
 	 * Exports
@@ -87,8 +82,9 @@
 	  this.els = {};
 
 	  document.body.addEventListener('click', this.onClick.bind(this));
-	  this.gridView = true;
+	  document.addEventListener('backbutton', this.onBackButton.bind(this));
 
+	  this.gridView = true;
 	  this.scanner = new Scanner();
 	  this.scanner.on('found', this.onFound.bind(this));
 	  this.scanner.on('lost', this.onLost.bind(this));
@@ -126,10 +122,12 @@
 	  },
 
 	  toggleView: function() {
-	    this.gridView = !this.gridView;
-	    this.grid.toggle(this.gridView);
-	    this.tiles.toggle(!this.gridView);
-	    this.header.toggleButton(this.gridView);
+	    fastdom.animate(this.tiles.el, function() {
+	      this.gridView = !this.gridView;
+	      this.grid.toggle(this.gridView);
+	      this.tiles.toggle(!this.gridView);
+	      this.header.toggleButton(this.gridView);
+	    }.bind(this));
 	  },
 
 	  /**
@@ -143,6 +141,14 @@
 	    if (!link) return;
 	    debug('click', link.href);
 	    window.open(link.href, '_system');
+	  },
+
+	  onBackButton: function(e) {
+	    debug('back button pressed');
+	    if (this.tiles.expanded) {
+	      e.preventDefault();
+	      this.tiles.collapse();
+	    }
 	  },
 
 	  onFound: function(url, data) {
@@ -1356,20 +1362,14 @@
 	 * Dependencies
 	 */
 
+	var debug = __webpack_require__(35)('[tiles-view]', 1);
+	var fastdom = __webpack_require__(16);
 	var registry = {
 	  website: __webpack_require__(14),
 	  embed: __webpack_require__(66)
 	};
 
-
 	__webpack_require__(42);
-
-	/**
-	 * Logger
-	 *
-	 * @return {Function}
-	 */
-	var debug = 0 ? console.log.bind(console, '[tiles-view]') : function() {};
 
 	/**
 	 * Exports
@@ -1393,6 +1393,8 @@
 	    var tile = new Tile(data);
 
 	    this.tiles[id] = tile;
+	    tile.el.addEventListener('click', this.onTileClick.bind(this, tile));
+	    tile.on('close', this.collapse.bind(this, tile));
 	    this.el.appendChild(tile.el);
 	  },
 
@@ -1410,8 +1412,125 @@
 	  appendTo: function(parent) {
 	    parent.appendChild(this.el);
 	    return this;
+	  },
+
+	  onTileClick: function(tile, e) {
+	    debug('tile click');
+	    this.expand(tile);
+	  },
+
+	  expand: function(tile) {
+	    if (this.expanded) return Promise.resolve();
+	    this.expanded = tile;
+
+	    var before = tile.el.previousElementSibling;
+	    var after = tile.el.nextElementSibling;
+	    var measurements;
+
+	    return fastdom
+	      .measure(function() {
+	        var tilesHeight = this.el.clientHeight;
+	        var top = rect(tile.el).top;
+
+	        measurements = this.measurements = {
+	          scrollTop: tile.el.offsetTop,
+	          translateY: -(top - 50),
+	          afterTranslateY: Math.max(tilesHeight - (rect(after).top - 50), 0),
+	          previousScrollTop: this.el.scrollTop,
+	          tileHeight: tilesHeight
+	        };
+	      }, this)
+
+	      .animate(tile.el, function() {
+	        debug('animate', measurements);
+	        var translateY = measurements.translateY;
+	        style([tile.el, before, after], { transition: 'transform 300ms' });
+	        style([tile.el, before], { transform: 'translateY(' + translateY + 'px)' });
+	        style(after, { transform: 'translateY(' + measurements.afterTranslateY + 'px)' });
+
+	      }.bind(this))
+
+	      .mutate(function() {
+	        this.el.scrollTop = measurements.scrollTop;
+	        style(this.el, { overflow: 'hidden' });
+
+	        style(tile.el, {
+	          height: measurements.tileHeight + 'px',
+	          overflowX: 'hidden',
+	          overflowY: 'scroll'
+	        });
+
+	        style([tile.el, before, after], {
+	          transition: '',
+	          transform: '',
+	        });
+	      }.bind(this))
+
+	      .animate(this.el, 200, function() {
+	        tile.el.classList.add('expanded');
+	      }.bind(this));
+	  },
+
+	  collapse: function() {
+	    if (!this.expanded) return Promise.resolve();
+	    var tile = this.expanded;
+	    // if (this.expanded !== tile) return Promise.resolve();
+	    delete this.expanded;
+
+	    debug('collapsing tile', tile);
+
+	    var before = tile.el.previousElementSibling;
+	    var after = tile.el.nextElementSibling;
+	    var measurements = this.measurements;
+
+	    return fastdom
+	      // .animate(this.el, 200, function() {
+	      //   tile.el.classList.remove('expanded');
+	      // }.bind(this))
+
+	      .mutate(function() {
+	        debug('animate', measurements);
+	        var translateY = measurements.translateY;
+
+	        style([tile.el, before], { transform: 'translateY(' + translateY + 'px)' });
+	        style(after, { transform: 'translateY(' + measurements.afterTranslateY + 'px)' });
+	        style(this.el, { overflow: '' });
+	        this.el.scrollTop = measurements.previousScrollTop;
+
+	        style(tile.el, {
+	          overflowX: '',
+	          overflowY: '',
+	          height: ''
+	        });
+	      }.bind(this))
+
+	      .animate(tile.el, function() {
+	        style([tile.el, before, after], {
+	          transition: 'transform 300ms',
+	          transform: ''
+	        });
+	      })
+
+	      .mutate(function() {
+	        style([tile.el, before, after], { transition: '' });
+	      }.bind(this));
 	  }
 	};
+
+	/**
+	 * Utils
+	 */
+
+	function rect(el) {
+	  return el.getBoundingClientRect();
+	}
+
+	function style(el, props) {
+	  var els = [].concat(el);
+	  els.forEach(function(el) {
+	    if (el) for (var key in props) el.style[key] = props[key];
+	  });
+	}
 
 
 /***/ },
@@ -1456,7 +1575,7 @@
 	  var image = (options && options.image) !== false;
 	  if (image && data.image) this.renderImage(data.image);
 
-	  var main = el('div', 'tile-website-main', this.els.content);
+	  var main = this.els.main = el('div', 'tile-website-main', this.els.content);
 	  var icon = el('div', 'tile-website-icon', main);
 	  var iconInner = el('div', 'inner', icon);
 	  var title = el('h3', 'tile-website-title', main);
@@ -1546,8 +1665,11 @@
 	  this.els = {};
 	  this.data = data;
 	  this.render(data);
-	  this.el.addEventListener('click', this.expand.bind(this));
-	  this.els.close.addEventListener('click', this.collapse.bind(this));
+	  this.els.close.addEventListener('click', function(e) {
+	    e.stopPropagation();
+	    this.emit('close');
+	  }.bind(this));
+
 	  debug('initialized', data);
 	}
 
@@ -1556,24 +1678,56 @@
 	  this.els.url.textContent = data.url;
 	  this.els.inner = el('div', 'inner', this.el);
 	  this.els.content = el('div', 'tile-content', this.els.inner);
-	  this.els.footer = el('footer', 'tile-footer', this.els.inner);
+	  this.els.collapsed = el('div', 'tile-collpased', this.els.inner);
+	  this.els.footer = el('footer', 'tile-footer', this.els.hidden);
 	  this.els.close = el('button', 'tile-close-button', this.els.footer);
 	  this.els.open = el('a', 'tile-open-button', this.els.footer);
 	  this.els.open.href = data.url;
 	  this.els.open.textContent = 'Open';
 	  this.els.close.textContent = 'Close';
-	  this.els.footer.hidden = true;
 	};
 
 	TileView.prototype.expand = function() {
-	  this.els.footer.hidden = false;
-	  this.el.classList.add('expanded');
+	  if (this.expanded) return;
+	  var inner = this.els.inner;
+
+	  return fastdom
+	    .measure(function() {
+	      return inner.getBoundingClientRect();
+	    })
+
+	    .animate(inner, function(rect) {
+	      var translateY = -(rect.top - 50);
+	      debug('animate', rect, translateY);
+	      inner.style.transition = 'transform 300ms';
+	      inner.style.transform = 'translateY(' + translateY + 'px)';
+	    }.bind(this))
+
+	    .then(function() {
+	      this.el.classList.add('expanded');
+	      this.expanded = true;
+	    }.bind(this));
 	};
 
 	TileView.prototype.collapse = function(e) {
 	  if (e) e.stopPropagation();
-	  this.els.footer.hidden = true;
-	  this.el.classList.remove('expanded');
+	  if (!this.expanded) return;
+	  debug('collapsing');
+	  this.expanded = false;
+
+	  var inner = this.els.inner;
+
+	  return fastdom
+	    .animate(inner, function() {
+	      console.log('12222');
+	      inner.style.removeProperty('transform');
+	    })
+
+	    .then(function() {
+	      inner.style.removeProperty('transition');
+	      this.el.classList.remove('expanded');
+	      debug('collapsed');
+	    }.bind(this));
 	};
 
 	/**
@@ -1651,7 +1805,7 @@
 
 		var fastdom = __webpack_require__(1);
 
-		var debug = 1 ? console.log.bind(console, '[sequencer]') : function() {};
+		var debug = 0 ? console.log.bind(console, '[sequencer]') : function() {};
 		var symbol = Symbol();
 
 		/**
@@ -1815,15 +1969,17 @@
 		   * @param  {Function}    task
 		   * @return {Promise}
 		   */
-		  animate: function(el, safety, task) {
+		  animate: function(el, safety, task, ctx) {
 		    debug('animate (1)');
 
-		    // support optional second argument
-		    if (typeof safety == 'function') task = safety, safety = null;
+		    // support optional second argument: `safety`
+		    if (typeof safety == 'function') {
+		    	ctx = task, task = safety, safety = null;
+		    }
 
 		    return this.after([this.interactions], function() {
 		      debug('animate (2)');
-		      var promise = this.task('mutate', task.bind(this, el));
+		      var promise = this.task('mutate', task, ctx);
 		      var result;
 
 		      var complete = promise
@@ -1845,9 +2001,15 @@
 		  task: function(type, fn, ctx) {
 		    var scoped = this.scopeFn(this.scope, fn);
 		    var task = fastdomTask('mutate', scoped, ctx);
-		    return new SequencerPromise(this, task.promise, {
-		      wrapper: this.scopeFn.bind(this, this.scope),
+		    return this.sequencerPromise(task.promise, {
 		      oncancel: function() { fastdom.clear(task.id); }
+		    });
+		  },
+
+		  sequencerPromise: function(promise, options) {
+		    return new SequencerPromise(this, promise, {
+		      wrapper: this.scopeFn.bind(this, this.scope),
+		      oncancel: options && options.oncancel
 		    });
 		  },
 
@@ -1968,7 +2130,8 @@
 		    debug('waiting till after', blockers);
 		    var flattened = [].concat.apply([], blockers);
 		    if (!flattened.length) return done();
-		    return Promise.all(flattened)
+
+		    var promise = Promise.all(flattened)
 		      .then(function() {
 		        return new Promise(function(resolve) { setTimeout(resolve); });
 		      })
@@ -1976,6 +2139,8 @@
 		      .then(function() {
 		        return this.after(blockers, done, scope);
 		      }.bind(this));
+
+		     return this.sequencerPromise(promise);
 		  },
 
 		  SequencerPromise: SequencerPromise
@@ -1994,9 +2159,9 @@
 		  var id;
 		  var promise = new Promise(function(resolve, reject) {
 		    id = fastdom[type](function() {
-		      try { resolve(fn()); }
+		      try { resolve(fn.call(ctx)); }
 		      catch (e) { reject(e); }
-		    }, ctx);
+		    });
 		  });
 
 		  return {
@@ -2213,16 +2378,17 @@
 		      })));
 		  },
 
-		  animate: function(el, safety, task) {
+		  animate: function(el, safety, task, ctx) {
 		    var sequencer = this.sequencer;
 
 		    // el and safety arguments are both optional
-		    if (typeof el == 'number') task = safety, safety = el, el = null;
-		    else if (typeof el == 'function') task = el, safety = el = null;
+		    if (typeof el == 'number') ctx = task, task = safety, safety = el, el = null;
+		    else if (typeof el == 'function') ctx = safety, task = el, safety = el = null;
+		    else if (typeof safety === 'function') ctx = task, task = safety, safety = null;
 
 		    return this.create(this.promise.then(
 		      sequencer.scopeFn(sequencer.scope, function(result) {
-		        return sequencer.animate(el || result, safety, task);
+		        return sequencer.animate(el || result, safety, task.bind(ctx, result));
 		      })));
 		  }
 		};
@@ -2594,7 +2760,7 @@
 
 
 	// module
-	exports.push([module.id, "\n.tile {\n  display: block;\n  margin-bottom: 28px;\n\n  color: inherit;\n  text-decoration: none;\n  list-style: none;\n}\n\n.tile-url {\n  overflow: hidden;\n  margin-bottom: 7px;\n\n  text-align: center;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-weight: normal;\n  font-style: italic;\n  color: #bbb;\n}\n\n.tile > .inner {\n  position: relative;\n\n  overflow: hidden;\n  /*border-radius: 3px;*/\n  box-shadow: 0 1px 2px rgba(0,0,0,0.17);\n  background-color: #fff;\n\n  transition: transform 400ms;\n}\n\n.tile-text {\n  display: flex;\n  padding: 21px;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n\n.tile:first-child .tile-text {\n  border: 0;\n}\n\n.tile-text > * {\n  margin: 0 0 14px;\n}\n\n.tile-text > :last-child {\n  margin: 0;\n}\n\n.tile-title {\n  font-size: 21px;\n  font-weight: lighter;\n  text-align: center;\n  padding: 0 6%;\n}\n\n.tile-desc {\n  width: 100%;\n  max-height: calc(1.35em * 5);\n  overflow: hidden;\n\n  text-align: center;\n  line-height: 1.35em;\n  font-size: 12px;\n  word-break: break-word;\n  color: hsl(0, 0%, 60%);\n}\n\n.tile-footer {\n  display: flex;\n  height: 46px;\n  background: hsl(0, 0%, 74%);\n  font-size: 15px;\n  color: #fff;\n}\n\n.tile-footer[hidden] {\n  display: none;;\n}\n\n.tile-footer > a,\n.tile-footer > button {\n  display: flex;\n  flex: 1;\n  padding: 7px;\n  border: 0;\n  background: none;\n  align-items: center;\n  justify-content: center;\n  color: inherit;\n  text-decoration: none;\n}\n\n.tile-footer > *:not(:first-child) {\n  border-left: solid 1px hsl(0, 0%, 82%);\n}\n", ""]);
+	exports.push([module.id, "\n.tile {\n  display: block;\n  padding: 0 14px;\n\n  color: inherit;\n  text-decoration: none;\n  list-style: none;\n}\n\n/**\n * 1. Fix animation glitch\n */\n\n.tile-url {\n  overflow: hidden;\n  margin-bottom: 7px;\n\n  text-align: center;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-weight: normal;\n  font-style: italic;\n  color: #bbb;\n\n  will-change: transform; /* 1 */\n}\n\n.tile > .inner {\n  position: relative;\n  margin-bottom: 28px;\n\n  box-shadow: 0 1px 2px rgba(0,0,0,0.17);\n  background-color: #fff;\n}\n\n.tile-content {\n  position: relative;\n  z-index: 1;\n  background: #fff;\n}\n\n.tile-title {\n  font-size: 21px;\n  font-weight: lighter;\n  text-align: center;\n  padding: 0 6%;\n}\n\n.tile-desc {\n  width: 100%;\n  max-height: calc(1.35em * 5);\n  overflow: hidden;\n\n  text-align: center;\n  line-height: 1.35em;\n  font-size: 12px;\n  word-break: break-word;\n  color: hsl(0, 0%, 60%);\n}\n\n.tile-collapsed {\n  display: none;\n}\n\n.tile-footer {\n  position: absolute;\n  left: 0;\n  bottom: 0;\n\n  display: flex;\n  width: 100%;\n  height: 46px;\n  background: hsl(0, 0%, 74%);\n  font-size: 15px;\n  color: #fff;\n\n  transition: transform 200ms;\n}\n\n.expanded .tile-footer {\n  transform: translateY(100%);\n}\n\n.tile-footer > a,\n.tile-footer > button {\n  display: flex;\n  flex: 1;\n  padding: 7px;\n  border: 0;\n  outline: 0;\n  background: none;\n  align-items: center;\n  justify-content: center;\n  color: inherit;\n  text-decoration: none;\n}\n\n.tile-footer > *:not(:first-child) {\n  border-left: solid 1px hsl(0, 0%, 82%);\n}\n", ""]);
 
 	// exports
 
@@ -2634,7 +2800,7 @@
 
 
 	// module
-	exports.push([module.id, "\n.tile-website-image {\n  position: relative;\n  padding-bottom: 53.25%;\n  background: #999;\n}\n\n.tile-website-image > .inner {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  width: 100%;\n  height: 100%;\n\n  opacity: 0;\n  transition: opacity 300ms;\n}\n\n.tile-website-image.loaded > .inner {\n  opacity: 1;\n}\n\n.tile-website-image img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n\n.tile-website-main {\n  position: relative;\n\n  display: flex;\n  box-sizing: border-box;\n  min-height: 114px;\n  padding: 21px;\n  padding-left: 114px;\n\n  flex-direction: column;\n  justify-content: center;\n  word-break: break-all;\n}\n\n.tile-website-main > * {\n  margin-top: 16px;\n}\n\n.tile-website-icon {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  display: flex;\n  box-sizing: border-box;\n  width: 114px;\n  height: 114px;\n  margin: 0;\n\n  align-items: center;\n  justify-content: center;\n}\n\n.tile-website-icon > .inner {\n  width: 68px;\n  height: 68px;\n  overflow: hidden;\n  border-radius: 4px;\n  font-family: magnet;\n}\n\n.no-icon .tile-website-icon > .inner::before {\n  content: '\\E078';\n  display: block;\n  margin-top: -2px;\n  font-size: 64px;\n  text-align: center;\n  color: #bbb;\n}\n\n.tile-website-icon img {\n  width: 100%;\n}\n\n.no-icon .tile-website-icon img {\n  display: none;\n}\n\n.tile:first-child .tile-website-text {\n  border: 0;\n}\n\n.tile-website-title {\n  font-size: 23px;\n  line-height: 1.19em;\n  word-break: normal;\n  font-weight: normal;\n  margin-top: 0;\n  margin-bottom: -0.19em;\n  color: #000;\n}\n\n.tile-website-desc {\n  width: 100%;\n  max-height: calc(1.35em * 5);\n  overflow: hidden;\n\n  line-height: 1.45em;\n  font-size: 13px;\n  color: hsl(0, 0%, 50%);\n}\n\n.tile-website-url {\n  display: none;\n  font-style: italic;\n  line-height: 1.35em;\n  color: #bbb;\n  color: #4C92E2;\n}\n\n.expanded .tile-website-url {\n  display: block;\n}\n\n.tile-website-footer {\n  display: flex;\n  height: 46px;\n  background: hsl(0, 0%, 74%);\n  font-size: 17px;\n  font-weight: bold;\n  color: #fff;\n}\n\n.tile-website-footer > a {\n  display: flex;\n  flex: 1;\n  padding: 7px;\n  align-items: center;\n  justify-content: center;\n  color: inherit;\n  text-decoration: none;\n}\n\n.tile-website-footer > a:not(:first-child) {\n  border-left: solid 1px hsl(0, 0%, 82%);\n}\n", ""]);
+	exports.push([module.id, "\n.tile-website-image {\n  position: relative;\n  padding-bottom: 53.25%;\n  background: #999;\n}\n\n.tile-website-image > .inner {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  width: 100%;\n  height: 100%;\n\n  opacity: 0;\n  transition: opacity 300ms;\n}\n\n.tile-website-image.loaded > .inner {\n  opacity: 1;\n}\n\n.tile-website-image img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n\n.tile-website-main {\n  position: relative;\n\n  display: flex;\n  box-sizing: border-box;\n  min-height: 114px;\n  padding: 21px;\n  padding-left: 114px;\n\n  flex-direction: column;\n  justify-content: center;\n  word-break: break-all;\n}\n\n.tile-website-main > * {\n  margin-top: 16px;\n}\n\n.tile-website-icon {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  display: flex;\n  box-sizing: border-box;\n  width: 114px;\n  height: 114px;\n  margin: 0;\n\n  align-items: center;\n  justify-content: center;\n}\n\n.tile-website-icon > .inner {\n  width: 68px;\n  height: 68px;\n  overflow: hidden;\n  border-radius: 4px;\n  font-family: magnet;\n}\n\n.no-icon .tile-website-icon > .inner::before {\n  content: '\\E078';\n  display: block;\n  margin-top: -2px;\n  font-size: 64px;\n  text-align: center;\n  color: #bbb;\n}\n\n.tile-website-icon img {\n  width: 100%;\n}\n\n.no-icon .tile-website-icon img {\n  display: none;\n}\n\n.tile:first-child .tile-website-text {\n  border: 0;\n}\n\n.tile-website-title {\n  font-size: 23px;\n  line-height: 1.19em;\n  word-break: normal;\n  font-weight: normal;\n  margin-top: 0;\n  margin-bottom: -0.19em;\n  color: #000;\n}\n\n.tile-website-desc {\n  width: 100%;\n  max-height: calc(1.35em * 5);\n  overflow: hidden;\n\n  line-height: 1.45em;\n  font-size: 13px;\n  color: hsl(0, 0%, 50%);\n}\n\n.tile-website-url {\n  display: none;\n  font-style: italic;\n  line-height: 1.35em;\n  color: #bbb;\n  color: #4C92E2;\n}\n\n.expanded .tile-website-url {\n  /*display: block;*/\n}\n", ""]);
 
 	// exports
 
@@ -2703,7 +2869,7 @@
 
 
 	// module
-	exports.push([module.id, "\n.tiles {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  box-sizing: border-box;\n  width: 100%;\n  height: 100%;\n  padding: 14px;\n  overflow-y: scroll;\n  overflow-x: hidden;\n\n  /*will-change: transform;*/ /* breaks fullscreen */\n\n  transition:\n    opacity 180ms 130ms,\n    transform 180ms 130ms;\n}\n\n.tiles.hidden {\n  opacity: 0;\n  transform: scale(0.90);\n\n  transition:\n    opacity 180ms,\n    transform 180ms;\n}\n", ""]);
+	exports.push([module.id, "\n.tiles {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  box-sizing: border-box;\n  width: 100%;\n  height: 100%;\n  padding: 14px 0;\n  overflow-y: scroll;\n  overflow-x: hidden;\n\n  /*will-change: transform;*/ /* breaks fullscreen */\n\n  transition:\n    opacity 180ms 130ms,\n    transform 180ms 130ms;\n}\n\n.tiles.hidden {\n  opacity: 0;\n  transform: scale(0.90);\n\n  transition:\n    opacity 180ms,\n    transform 180ms;\n}\n", ""]);
 
 	// exports
 
@@ -3431,35 +3597,44 @@
 	  WebsiteTile.prototype.render.call(this, data, { image: false });
 
 	  var embed = data.embed;
-	  this.els.frame = el('div', 'tile-embed-frame');
+	  this.els.frame = el('div', 'tile-embed-frame', this.els.content);
 	  this.els.screen = el('div', 'tile-embed-screen', this.els.frame);
 
 	  if (data.image) this.addImage(data.image);
 	  else this.addEmbed(embed);
 
-	  this.els.content.insertBefore(this.els.frame, this.els.content.firstChild);
+	  this.els.collapsed.appendChild(this.els.main);
 	  debug('rendered');
 	};
 
 	WebsiteEmbedTile.prototype.expand = function() {
-	  WebsiteTile.prototype.expand.apply(this, arguments);
-	  this.addEmbed(this.data.embed)
+	  var promise = WebsiteTile.prototype.expand.apply(this, arguments);
+	  if (!promise) return;
+
+	  promise
 	    .then(function() {
-	      this.hideImage();
-	      this.els.screen.hidden = true;
+	      return this.addEmbed(this.data.embed);
+	    }.bind(this))
+	    .then(function() {
+	      return this.hideImage();
 	    }.bind(this));
 	};
 
 	WebsiteEmbedTile.prototype.collapse = function() {
-	  WebsiteTile.prototype.collapse.apply(this, arguments);
+	  var promise = WebsiteTile.prototype.collapse.apply(this, arguments);
+	  if (!promise) return;
 
-	  if (this.data.image) {
-	    this.removeEmbed();
-	    this.showImage();
-	  }
+	  promise
+	    .then(function() {
+	      return this.hideLoading();
+	    }.bind(this))
 
-	  this.els.screen.hidden = false;
-	  this.hideLoading();
+	    .then(function() {
+	      if (this.data.image) {
+	        this.removeEmbed();
+	        this.showImage();
+	      }
+	    }.bind(this));
 	};
 
 	WebsiteEmbedTile.prototype.setFrameApect = function() {
@@ -3470,7 +3645,6 @@
 	  this.el.classList.add('aspect-set');
 	  this.aspectSet = true;
 	};
-
 
 	WebsiteEmbedTile.prototype.addImage = function(src) {
 	  debug('add image', src);
@@ -3499,23 +3673,30 @@
 
 	    this.els.embed = el('div', 'tile-embed-embed');
 	    this.els.embed.innerHTML = cleanHtml(embed.html);
-
 	    var iframe = this.els.embed.querySelector('iframe');
+
 	    if (iframe) {
 	      this.setFrameApect();
-	      this.showLoading();
-	      var hasQuery = !!~iframe.src.indexOf('?');
-	      iframe.src += (!hasQuery ? '?' : '&') + 'autoplay=1&rel=0&controls=0&showinfo=0&title=0&portrait=0&badge=0&modestbranding=1&byline=0';
+	      this.showLoading()
+	        .then(function() {
+	          var hasQuery = !!~iframe.src.indexOf('?');
+	          iframe.src += (!hasQuery ? '?' : '&') + 'autoplay=1&rel=0&controls=0&showinfo=0&title=0&portrait=0&badge=0&modestbranding=1&byline=0';
 
-	      iframe.onload = function() {
-	        debug('embedded', embed);
-	        this.el.classList.add('embed-active');
-	        this.hideLoading();
-	        resolve();
-	      }.bind(this);
+	          iframe.onload = function() {
+	            debug('embedded', embed);
+	            this.el.classList.add('embed-active');
+	            this.hideLoading();
+	            resolve();
+	          }.bind(this);
+
+	          fastdom.mutate(function() {
+	            this.els.frame.appendChild(this.els.embed);
+	          }, this);
+	        }.bind(this));
+	    } else {
+	      this.els.frame.appendChild(this.els.embed);
 	    }
 
-	    this.els.frame.appendChild(this.els.embed);
 	    this.embedded = true;
 	  }.bind(this));
 	};
@@ -3529,21 +3710,23 @@
 	};
 
 	WebsiteEmbedTile.prototype.showLoading = function() {
-	  if (this.loading) return;
+	  if (this.loading) return Promise.resolve();
+
 	  this.loading = true;
 	  var spinner = new SpinnerView();
+	  this.els.loading = el('div', 'tile-embed-loading');
 
-	  // fastdom
-	  //   .mutate(function() {
-	      this.els.loading = el('div', 'tile-embed-loading');
+	  return fastdom
+	    .mutate(function() {
 	      this.els.loading.appendChild(spinner.el);
 	      this.els.frame.appendChild(this.els.loading);
-	    //   return this.els.loading;
-	    // }.bind(this))
+	      this.els.loading.style.opacity = 0;
+	      this.els.loading.style.transition = 'opacity 300ms';
+	    }.bind(this))
 
-	    // .animate(function(loading) {
+	    .animate(this.els.loading, 300, function() {
 	      this.els.loading.style.opacity = 1;
-	    // }.bind(this));
+	    }.bind(this));
 	};
 
 	WebsiteEmbedTile.prototype.hideLoading = function() {
@@ -3606,7 +3789,7 @@
 
 
 	// module
-	exports.push([module.id, "\n.tile-embed-frame  {\n  position: relative;\n}\n\n.aspect-set .tile-embed-embed {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n}\n\n.tile-embed-embed table {\n  width: 100%;\n}\n\n.tile-embed-embed tr {\n  padding: 0 7px;\n}\n\n.tile-embed-embed td {\n  padding: 21px 14px;\n  border-top: solid 1px #f2f2f2;\n  text-align: center;\n  font-size: 18px;\n}\n\n.tile-embed-embed tr:first-child td {\n  border-top: 0;\n}\n\n.tile-embed-embed > iframe {\n  position: absolute;\n  left: 0;]\n  top: 0;\n\n  display: block;;\n  width: 100.5%;\n  height: 100.5%;\n  background: #000;\n}\n\n.tile-embed-screen {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 2;\n\n  width: 100%;\n  height: 100%;\n\n  background: rgba(255,255,255,0.05);\n  transition: opacity 200ms;\n}\n\n.tile-embed-screen[hidden] {\n  opacity: 0;\n  pointer-events: none;\n}\n\n.tile-embed-loading {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 2;\n\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n\n  color: rgba(255,255,255,0.6);\n  background: rgba(0,0,0,0.3);\n}\n\n.tile-embed-image {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 1;\n\n  width: 100%;\n  height: 100%;\n}\n\n.tile-embed-image > img {\n  display: block;\n  width: 100.5%;\n  height: 100.5%;\n  object-fit: cover;\n}\n\n.tile-embed .tile-website-main {\n  display: none;\n  border-top: solid 1px #f2f2f2;\n}\n\n.tile-embed.expanded .tile-website-main {\n  display: block;\n}\n", ""]);
+	exports.push([module.id, "\n.tile-embed-frame  {\n  position: relative;\n}\n\n.aspect-set .tile-embed-embed {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n}\n\n.tile-embed-embed table {\n  width: 100%;\n}\n\n.tile-embed-embed tr {\n  padding: 0 7px;\n}\n\n.tile-embed-embed td {\n  padding: 21px 14px;\n  border-top: solid 1px #f2f2f2;\n  text-align: center;\n  font-size: 18px;\n}\n\n.tile-embed-embed tr:first-child td {\n  border-top: 0;\n}\n\n.tile-embed-embed > iframe {\n  position: absolute;\n  left: 0;]\n  top: 0;\n\n  display: block;;\n  width: 100.5%;\n  height: 100.5%;\n  background: #000;\n}\n\n.tile-embed-screen {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 2;\n\n  width: 100%;\n  height: 100%;\n\n  background: rgba(255,255,255,0.05);\n  transition: opacity 200ms;\n}\n\n.expanded .tile-embed-screen {\n  opacity: 0;\n  pointer-events: none;\n}\n\n.tile-embed-loading {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 2;\n\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n\n  color: rgba(255,255,255,0.6);\n  background: rgba(0,0,0,0.3);\n}\n\n.tile-embed-image {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 1;\n\n  width: 100%;\n  height: 100%;\n}\n\n.tile-embed-image > img {\n  display: block;\n  width: 100.5%;\n  height: 100.5%;\n  object-fit: cover;\n}\n\n.tile-embed .tile-website-main {\n  display: none;\n  border-top: solid 1px #f2f2f2;\n}\n\n/*.tile-embed.expanded .tile-website-main {\n  display: block;\n}*/\n", ""]);
 
 	// exports
 

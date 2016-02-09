@@ -1,15 +1,15 @@
 .spinner {
-  margin: 100px auto;
-  width: 50px;
-  height: 40px;
+  width: 55px;
+  height: 44px;
+  margin: 0 auto;
   text-align: center;
-  font-size: 10px;
 }
 
 .spinner > div {
-  background-color: #333;
+  background-color: currentColor;
   height: 100%;
   width: 6px;
+  margin: 1px;
   display: inline-block;
   will-change: transform;
 

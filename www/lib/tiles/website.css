@@ -118,28 +118,5 @@
 }
 
 .expanded .tile-website-url {
-  display: block;
-}
-
-.tile-website-footer {
-  display: flex;
-  height: 46px;
-  background: hsl(0, 0%, 74%);
-  font-size: 17px;
-  font-weight: bold;
-  color: #fff;
-}
-
-.tile-website-footer > a {
-  display: flex;
-  flex: 1;
-  padding: 7px;
-  align-items: center;
-  justify-content: center;
-  color: inherit;
-  text-decoration: none;
-}
-
-.tile-website-footer > a:not(:first-child) {
-  border-left: solid 1px hsl(0, 0%, 82%);
+  /*display: block;*/
 }

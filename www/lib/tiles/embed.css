@@ -56,7 +56,7 @@
   transition: opacity 200ms;
 }
 
-.tile-embed-screen[hidden] {
+.expanded .tile-embed-screen {
   opacity: 0;
   pointer-events: none;
 }
@@ -99,6 +99,6 @@
   border-top: solid 1px #f2f2f2;
 }
 
-.tile-embed.expanded .tile-website-main {
+/*.tile-embed.expanded .tile-website-main {
   display: block;
-}
+}*/

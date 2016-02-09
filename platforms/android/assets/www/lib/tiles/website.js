@@ -31,10 +31,10 @@ function WebsiteTile(data) {
   debug('initialized', data);
 }
 
-WebsiteTile.prototype.render = function(data) {
+WebsiteTile.prototype.render = function(data, options) {
   Tile.prototype.render.apply(this, arguments);
-
-  if (data.image) this.renderImage(data.image);
+  var image = (options && options.image) !== false;
+  if (image && data.image) this.renderImage(data.image);
 
   var main = el('div', 'tile-website-main', this.els.content);
   var icon = el('div', 'tile-website-icon', main);
@@ -48,6 +48,9 @@ WebsiteTile.prototype.render = function(data) {
     var desc = el('p', 'tile-website-desc', main);
     desc.textContent = data.description;
   }
+
+  var url = el('p', 'tile-website-url', main);
+  url.textContent = data.url;
 
   if (!data.icon) {
     this.el.classList.add('no-icon');
