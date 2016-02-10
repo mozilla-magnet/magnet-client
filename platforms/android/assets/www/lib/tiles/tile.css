@@ -1,6 +1,7 @@
 
 .tile {
   display: block;
+  padding: 0 14px;
 
   color: inherit;
   text-decoration: none;
@@ -28,15 +29,17 @@
 .tile > .inner {
   position: relative;
   margin-bottom: 28px;
+}
 
+.tile-expanded,
+.tile-collapsed {
+  position: relative;
   box-shadow: 0 1px 2px rgba(0,0,0,0.17);
   background-color: #fff;
 }
 
-.tile-content {
-  position: relative;
+.tile-expanded {
   z-index: 1;
-  background: #fff;
 }
 
 .tile-title {
@@ -58,6 +61,15 @@
   color: hsl(0, 0%, 60%);
 }
 
+.tile-collapsed {
+  display: none;
+  transform: translateY(-100%);
+}
+
+.expanded .tile-collapsed {
+  display: block;
+}
+
 .tile-footer {
   position: absolute;
   left: 0;
@@ -70,7 +82,7 @@
   font-size: 15px;
   color: #fff;
 
-  transition: transform 250ms linear;
+  transition: transform 200ms;
 }
 
 .expanded .tile-footer {
@@ -83,6 +95,7 @@
   flex: 1;
   padding: 7px;
   border: 0;
+  outline: 0;
   background: none;
   align-items: center;
   justify-content: center;

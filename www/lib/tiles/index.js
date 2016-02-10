@@ -76,23 +76,26 @@ TilesView.prototype = {
         measurements = this.measurements = {
           scrollTop: tile.el.offsetTop,
           translateY: -(top - 50),
-          afterTranslateY: Math.max(tilesHeight - (rect(after).top - 50), 0),
           previousScrollTop: this.el.scrollTop,
           tileHeight: tilesHeight
         };
+
+        if (after) {
+          measurements.afterTranslateY = tilesHeight - (rect(after).top - 50);
+          measurements.afterTranslateY = Math.max(measurements.afterTranslateY, 0);
+        }
       }, this)
 
-      .animate(tile.el, function() {
+      .animate(function() {
         debug('animate', measurements);
         var translateY = measurements.translateY;
         style([tile.el, before, after], { transition: 'transform 300ms' });
         style([tile.el, before], { transform: 'translateY(' + translateY + 'px)' });
         style(after, { transform: 'translateY(' + measurements.afterTranslateY + 'px)' });
-
+        return tile.el;
       }.bind(this))
 
       .mutate(function() {
-        this.el.scrollTop = measurements.scrollTop;
         style(this.el, { overflow: 'hidden' });
 
         style(tile.el, {
@@ -105,17 +108,19 @@ TilesView.prototype = {
           transition: '',
           transform: '',
         });
+
+        this.el.scrollTop = measurements.scrollTop;
+        tile.el.classList.add('expanded');
       }.bind(this))
 
-      .animate(this.el, 200, function() {
-        tile.el.classList.add('expanded');
-      }.bind(this));
+      .then(function() {
+        return tile.expand().then(function(){});
+      });
   },
 
   collapse: function() {
     if (!this.expanded) return Promise.resolve();
     var tile = this.expanded;
-    // if (this.expanded !== tile) return Promise.resolve();
     delete this.expanded;
 
     debug('collapsing tile', tile);
@@ -125,9 +130,9 @@ TilesView.prototype = {
     var measurements = this.measurements;
 
     return fastdom
-      // .animate(this.el, 200, function() {
-      //   tile.el.classList.remove('expanded');
-      // }.bind(this))
+      .animate(function() {
+        return tile.collapse().then(function(){});
+      })
 
       .mutate(function() {
         debug('animate', measurements);
@@ -143,13 +148,17 @@ TilesView.prototype = {
           overflowY: '',
           height: ''
         });
+
+        tile.el.classList.remove('expanded');
       }.bind(this))
 
-      .animate(tile.el, function() {
+      .animate(function() {
         style([tile.el, before, after], {
           transition: 'transform 300ms',
           transform: ''
         });
+
+        return tile.el;
       })
 
       .mutate(function() {

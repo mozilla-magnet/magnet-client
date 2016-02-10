@@ -29,15 +29,13 @@
 .tile > .inner {
   position: relative;
   margin-bottom: 28px;
-
-  box-shadow: 0 1px 2px rgba(0,0,0,0.17);
-  background-color: #fff;
 }
 
-.tile-content {
+.tile-expanded,
+.tile-collapsed {
   position: relative;
-  z-index: 1;
-  background: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.17);
+  background-color: #fff;
 }
 
 .tile-title {
@@ -61,6 +59,13 @@
 
 .tile-collapsed {
   display: none;
+}
+
+.expanded .tile-collapsed {
+  display: block;
+  transform: translateY(14px);
+  transition-timing-function: ease-in-out;
+  opacity: 0;
 }
 
 .tile-footer {

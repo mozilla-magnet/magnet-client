@@ -29,6 +29,7 @@ TileView.prototype = Object.create(Emitter.prototype);
 function TileView(data) {
   Emitter.call(this);
   this.el = el('li', 'tile');
+  this.el._view = this;
   this.els = {};
   this.data = data;
   this.render(data);
@@ -44,8 +45,8 @@ TileView.prototype.render = function(data) {
   this.els.url = el('h4', 'tile-url', this.el);
   this.els.url.textContent = data.url;
   this.els.inner = el('div', 'inner', this.el);
-  this.els.content = el('div', 'tile-content', this.els.inner);
-  this.els.collapsed = el('div', 'tile-collpased', this.els.inner);
+  this.els.expanded = el('div', 'tile-expanded', this.els.inner);
+  this.els.collapsed = el('div', 'tile-collapsed', this.els.inner);
   this.els.footer = el('footer', 'tile-footer', this.els.hidden);
   this.els.close = el('button', 'tile-close-button', this.els.footer);
   this.els.open = el('a', 'tile-open-button', this.els.footer);
@@ -55,46 +56,11 @@ TileView.prototype.render = function(data) {
 };
 
 TileView.prototype.expand = function() {
-  if (this.expanded) return;
-  var inner = this.els.inner;
-
-  return fastdom
-    .measure(function() {
-      return inner.getBoundingClientRect();
-    })
-
-    .animate(inner, function(rect) {
-      var translateY = -(rect.top - 50);
-      debug('animate', rect, translateY);
-      inner.style.transition = 'transform 300ms';
-      inner.style.transform = 'translateY(' + translateY + 'px)';
-    }.bind(this))
-
-    .then(function() {
-      this.el.classList.add('expanded');
-      this.expanded = true;
-    }.bind(this));
+  return Promise.resolve();
 };
 
 TileView.prototype.collapse = function(e) {
-  if (e) e.stopPropagation();
-  if (!this.expanded) return;
-  debug('collapsing');
-  this.expanded = false;
-
-  var inner = this.els.inner;
-
-  return fastdom
-    .animate(inner, function() {
-      console.log('12222');
-      inner.style.removeProperty('transform');
-    })
-
-    .then(function() {
-      inner.style.removeProperty('transition');
-      this.el.classList.remove('expanded');
-      debug('collapsed');
-    }.bind(this));
+  return Promise.resolve();
 };
 
 /**

@@ -3,7 +3,7 @@
  * Dependencies
  */
 
-var debug = require('../utils/debug')('tile-website-embed', 1);
+var debug = require('../utils/debug')('tile-embed', 1);
 var fastdom = require('fastdom-sequencer');
 var SpinnerView = require('../spinner');
 var WebsiteTile = require('./website');
@@ -31,7 +31,7 @@ WebsiteEmbedTile.prototype.render = function(data) {
   WebsiteTile.prototype.render.call(this, data, { image: false });
 
   var embed = data.embed;
-  this.els.frame = el('div', 'tile-embed-frame', this.els.content);
+  this.els.frame = el('div', 'tile-embed-frame', this.els.expanded);
   this.els.screen = el('div', 'tile-embed-screen', this.els.frame);
 
   if (data.image) this.addImage(data.image);
@@ -42,33 +42,43 @@ WebsiteEmbedTile.prototype.render = function(data) {
 };
 
 WebsiteEmbedTile.prototype.expand = function() {
-  var promise = WebsiteTile.prototype.expand.apply(this, arguments);
-  if (!promise) return;
+  debug('expand');
 
-  promise
+  return fastdom
+    .mutate(function() {
+      this.els.collapsed.style.transition = 'transform 200ms, opacity 200ms';
+    }, this)
+
+    .animate(function() {
+      this.els.collapsed.style.transform = 'translateY(0px)';
+      this.els.collapsed.style.opacity = 1;
+      return this.els.collapsed;
+    }, this)
+
     .then(function() {
       return this.addEmbed(this.data.embed);
     }.bind(this))
+
     .then(function() {
       return this.hideImage();
     }.bind(this));
 };
 
 WebsiteEmbedTile.prototype.collapse = function() {
-  var promise = WebsiteTile.prototype.collapse.apply(this, arguments);
-  if (!promise) return;
-
-  promise
-    .then(function() {
-      return this.hideLoading();
+  return fastdom
+    .mutate(function() {
+      if (this.data.image) {
+        return this.showImage()
+          .then(function() {
+            this.hideLoading();
+            this.removeEmbed();
+          }.bind(this));
+      }
     }.bind(this))
 
-    .then(function() {
-      if (this.data.image) {
-        this.removeEmbed();
-        this.showImage();
-      }
-    }.bind(this));
+    .animate(function() {
+      return this.scrollToTop();
+    }, this);
 };
 
 WebsiteEmbedTile.prototype.setFrameApect = function() {
@@ -89,15 +99,46 @@ WebsiteEmbedTile.prototype.addImage = function(src) {
 };
 
 WebsiteEmbedTile.prototype.hideImage = function() {
-  if (!this.els.image) return;
-  this.els.image.hidden = true;
-  debug('image hidden');
+  if (!this.els.image) return Promise.resolve();
+  debug('hiding image');
+  return fastdom.animate(function() {
+    this.els.image.hidden = true;
+    return this.els.image;
+  }, this);
 };
 
 WebsiteEmbedTile.prototype.showImage = function() {
-  if (!this.els.image) return;
-  this.els.image.hidden = false;
-  debug('image shown');
+  if (!this.els.image) return Promise.resolve();
+  debug('showing image');
+  return fastdom.animate(function() {
+    this.els.image.hidden = false;
+    return this.els.image;
+  }, this);
+};
+
+WebsiteEmbedTile.prototype.scrollToTop = function() {
+  return fastdom
+    .measure(function() {
+      return -this.el.scrollTop;
+    }.bind(this))
+
+    .mutate(function(translateY) {
+      debug('translateY', translateY);
+      this.els.inner.style.transform = 'translateY(' + translateY + 'px)';
+      this.el.scrollTop = 0;
+    }.bind(this)) // fix ctx arg
+
+    .animate(function() {
+      this.els.collapsed.style.transform = '';
+      this.els.collapsed.style.opacity = '';
+      this.els.inner.style.transition = 'transform 300ms';
+      this.els.inner.style.transform = '';
+      return this.els.inner;
+    }, this)
+
+    .then(function() {
+      this.els.inner.style.transition = '';
+    }.bind(this));
 };
 
 WebsiteEmbedTile.prototype.addEmbed = function(embed) {
@@ -155,11 +196,12 @@ WebsiteEmbedTile.prototype.showLoading = function() {
       this.els.loading.appendChild(spinner.el);
       this.els.frame.appendChild(this.els.loading);
       this.els.loading.style.opacity = 0;
-      this.els.loading.style.transition = 'opacity 300ms';
+      this.els.loading.style.transition = 'opacity 600ms 100ms';
     }.bind(this))
 
-    .animate(this.els.loading, 300, function() {
+    .animate(function() {
       this.els.loading.style.opacity = 1;
+      return this.els.loading;
     }.bind(this));
 };
 

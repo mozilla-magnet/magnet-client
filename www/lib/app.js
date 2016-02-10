@@ -63,11 +63,12 @@ App.prototype = {
   },
 
   toggleView: function() {
-    fastdom.animate(this.tiles.el, function() {
+    fastdom.animate(function() {
       this.gridView = !this.gridView;
       this.grid.toggle(this.gridView);
       this.tiles.toggle(!this.gridView);
       this.header.toggleButton(this.gridView);
+      return this.tiles.el;
     }.bind(this));
   },
 

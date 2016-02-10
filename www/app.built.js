@@ -122,11 +122,12 @@
 	  },
 
 	  toggleView: function() {
-	    fastdom.animate(this.tiles.el, function() {
+	    fastdom.animate(function() {
 	      this.gridView = !this.gridView;
 	      this.grid.toggle(this.gridView);
 	      this.tiles.toggle(!this.gridView);
 	      this.header.toggleButton(this.gridView);
+	      return this.tiles.el;
 	    }.bind(this));
 	  },
 
@@ -975,15 +976,18 @@
 
 	  setTimeout(function() {
 	    this.emit('found', 'http://twitter.com/wilsonpage');
-	    // this.emit('found', 'http://twitter.com/mepartoconmigo');
-	    this.emit('found', 'http://taltonmill.co.uk');
-	    // this.emit('found', 'https://play.google.com/store/apps/details?id=com.whatsapp');
+	    this.emit('found', 'http://twitter.com/mepartoconmigo');
+	    this.emit('found', 'http://twitter.com/samuelgiles_');
+	    // this.emit('found', 'http://taltonmill.co.uk');
+	    this.emit('found', 'https://play.google.com/store/apps/details?id=org.mozilla.firefox');
 	    // this.emit('found', 'https://play.google.com/store/apps/details?id=jp.naver.line.android');
 	    // this.emit('found', 'https://vimeo.com/152985022');
-	    this.emit('found', 'https://www.youtube.com/watch?v=kh29_SERH0Y');
-	    this.emit('found', 'https://soundcloud.com/imaginedherbalflows/evolve');
-	    this.emit('found', 'https://play.spotify.com/track/2zMNWC0kbjfgjWpieSURja');
-	    this.emit('found', 'http://wilsonpage.github.io/magnet-tfl-countdown/?eee');
+	    // this.emit('found', 'https://www.youtube.com/watch?v=kh29_SERH0Y');
+	    // this.emit('found', 'https://soundcloud.com/imaginedherbalflows/evolve');
+	    // this.emit('found', 'https://play.spotify.com/track/2zMNWC0kbjfgjWpieSURja');
+	    // this.emit('found', 'http://wilsonpage.github.io/magnet-dummy-apps/tfl-countdown');
+	    this.emit('found', 'http://wilsonpage.github.io/magnet-dummy-apps/sonos');
+	    this.emit('found', 'http://wilsonpage.github.io/magnet-dummy-apps/ics');
 	    // this.emit('found', 'https://calendar.google.com/calendar/ical/mozilla.com_2d3638353137343333373332%40resource.calendar.google.com/public/basic.ics');
 	    // this.emit('found', 'http://www.bbc.co.uk/news/business-35416812');
 	    // this.emit('found', 'https://twitter.com/wheresrhys/status/692416923720650754');
@@ -1170,7 +1174,7 @@
 	 */
 	var debug = 1 ? console.log.bind(console, '[metadata]') : function() {};
 
-	var endpoint = 'http://10.246.27.23:3030'; // endpoint of metadata service
+	var endpoint = 'http://192.168.0.5:3030'; // endpoint of metadata service
 
 	function Metadata() {
 	  this.batch = [];
@@ -1435,23 +1439,26 @@
 	        measurements = this.measurements = {
 	          scrollTop: tile.el.offsetTop,
 	          translateY: -(top - 50),
-	          afterTranslateY: Math.max(tilesHeight - (rect(after).top - 50), 0),
 	          previousScrollTop: this.el.scrollTop,
 	          tileHeight: tilesHeight
 	        };
+
+	        if (after) {
+	          measurements.afterTranslateY = tilesHeight - (rect(after).top - 50);
+	          measurements.afterTranslateY = Math.max(measurements.afterTranslateY, 0);
+	        }
 	      }, this)
 
-	      .animate(tile.el, function() {
+	      .animate(function() {
 	        debug('animate', measurements);
 	        var translateY = measurements.translateY;
 	        style([tile.el, before, after], { transition: 'transform 300ms' });
 	        style([tile.el, before], { transform: 'translateY(' + translateY + 'px)' });
 	        style(after, { transform: 'translateY(' + measurements.afterTranslateY + 'px)' });
-
+	        return tile.el;
 	      }.bind(this))
 
 	      .mutate(function() {
-	        this.el.scrollTop = measurements.scrollTop;
 	        style(this.el, { overflow: 'hidden' });
 
 	        style(tile.el, {
@@ -1464,17 +1471,19 @@
 	          transition: '',
 	          transform: '',
 	        });
+
+	        this.el.scrollTop = measurements.scrollTop;
+	        tile.el.classList.add('expanded');
 	      }.bind(this))
 
-	      .animate(this.el, 200, function() {
-	        tile.el.classList.add('expanded');
-	      }.bind(this));
+	      .then(function() {
+	        return tile.expand().then(function(){});
+	      });
 	  },
 
 	  collapse: function() {
 	    if (!this.expanded) return Promise.resolve();
 	    var tile = this.expanded;
-	    // if (this.expanded !== tile) return Promise.resolve();
 	    delete this.expanded;
 
 	    debug('collapsing tile', tile);
@@ -1484,9 +1493,9 @@
 	    var measurements = this.measurements;
 
 	    return fastdom
-	      // .animate(this.el, 200, function() {
-	      //   tile.el.classList.remove('expanded');
-	      // }.bind(this))
+	      .animate(function() {
+	        return tile.collapse().then(function(){});
+	      })
 
 	      .mutate(function() {
 	        debug('animate', measurements);
@@ -1502,13 +1511,17 @@
 	          overflowY: '',
 	          height: ''
 	        });
+
+	        tile.el.classList.remove('expanded');
 	      }.bind(this))
 
-	      .animate(tile.el, function() {
+	      .animate(function() {
 	        style([tile.el, before, after], {
 	          transition: 'transform 300ms',
 	          transform: ''
 	        });
+
+	        return tile.el;
 	      })
 
 	      .mutate(function() {
@@ -1575,7 +1588,7 @@
 	  var image = (options && options.image) !== false;
 	  if (image && data.image) this.renderImage(data.image);
 
-	  var main = this.els.main = el('div', 'tile-website-main', this.els.content);
+	  var main = this.els.main = el('div', 'tile-website-main', this.els.expanded);
 	  var icon = el('div', 'tile-website-icon', main);
 	  var iconInner = el('div', 'inner', icon);
 	  var title = el('h3', 'tile-website-title', main);
@@ -1662,6 +1675,7 @@
 	function TileView(data) {
 	  Emitter.call(this);
 	  this.el = el('li', 'tile');
+	  this.el._view = this;
 	  this.els = {};
 	  this.data = data;
 	  this.render(data);
@@ -1677,8 +1691,8 @@
 	  this.els.url = el('h4', 'tile-url', this.el);
 	  this.els.url.textContent = data.url;
 	  this.els.inner = el('div', 'inner', this.el);
-	  this.els.content = el('div', 'tile-content', this.els.inner);
-	  this.els.collapsed = el('div', 'tile-collpased', this.els.inner);
+	  this.els.expanded = el('div', 'tile-expanded', this.els.inner);
+	  this.els.collapsed = el('div', 'tile-collapsed', this.els.inner);
 	  this.els.footer = el('footer', 'tile-footer', this.els.hidden);
 	  this.els.close = el('button', 'tile-close-button', this.els.footer);
 	  this.els.open = el('a', 'tile-open-button', this.els.footer);
@@ -1688,46 +1702,11 @@
 	};
 
 	TileView.prototype.expand = function() {
-	  if (this.expanded) return;
-	  var inner = this.els.inner;
-
-	  return fastdom
-	    .measure(function() {
-	      return inner.getBoundingClientRect();
-	    })
-
-	    .animate(inner, function(rect) {
-	      var translateY = -(rect.top - 50);
-	      debug('animate', rect, translateY);
-	      inner.style.transition = 'transform 300ms';
-	      inner.style.transform = 'translateY(' + translateY + 'px)';
-	    }.bind(this))
-
-	    .then(function() {
-	      this.el.classList.add('expanded');
-	      this.expanded = true;
-	    }.bind(this));
+	  return Promise.resolve();
 	};
 
 	TileView.prototype.collapse = function(e) {
-	  if (e) e.stopPropagation();
-	  if (!this.expanded) return;
-	  debug('collapsing');
-	  this.expanded = false;
-
-	  var inner = this.els.inner;
-
-	  return fastdom
-	    .animate(inner, function() {
-	      console.log('12222');
-	      inner.style.removeProperty('transform');
-	    })
-
-	    .then(function() {
-	      inner.style.removeProperty('transition');
-	      this.el.classList.remove('expanded');
-	      debug('collapsed');
-	    }.bind(this));
+	  return Promise.resolve();
 	};
 
 	/**
@@ -1805,7 +1784,7 @@
 
 		var fastdom = __webpack_require__(1);
 
-		var debug = 0 ? console.log.bind(console, '[sequencer]') : function() {};
+		var debug = 1 ? console.log.bind(console, '[sequencer]') : function() {};
 		var symbol = Symbol();
 
 		/**
@@ -1861,7 +1840,7 @@
 		   */
 		  on: function(el, type, task) {
 		    debug('on', el.localName, type);
-		    var scoped = this.scopeFn('interaction', task);
+		    var scoped = this.scopeFn('nested', task);
 		    var data = el[symbol] || (el[symbol] = {
 		      callbacks: {},
 		      pending: {},
@@ -1969,13 +1948,11 @@
 		   * @param  {Function}    task
 		   * @return {Promise}
 		   */
-		  animate: function(el, safety, task, ctx) {
+		  animate: function(safety, task, ctx) {
 		    debug('animate (1)');
 
-		    // support optional second argument: `safety`
-		    if (typeof safety == 'function') {
-		    	ctx = task, task = safety, safety = null;
-		    }
+		    // support optional first argument: `safety`
+		    if (typeof safety == 'function') ctx = task, task = safety, safety = null;
 
 		    return this.after([this.interactions], function() {
 		      debug('animate (2)');
@@ -1983,9 +1960,15 @@
 		      var result;
 
 		      var complete = promise
-		        .then(function(_result) {
-		          result = _result;
-		          return animationend(el || result, safety);
+		        .then(function(el) {
+		          result = el;
+
+		          // if the task returns a
+		          // Promise then use that as
+		          // an indication of completion.
+		          return el instanceof HTMLElement
+		          	? animationend(el, safety)
+		          	: el;
 		        })
 
 		        .then(function() {
@@ -1999,7 +1982,7 @@
 		  },
 
 		  task: function(type, fn, ctx) {
-		    var scoped = this.scopeFn(this.scope, fn);
+		    var scoped = this.scopeFn('nested', fn);
 		    var task = fastdomTask('mutate', scoped, ctx);
 		    return this.sequencerPromise(task.promise, {
 		      oncancel: function() { fastdom.clear(task.id); }
@@ -2126,7 +2109,7 @@
 		   */
 		  after: function(blockers, done, scope) {
 		    scope = scope || this.scope;
-		    if (scope == 'interaction') return done();
+		    if (scope == 'nested') return done();
 		    debug('waiting till after', blockers);
 		    var flattened = [].concat.apply([], blockers);
 		    if (!flattened.length) return done();
@@ -2159,7 +2142,10 @@
 		  var id;
 		  var promise = new Promise(function(resolve, reject) {
 		    id = fastdom[type](function() {
-		      try { resolve(fn.call(ctx)); }
+		      try {
+		      	var result = fn.call(ctx);
+		      	resolve(result);
+		      }
 		      catch (e) { reject(e); }
 		    });
 		  });
@@ -2378,17 +2364,15 @@
 		      })));
 		  },
 
-		  animate: function(el, safety, task, ctx) {
+		  animate: function(safety, task, ctx) {
 		    var sequencer = this.sequencer;
 
 		    // el and safety arguments are both optional
-		    if (typeof el == 'number') ctx = task, task = safety, safety = el, el = null;
-		    else if (typeof el == 'function') ctx = safety, task = el, safety = el = null;
-		    else if (typeof safety === 'function') ctx = task, task = safety, safety = null;
+		    if (typeof safety === 'function') ctx = task, task = safety, safety = null;
 
 		    return this.create(this.promise.then(
 		      sequencer.scopeFn(sequencer.scope, function(result) {
-		        return sequencer.animate(el || result, safety, task.bind(ctx, result));
+		        return sequencer.animate(safety, task.bind(ctx, result), ctx);
 		      })));
 		  }
 		};
@@ -2760,7 +2744,7 @@
 
 
 	// module
-	exports.push([module.id, "\n.tile {\n  display: block;\n  padding: 0 14px;\n\n  color: inherit;\n  text-decoration: none;\n  list-style: none;\n}\n\n/**\n * 1. Fix animation glitch\n */\n\n.tile-url {\n  overflow: hidden;\n  margin-bottom: 7px;\n\n  text-align: center;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-weight: normal;\n  font-style: italic;\n  color: #bbb;\n\n  will-change: transform; /* 1 */\n}\n\n.tile > .inner {\n  position: relative;\n  margin-bottom: 28px;\n\n  box-shadow: 0 1px 2px rgba(0,0,0,0.17);\n  background-color: #fff;\n}\n\n.tile-content {\n  position: relative;\n  z-index: 1;\n  background: #fff;\n}\n\n.tile-title {\n  font-size: 21px;\n  font-weight: lighter;\n  text-align: center;\n  padding: 0 6%;\n}\n\n.tile-desc {\n  width: 100%;\n  max-height: calc(1.35em * 5);\n  overflow: hidden;\n\n  text-align: center;\n  line-height: 1.35em;\n  font-size: 12px;\n  word-break: break-word;\n  color: hsl(0, 0%, 60%);\n}\n\n.tile-collapsed {\n  display: none;\n}\n\n.tile-footer {\n  position: absolute;\n  left: 0;\n  bottom: 0;\n\n  display: flex;\n  width: 100%;\n  height: 46px;\n  background: hsl(0, 0%, 74%);\n  font-size: 15px;\n  color: #fff;\n\n  transition: transform 200ms;\n}\n\n.expanded .tile-footer {\n  transform: translateY(100%);\n}\n\n.tile-footer > a,\n.tile-footer > button {\n  display: flex;\n  flex: 1;\n  padding: 7px;\n  border: 0;\n  outline: 0;\n  background: none;\n  align-items: center;\n  justify-content: center;\n  color: inherit;\n  text-decoration: none;\n}\n\n.tile-footer > *:not(:first-child) {\n  border-left: solid 1px hsl(0, 0%, 82%);\n}\n", ""]);
+	exports.push([module.id, "\n.tile {\n  display: block;\n  padding: 0 14px;\n\n  color: inherit;\n  text-decoration: none;\n  list-style: none;\n}\n\n/**\n * 1. Fix animation glitch\n */\n\n.tile-url {\n  overflow: hidden;\n  margin-bottom: 7px;\n\n  text-align: center;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-weight: normal;\n  font-style: italic;\n  color: #bbb;\n\n  will-change: transform; /* 1 */\n}\n\n.tile > .inner {\n  position: relative;\n  margin-bottom: 28px;\n}\n\n.tile-expanded,\n.tile-collapsed {\n  position: relative;\n  box-shadow: 0 1px 2px rgba(0,0,0,0.17);\n  background-color: #fff;\n}\n\n.tile-title {\n  font-size: 21px;\n  font-weight: lighter;\n  text-align: center;\n  padding: 0 6%;\n}\n\n.tile-desc {\n  width: 100%;\n  max-height: calc(1.35em * 5);\n  overflow: hidden;\n\n  text-align: center;\n  line-height: 1.35em;\n  font-size: 12px;\n  word-break: break-word;\n  color: hsl(0, 0%, 60%);\n}\n\n.tile-collapsed {\n  display: none;\n}\n\n.expanded .tile-collapsed {\n  display: block;\n  transform: translateY(14px);\n  transition-timing-function: ease-in-out;\n  opacity: 0;\n}\n\n.tile-footer {\n  position: absolute;\n  left: 0;\n  bottom: 0;\n\n  display: flex;\n  width: 100%;\n  height: 46px;\n  background: hsl(0, 0%, 74%);\n  font-size: 15px;\n  color: #fff;\n\n  transition: transform 200ms;\n}\n\n.expanded .tile-footer {\n  transform: translateY(100%);\n}\n\n.tile-footer > a,\n.tile-footer > button {\n  display: flex;\n  flex: 1;\n  padding: 7px;\n  border: 0;\n  outline: 0;\n  background: none;\n  align-items: center;\n  justify-content: center;\n  color: inherit;\n  text-decoration: none;\n}\n\n.tile-footer > *:not(:first-child) {\n  border-left: solid 1px hsl(0, 0%, 82%);\n}\n", ""]);
 
 	// exports
 
@@ -2869,7 +2853,7 @@
 
 
 	// module
-	exports.push([module.id, "\n.tiles {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  box-sizing: border-box;\n  width: 100%;\n  height: 100%;\n  padding: 14px 0;\n  overflow-y: scroll;\n  overflow-x: hidden;\n\n  /*will-change: transform;*/ /* breaks fullscreen */\n\n  transition:\n    opacity 180ms 130ms,\n    transform 180ms 130ms;\n}\n\n.tiles.hidden {\n  opacity: 0;\n  transform: scale(0.90);\n\n  transition:\n    opacity 180ms,\n    transform 180ms;\n}\n", ""]);
+	exports.push([module.id, "\n.tiles {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  box-sizing: border-box;\n  width: 100%;\n  height: 100%;\n  padding-top: 14px;\n  overflow-y: scroll;\n  overflow-x: hidden;\n\n  /*will-change: transform;*/ /* breaks fullscreen */\n\n  transition:\n    opacity 180ms 130ms,\n    transform 180ms 130ms;\n}\n\n.tiles.hidden {\n  opacity: 0;\n  transform: scale(0.90);\n\n  transition:\n    opacity 180ms,\n    transform 180ms;\n}\n", ""]);
 
 	// exports
 
@@ -3569,7 +3553,7 @@
 	 * Dependencies
 	 */
 
-	var debug = __webpack_require__(35)('tile-website-embed', 1);
+	var debug = __webpack_require__(35)('tile-embed', 1);
 	var fastdom = __webpack_require__(16);
 	var SpinnerView = __webpack_require__(72);
 	var WebsiteTile = __webpack_require__(14);
@@ -3597,7 +3581,7 @@
 	  WebsiteTile.prototype.render.call(this, data, { image: false });
 
 	  var embed = data.embed;
-	  this.els.frame = el('div', 'tile-embed-frame', this.els.content);
+	  this.els.frame = el('div', 'tile-embed-frame', this.els.expanded);
 	  this.els.screen = el('div', 'tile-embed-screen', this.els.frame);
 
 	  if (data.image) this.addImage(data.image);
@@ -3608,33 +3592,43 @@
 	};
 
 	WebsiteEmbedTile.prototype.expand = function() {
-	  var promise = WebsiteTile.prototype.expand.apply(this, arguments);
-	  if (!promise) return;
+	  debug('expand');
 
-	  promise
+	  return fastdom
+	    .mutate(function() {
+	      this.els.collapsed.style.transition = 'transform 200ms, opacity 200ms';
+	    }, this)
+
+	    .animate(function() {
+	      this.els.collapsed.style.transform = 'translateY(0px)';
+	      this.els.collapsed.style.opacity = 1;
+	      return this.els.collapsed;
+	    }, this)
+
 	    .then(function() {
 	      return this.addEmbed(this.data.embed);
 	    }.bind(this))
+
 	    .then(function() {
 	      return this.hideImage();
 	    }.bind(this));
 	};
 
 	WebsiteEmbedTile.prototype.collapse = function() {
-	  var promise = WebsiteTile.prototype.collapse.apply(this, arguments);
-	  if (!promise) return;
-
-	  promise
-	    .then(function() {
-	      return this.hideLoading();
+	  return fastdom
+	    .mutate(function() {
+	      if (this.data.image) {
+	        return this.showImage()
+	          .then(function() {
+	            this.hideLoading();
+	            this.removeEmbed();
+	          }.bind(this));
+	      }
 	    }.bind(this))
 
-	    .then(function() {
-	      if (this.data.image) {
-	        this.removeEmbed();
-	        this.showImage();
-	      }
-	    }.bind(this));
+	    .animate(function() {
+	      return this.scrollToTop();
+	    }, this);
 	};
 
 	WebsiteEmbedTile.prototype.setFrameApect = function() {
@@ -3655,15 +3649,46 @@
 	};
 
 	WebsiteEmbedTile.prototype.hideImage = function() {
-	  if (!this.els.image) return;
-	  this.els.image.hidden = true;
-	  debug('image hidden');
+	  if (!this.els.image) return Promise.resolve();
+	  debug('hiding image');
+	  return fastdom.animate(function() {
+	    this.els.image.hidden = true;
+	    return this.els.image;
+	  }, this);
 	};
 
 	WebsiteEmbedTile.prototype.showImage = function() {
-	  if (!this.els.image) return;
-	  this.els.image.hidden = false;
-	  debug('image shown');
+	  if (!this.els.image) return Promise.resolve();
+	  debug('showing image');
+	  return fastdom.animate(function() {
+	    this.els.image.hidden = false;
+	    return this.els.image;
+	  }, this);
+	};
+
+	WebsiteEmbedTile.prototype.scrollToTop = function() {
+	  return fastdom
+	    .measure(function() {
+	      return -this.el.scrollTop;
+	    }.bind(this))
+
+	    .mutate(function(translateY) {
+	      debug('translateY', translateY);
+	      this.els.inner.style.transform = 'translateY(' + translateY + 'px)';
+	      this.el.scrollTop = 0;
+	    }.bind(this)) // fix ctx arg
+
+	    .animate(function() {
+	      this.els.collapsed.style.transform = '';
+	      this.els.collapsed.style.opacity = '';
+	      this.els.inner.style.transition = 'transform 300ms';
+	      this.els.inner.style.transform = '';
+	      return this.els.inner;
+	    }, this)
+
+	    .then(function() {
+	      this.els.inner.style.transition = '';
+	    }.bind(this));
 	};
 
 	WebsiteEmbedTile.prototype.addEmbed = function(embed) {
@@ -3721,11 +3746,12 @@
 	      this.els.loading.appendChild(spinner.el);
 	      this.els.frame.appendChild(this.els.loading);
 	      this.els.loading.style.opacity = 0;
-	      this.els.loading.style.transition = 'opacity 300ms';
+	      this.els.loading.style.transition = 'opacity 600ms 100ms';
 	    }.bind(this))
 
-	    .animate(this.els.loading, 300, function() {
+	    .animate(function() {
 	      this.els.loading.style.opacity = 1;
+	      return this.els.loading;
 	    }.bind(this));
 	};
 
@@ -3789,7 +3815,7 @@
 
 
 	// module
-	exports.push([module.id, "\n.tile-embed-frame  {\n  position: relative;\n}\n\n.aspect-set .tile-embed-embed {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n}\n\n.tile-embed-embed table {\n  width: 100%;\n}\n\n.tile-embed-embed tr {\n  padding: 0 7px;\n}\n\n.tile-embed-embed td {\n  padding: 21px 14px;\n  border-top: solid 1px #f2f2f2;\n  text-align: center;\n  font-size: 18px;\n}\n\n.tile-embed-embed tr:first-child td {\n  border-top: 0;\n}\n\n.tile-embed-embed > iframe {\n  position: absolute;\n  left: 0;]\n  top: 0;\n\n  display: block;;\n  width: 100.5%;\n  height: 100.5%;\n  background: #000;\n}\n\n.tile-embed-screen {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 2;\n\n  width: 100%;\n  height: 100%;\n\n  background: rgba(255,255,255,0.05);\n  transition: opacity 200ms;\n}\n\n.expanded .tile-embed-screen {\n  opacity: 0;\n  pointer-events: none;\n}\n\n.tile-embed-loading {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 2;\n\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n\n  color: rgba(255,255,255,0.6);\n  background: rgba(0,0,0,0.3);\n}\n\n.tile-embed-image {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 1;\n\n  width: 100%;\n  height: 100%;\n}\n\n.tile-embed-image > img {\n  display: block;\n  width: 100.5%;\n  height: 100.5%;\n  object-fit: cover;\n}\n\n.tile-embed .tile-website-main {\n  display: none;\n  border-top: solid 1px #f2f2f2;\n}\n\n/*.tile-embed.expanded .tile-website-main {\n  display: block;\n}*/\n", ""]);
+	exports.push([module.id, "\n.tile-embed-frame  {\n  position: relative;\n}\n\n.aspect-set .tile-embed-embed {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n}\n\n.tile-embed-embed table {\n  width: 100%;\n}\n\n.tile-embed-embed tr {\n  padding: 0 7px;\n}\n\n.tile-embed-embed td {\n  padding: 21px 14px;\n  border-top: solid 1px #f2f2f2;\n  text-align: center;\n  font-size: 18px;\n}\n\n.tile-embed-embed tr:first-child td {\n  border-top: 0;\n}\n\n.tile-embed-embed > iframe {\n  position: absolute;\n  left: 0;]\n  top: 0;\n\n  display: block;;\n  width: 100.8%;\n  height: 100.8%;\n  border: 0;\n  background: #000;\n}\n\n.tile-embed-screen {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 2;\n\n  width: 100%;\n  height: 100%;\n\n  background: rgba(255,255,255,0.05);\n  transition: opacity 200ms;\n}\n\n.expanded .tile-embed-screen {\n  opacity: 0;\n  pointer-events: none;\n}\n\n.tile-embed-loading {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 2;\n\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n\n  color: rgba(255,255,255,0.6);\n  background: rgba(0,0,0,0.3);\n}\n\n.tile-embed-image {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 1;\n\n  width: 100%;\n  height: 100%;\n\n  transition: opacity 300ms;\n}\n\n.tile-embed-image[hidden] {\n  display: block;\n  pointer-events: none;\n  opacity: 0;\n}\n\n.tile-embed-image > img {\n  display: block;\n  width: 100.5%;\n  height: 100.5%;\n  object-fit: cover;\n}\n\n.tile-embed .tile-website-main {\n  border-top: solid 1px #f2f2f2;\n}\n\n/*.tile-embed.expanded .tile-website-main {\n  display: block;\n}*/\n", ""]);
 
 	// exports
 

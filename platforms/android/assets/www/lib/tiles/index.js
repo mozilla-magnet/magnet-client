@@ -35,7 +35,7 @@ TilesView.prototype = {
 
     this.tiles[id] = tile;
     tile.el.addEventListener('click', this.onTileClick.bind(this, tile));
-    tile.on('close', this.collapseTile.bind(this, tile));
+    tile.on('close', this.collapse.bind(this, tile));
     this.el.appendChild(tile.el);
   },
 
@@ -57,10 +57,13 @@ TilesView.prototype = {
 
   onTileClick: function(tile, e) {
     debug('tile click');
-    this.expandTile(tile);
+    this.expand(tile);
   },
 
-  expandTile: function(tile) {
+  expand: function(tile) {
+    if (this.expanded) return Promise.resolve();
+    this.expanded = tile;
+
     var before = tile.el.previousElementSibling;
     var after = tile.el.nextElementSibling;
     var measurements;
@@ -79,13 +82,13 @@ TilesView.prototype = {
         };
       }, this)
 
-      .animate(tile.el, function() {
+      .animate(function() {
         debug('animate', measurements);
         var translateY = measurements.translateY;
         style([tile.el, before, after], { transition: 'transform 300ms' });
         style([tile.el, before], { transform: 'translateY(' + translateY + 'px)' });
         style(after, { transform: 'translateY(' + measurements.afterTranslateY + 'px)' });
-
+        return tile.el;
       }.bind(this))
 
       .mutate(function() {
@@ -102,37 +105,37 @@ TilesView.prototype = {
           transition: '',
           transform: '',
         });
+
+        tile.el.classList.add('expanded');
       }.bind(this))
 
-      .animate(this.el, 200, function() {
-        tile.el.classList.add('expanded');
-      }.bind(this));
+      .then(function() {
+        return tile.expand().then(function(){});
+      });
   },
 
-  collapseTile: function(tile) {
-    debug('collapse tile');
+  collapse: function() {
+    if (!this.expanded) return Promise.resolve();
+    var tile = this.expanded;
+    delete this.expanded;
+
+    debug('collapsing tile', tile);
 
     var before = tile.el.previousElementSibling;
     var after = tile.el.nextElementSibling;
     var measurements = this.measurements;
 
     return fastdom
-      .animate(this.el, 200, function() {
-        tile.el.classList.remove('expanded');
-      }.bind(this))
+      .animate(function() {
+        return tile.collapse().then(function(){});
+      })
 
       .mutate(function() {
         debug('animate', measurements);
         var translateY = measurements.translateY;
 
-        style([tile.el, before], {
-          transform: 'translateY(' + translateY + 'px)'
-        });
-
-        style(after, {
-          transform: 'translateY(' + measurements.afterTranslateY + 'px)'
-        });
-
+        style([tile.el, before], { transform: 'translateY(' + translateY + 'px)' });
+        style(after, { transform: 'translateY(' + measurements.afterTranslateY + 'px)' });
         style(this.el, { overflow: '' });
         this.el.scrollTop = measurements.previousScrollTop;
 
@@ -141,13 +144,17 @@ TilesView.prototype = {
           overflowY: '',
           height: ''
         });
+
+        tile.el.classList.remove('expanded');
       }.bind(this))
 
-      .animate(tile.el, function() {
+      .animate(function() {
         style([tile.el, before, after], {
           transition: 'transform 300ms',
           transform: ''
         });
+
+        return tile.el;
       })
 
       .mutate(function() {

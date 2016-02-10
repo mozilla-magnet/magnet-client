@@ -39,7 +39,9 @@ Bluetooth.prototype.start = function() {
     this.emit('found', 'https://www.youtube.com/watch?v=kh29_SERH0Y');
     this.emit('found', 'https://soundcloud.com/imaginedherbalflows/evolve');
     this.emit('found', 'https://play.spotify.com/track/2zMNWC0kbjfgjWpieSURja');
-    this.emit('found', 'http://wilsonpage.github.io/magnet-tfl-countdown/?eee');
+    this.emit('found', 'http://wilsonpage.github.io/magnet-dummy-apps/tfl-countdown');
+    this.emit('found', 'http://wilsonpage.github.io/magnet-dummy-apps/sonos');
+    this.emit('found', 'http://wilsonpage.github.io/magnet-dummy-apps/ics');
     // this.emit('found', 'https://calendar.google.com/calendar/ical/mozilla.com_2d3638353137343333373332%40resource.calendar.google.com/public/basic.ics');
     // this.emit('found', 'http://www.bbc.co.uk/news/business-35416812');
     // this.emit('found', 'https://twitter.com/wheresrhys/status/692416923720650754');
