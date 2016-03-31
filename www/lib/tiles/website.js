@@ -46,7 +46,7 @@ WebsiteTile.prototype.render = function(data, options) {
 
   if (data.description) {
     var desc = el('p', 'tile-website-desc', main);
-    desc.textContent = data.description;
+    desc.innerHTML = data.description;
   }
 
   var url = el('p', 'tile-website-url', main);

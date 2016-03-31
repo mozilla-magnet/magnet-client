@@ -62,14 +62,14 @@
 	 * Dependencies
 	 */
 
-	var debug = __webpack_require__(35)('[App]', 1);
-	var fastdom = __webpack_require__(16);
-	var HeaderView = __webpack_require__(2);
-	var Scanner = __webpack_require__(8);
-	var TilesView = __webpack_require__(13);
-	var GridView = __webpack_require__(44);
+	var debug = __webpack_require__(2)('[App]', 1);
+	var fastdom = __webpack_require__(3);
+	var HeaderView = __webpack_require__(5);
+	var Scanner = __webpack_require__(11);
+	var TilesView = __webpack_require__(16);
+	var GridView = __webpack_require__(31);
 
-	__webpack_require__(64);
+	__webpack_require__(51);
 
 	/**
 	 * Exports
@@ -174,12 +174,1034 @@
 
 /***/ },
 /* 2 */
+/***/ function(module, exports) {
+
+	
+	module.exports = function(name, on) {
+	 return on ? console.log.bind(console, '[' + name + ']') : function() {};
+	};
+
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	(function webpackUniversalModuleDefinition(root, factory) {
+		if(true)
+			module.exports = factory(__webpack_require__(4));
+		else if(typeof define === 'function' && define.amd)
+			define(["fastdom"], factory);
+		else if(typeof exports === 'object')
+			exports["sequencer"] = factory(require("fastdom"));
+		else
+			root["sequencer"] = factory(root["fastdom"]);
+	})(this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
+	return /******/ (function(modules) { // webpackBootstrap
+	/******/ 	// The module cache
+	/******/ 	var installedModules = {};
+
+	/******/ 	// The require function
+	/******/ 	function __webpack_require__(moduleId) {
+
+	/******/ 		// Check if module is in cache
+	/******/ 		if(installedModules[moduleId])
+	/******/ 			return installedModules[moduleId].exports;
+
+	/******/ 		// Create a new module (and put it into the cache)
+	/******/ 		var module = installedModules[moduleId] = {
+	/******/ 			exports: {},
+	/******/ 			id: moduleId,
+	/******/ 			loaded: false
+	/******/ 		};
+
+	/******/ 		// Execute the module function
+	/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+	/******/ 		// Flag the module as loaded
+	/******/ 		module.loaded = true;
+
+	/******/ 		// Return the exports of the module
+	/******/ 		return module.exports;
+	/******/ 	}
+
+
+	/******/ 	// expose the modules object (__webpack_modules__)
+	/******/ 	__webpack_require__.m = modules;
+
+	/******/ 	// expose the module cache
+	/******/ 	__webpack_require__.c = installedModules;
+
+	/******/ 	// __webpack_public_path__
+	/******/ 	__webpack_require__.p = "";
+
+	/******/ 	// Load entry module and return exports
+	/******/ 	return __webpack_require__(0);
+	/******/ })
+	/************************************************************************/
+	/******/ ([
+	/* 0 */
+	/***/ function(module, exports, __webpack_require__) {
+
+
+		/**
+		 * Dependencies
+		 */
+
+		var fastdom = __webpack_require__(1);
+
+		/**
+		 * Mini logger.
+		 *
+		 * @type {Function}
+		 */
+		var debug = 1 ? console.log.bind(console, '[sequencer]') : function() {};
+
+		/**
+		 * Used to store state on Elements.
+		 *
+		 * @type {Symbol}
+		 */
+		var symbol = Symbol();
+
+		/**
+		 * Intialize a new `Sequencer`
+		 *
+		 * @constructor
+		 * @param {FastDom} fastdom
+		 */
+		function Sequencer(fastdom) {
+		  this.fastdom = fastdom;
+		  this.interactions = [];
+		  this.animations = [];
+		  this.scope = null;
+		}
+
+
+		Sequencer.prototype = {
+
+		  /**
+		   * Bind a 'protected' callback to an event.
+		   *
+		   * Callbacks are protected from (will delay)
+		   * .measure(), .mutate(), .animate() tasks
+		   * that are scheduled *after* an interaction
+		   * has begun.
+		   *
+		   * An interaction is deemed 'complete' once
+		   * the `Promise` returned from the callback
+		   * resolves. If a Promise is not returned
+		   * the interaction is complete after an
+		   * internal debounce timeout is reached.
+		   *
+		   * Callbacks are run at maximum once a
+		   * frame inside a `fastdom.measure()` task.
+		   *
+		   * @example
+		   *
+		   * sequencer.on('touchstart', e => {
+		   *   return sequencer.animate(element, () => {
+		   *     element.classList.add('grow')
+		   *   });
+		   * })
+		   *
+		   * sequencer.on('touchend', e => {
+		   *   return sequencer.animate(element, () => {
+		   *     element.classList.remove('grow')
+		   *   });
+		   * })
+		   *
+		   * @public
+		   * @param  {HTMLElement} el
+		   * @param  {String} type
+		   * @param  {Function} task
+		   */
+		  on: function(el, type, task) {
+		    debug('on', el.localName, type);
+		    var scoped = this.scopeFn('nested', task);
+		    var data = el[symbol] || (el[symbol] = {
+		      callbacks: {},
+		      pending: {},
+		      interactions: {}
+		    });
+
+		    // only one binding per event type
+		    if (data.callbacks[type]) throw new Error('already listening');
+
+		    data.callbacks[type] = function(e) {
+		      debug('event', type, this.scope);
+		      var interaction = this.createInteraction(el, type);
+		      var pending = data.pending[type];
+
+		      if (pending) this.fastdom.clear(pending);
+
+		      data.pending[type] = this.fastdom.measure(function() {
+		        delete data.pending[type];
+		        interaction.reset(scoped());
+		      });
+		    }.bind(this);
+
+		    // attach the wrapped callback
+		    on(el, type, data.callbacks[type]);
+		  },
+
+		  /**
+		   * Unbind a callback from an event.
+		   *
+		   * If an interaciton is not 'complete'
+		   * unbinding infers completion.
+		   *
+		   * @public
+		   * @param  {HTMLElement} el
+		   * @param  {String} type
+		   * @param  {Function} task
+		   */
+		  off: function(el, type, task) {
+		    var data = el[symbol];
+		    var callback = data.callbacks && data.callbacks[type];
+		    if (!callback) return;
+
+		    var interaction = data.interactions[type];
+		    interaction.resolve();
+
+		    off(el, type, callback);
+		    delete data.callbacks[type];
+		  },
+
+		  /**
+		   * Create an `Interaction` to represent
+		   * a user input and ongoing feedback
+		   * that may be triggered in response.
+		   *
+		   * @param  {HTMLElement} el
+		   * @param  {String} type
+		   * @return {Interaction}
+		   */
+		  createInteraction: function(el, type) {
+		    var interactions = el[symbol].interactions;
+		    var interaction = interactions[type];
+
+		    if (interaction) return interaction;
+		    interaction = new Interaction(type);
+
+		    var complete = interaction.complete
+		      .then(function() {
+		        remove(this.interactions, complete);
+		        delete interactions[type];
+		      }.bind(this));
+
+		    this.interactions.push(complete);
+		    interactions[type] = interaction;
+
+		    debug('created interaction', el.localName, type);
+		    return interaction;
+		  },
+
+		  /**
+		   * Schedule a task that triggers a CSS animation
+		   * or transition on an element.
+		   *
+		   * The returned `Promise` resolves once
+		   * the animation/transition has ended.
+		   *
+		   * Animation tasks are postponed by incomplete:
+		   *   - interactions
+		   *
+		   * IDEA: Perhaps returning the Element would
+		   * be a better way to provide the animation
+		   * target?
+		   *
+		   * @example
+		   *
+		   * sequencer.animate(() => {
+		   *   element.classList.add('slide-in');
+		   *   return element;
+		   * }).then(...)
+		   *
+		   * // with optional safety timeout
+		   * sequencer.animate(400, () => ...)
+		   *
+		   * @public
+		   * @param  {Number}      [safety]
+		   * @param  {Function}    task
+		   * @return {Promise}
+		   */
+		  animate: function(safety, task, ctx) {
+		    debug('animate (1)');
+		    var self = this;
+		    var arg;
+
+		    // support optional first argument: `safety`
+		    switch (typeof safety) {
+		      case 'function': ctx = task, task = safety, safety = null; break;
+		      case 'object':
+		        arg = safety.arg;
+		        ctx = safety.ctx;
+		        task = arg ? safety.task.bind(ctx, arg) : safety.task;
+		        safety = safety.safety;
+		    }
+
+		    return this.after([this.interactions], function() {
+		      debug('animate (2)');
+		      var promise = self.task('mutate', task, ctx);
+		      var result;
+
+		      var complete = promise
+		        .then(function(_result) {
+		          result = _result;
+
+		          // if the task returns a
+		          // Promise then use that as
+		          // an indication of completion.
+		          if (result instanceof HTMLElement) return animationend(result, safety);
+		          else if (arg instanceof HTMLElement) return animationend(arg, safety);
+		          else throw new Error('.animate() must be passed or return a target Element');
+		        })
+
+		        .then(function() {
+		          remove(self.animations, complete);
+		          return result;
+		        });
+
+		      self.animations.push(complete);
+		      return complete;
+		    });
+		  },
+
+		  task: function(type, fn, ctx) {
+		    var scoped = this.scopeFn('nested', fn);
+		    var task = fastdomTask('mutate', scoped, ctx);
+		    return this.promise(task.promise, {
+		      oncancel: function() { fastdom.clear(task.id); }
+		    });
+		  },
+
+		  promise: function(promise, options) {
+		    return new SequencerPromise(this, promise, {
+		      wrapper: this.scopeFn.bind(this, this.scope),
+		      oncancel: options && options.oncancel
+		    });
+		  },
+
+		  /**
+		   * Schedule a task that measures the
+		   * size/position of an element.
+		   *
+		   * Measure tasks are postponed by incomplete:
+		   *   - interactions
+		   *   - animations
+		   *
+		   * @example
+		   *
+		   * sequencer.measure(() => {
+		   *   return element.clientWidth;
+		   * }).then(result => ...)
+		   *
+		   * @public
+		   * @param  {Function} task
+		   * @param  {*}        [ctx]
+		   * @return {Promise}
+		   */
+		  measure: function(task, ctx) {
+		    debug('measure (1)');
+		    return this.after([this.interactions, this.animations], function() {
+		      debug('measure (2)');
+		      return this.task('measure', task, ctx);
+		    }.bind(this));
+		  },
+
+		  /**
+		   * Schedule a task that mutates (changes) the DOM.
+		   *
+		   * Mutation tasks are postponed by incomplete
+		   * interactions or animations.
+		   *
+		   * @example
+		   *
+		   * sequencer.mutate(() => {
+		   *   element.innerHTML = 'foo'
+		   * }).then(...)
+		   *
+		   * @public
+		   * @param  {Function} task
+		   * @param  {*}        [ctx]
+		   * @return {Promise}
+		   */
+		  mutate: function(task, ctx) {
+		    debug('mutate (1)');
+		    return this.after([this.interactions, this.animations], function() {
+		      debug('mutate (2)');
+		      return this.task('mutate', task, ctx);
+		    }.bind(this));
+		  },
+
+		  /**
+		   * Clear a pending task.
+		   *
+		   * @public
+		   * @param  {SequencerPromise} promise
+		   */
+		  clear: function(promise) {
+		    debug('clear');
+		    if (promise.cancel) promise.cancel();
+		  },
+
+		  /**
+		   * 'Scope' a function.
+		   *
+		   * @private
+		   * @param  {Function} fn
+		   * @param  {String}   scope
+		   * @return {Function}
+		   */
+		  scopeFn: function(scope, fn) {
+		    var self = this;
+		    return function() {
+		      var previous = self.scope;
+		      var result;
+		      var error;
+
+		      self.scope = scope;
+		      debug('set scope', self.scope);
+
+		      try { result = fn.apply(this, arguments); }
+		      catch (e) { error = e; }
+
+		      self.scope = previous;
+		      debug('restored scope', self.scope);
+		      if (error) throw error;
+
+		      return result;
+		    };
+		  },
+
+		  /**
+		   * Calls the callback once the given
+		   * 'blockers' lists have resolved.
+		   *
+		   * Onces all promises are resolved we wait
+		   * one turn of the event loop and check
+		   * again, this gives the user chance to
+		   * schedule another task via `.then()`.
+		   *
+		   * For example, when chaining animate() tasks,
+		   * we don't want a queued `.mutate()` task
+		   * to be run between stages.
+		   *
+		   * @private
+		   * @param  {Array}     blockers
+		   * @param  {Function}  done
+		   * @param  {String}    [scope]
+		   * @return {Promise|*}
+		   */
+		  after: function(blockers, done, scope) {
+		    scope = scope || this.scope;
+		    if (scope == 'nested') return done();
+		    debug('waiting till after', blockers);
+		    var flattened = [].concat.apply([], blockers);
+		    if (!flattened.length) return done();
+
+		    var promise = Promise.all(flattened)
+		      .then(function() {
+		        return new Promise(function(resolve) { setTimeout(resolve); });
+		      })
+
+		      .then(function() {
+		        return this.after(blockers, done, scope);
+		      }.bind(this));
+
+		     return this.promise(promise);
+		  },
+
+		  SequencerPromise: SequencerPromise
+		};
+
+		/**
+		 * Create a fastdom task wrapped in
+		 * a Promise.
+		 *
+		 * @param  {FastDom}  fastdom
+		 * @param  {String}   type - 'measure'|'muatate'
+		 * @param  {Function} fn
+		 * @return {Promise}
+		 */
+		function fastdomTask(type, fn, ctx) {
+		  var id;
+		  var promise = new Promise(function(resolve, reject) {
+		    id = fastdom[type](function() {
+		      try {
+		        var result = fn.call(ctx);
+		        resolve(result);
+		      }
+		      catch (e) { reject(e); }
+		    });
+		  });
+
+		  return {
+		    id: id,
+		    promise: promise
+		  };
+		}
+
+		/**
+		 * Represents an interaction that
+		 * can last a period of time.
+		 *
+		 * TODO: Introduce specific paths for 'scroll'
+		 * and 'touchmove' events that listen to
+		 * 'scrollend' amd 'touchend' respectively.
+		 *
+		 * @constructor
+		 * @param {Srting} type
+		 */
+		function Interaction(type) {
+		  this.type = type;
+		  this.defer = new Deferred();
+		  this.complete = this.defer.promise;
+		}
+
+		Interaction.prototype = {
+
+		  /**
+		   * Define when the interaction should
+		   * be deemed 'resolved'.
+		   *
+		   * @example
+		   *
+		   * // each call extends the debounce timer
+		   * interaction.reset();
+		   * interaction.reset();
+		   * interaction.reset();
+		   *
+		   * @example
+		   *
+		   * // no timer is installed, the interaction
+		   * // will resolve once the promise resolves
+		   * interaction.reset(promise)
+		   *
+		   * @private
+		   * @param  {Promise} [promise]
+		   */
+		  reset: function(promise) {
+		    debug('reset interaction');
+		    var self = this;
+
+		    clearTimeout(this.timeout);
+
+		    // redefine the completed promise
+		    this.promise = promise;
+
+		    // if a promise was given then
+		    // we use that to determine when
+		    // the interaction is complete
+		    if (promise && promise.then) {
+		      debug('interaction promise');
+		      return promise.then(done, done);
+		    }
+
+		    function done(result) {
+		      if (self.promise !== promise) return;
+		      self.resolve(result);
+		    }
+
+		    // when no Promise is given we use a
+		    // debounce approach to judge completion
+		    this.timeout = setTimeout(this.resolve.bind(this), 300);
+		  },
+
+		  /**
+		   * Mark the interaction 'complete'.
+		   *
+		   * @param  {*} result
+		   */
+		  resolve: function(result) {
+		    debug('interaction complete');
+		    this.defer.resolve(result);
+		  }
+		};
+
+		/**
+		 * Wraps a `Promise`, providing additional
+		 * functionality and hooks to wrap user
+		 * defined callbacks.
+		 *
+		 * A `SequencerPromise` is a link in a
+		 * chain of async tasks to be completed
+		 * in series.
+		 *
+		 * NOTE: Chained syntax is optional and does
+		 * not prevent users from using a familiar
+		 * Promise syntax.
+		 *
+		 * @example
+		 *
+		 * // before: lots of boilerplate
+		 * sequencer.mutate(...)
+		 *   .then(() => sequencer.measure(...))
+		 *   .then(() => sequencer.animate(...))
+		 *   .then(() => sequencer.animate(...))
+		 *   .then(...)
+		 *
+		 * // after: clean/terse
+		 * sequencer
+		 *   .mutate(...)
+		 *   .measure(...)
+		 *   .animate(...)
+		 *   .animate(...)
+		 *   .then(...)
+		 *
+		 * @example
+		 *
+		 * var li;
+		 *
+		 * sequencer
+		 *   .mutate(() => {
+		 *     li = document.createElement('li');
+		 *     list.appendChild(li);
+		 *     return li;
+		 *   })
+		 *
+		 *   // previous return value can be used
+		 *   // as target by omitting first argument
+		 *   .animate(li => li.classList.add('grow'))
+		 *
+		 *   // or pass target as first param
+		 *   .animate(li, () => li.classList.add('slide'));
+		 *
+		 * @constructor
+		 * @param {Sequencer} sequencer
+		 * @param {Promise} promise
+		 * @param {Object} [options]
+		 * @param {Function} [options.wrapper]
+		 * @param {SequencerPromise} [options.parent]
+		 * @param {Function} [options.oncancel]
+		 */
+		function SequencerPromise(sequencer, promise, options) {
+		  options = options || {};
+		  this.sequencer = sequencer;
+		  this.promise = Promise.resolve(promise);
+		  this.oncancel = options.oncancel;
+		  this.wrapper = options.wrapper;
+		  this.parent = options.parent;
+		  this.canceled = false;
+		  debug('created');
+		}
+
+		SequencerPromise.prototype = {
+		  _wrap: function(callback) {
+		    if (!callback) return;
+		    var self = this;
+		    callback = this.wrapper(callback);
+		    return function(value) {
+		      if (self.canceled) return;
+		      var result = callback(value);
+		      if (result && result.then) self.sibling = result;
+		      return result;
+		    };
+		  },
+
+		  then: function(onsuccess, onerror) {
+		    return this.create(this.promise.then(
+		      this._wrap(onsuccess),
+		      this._wrap(onerror)
+		    ));
+		  },
+
+		  create: function(promise) {
+		    return this.child = new SequencerPromise(this.sequencer, promise, {
+		      parent: this,
+		      wrapper: this.wrapper
+		    });
+		  },
+
+		  catch: function(callback) {
+		    return this.create(this.promise.catch(this._wrap(callback)));
+		  },
+
+		  cancel: function() {
+		    if (this.canceled) return;
+		    this.canceled = true;
+		    if (this.oncancel) this.oncancel();
+		    if (this.parent) this.parent.cancel();
+		    if (this.child) this.child.cancel();
+		    if (this.sibling) this.sibling.cancel();
+		    debug('canceled', this.id);
+		  },
+
+		  measure: function(task, ctx) {
+		    var sequencer = this.sequencer;
+		    return this.then(function(result) {
+		      return sequencer.measure(function() {
+		        return task(result);
+		      }, ctx);
+		    });
+		  },
+
+		  mutate: function(task, ctx) {
+		    var sequencer = this.sequencer;
+		    return this.then(function(result) {
+		      return sequencer.mutate(function() {
+		        return task(result);
+		      }, ctx);
+		    });
+		  },
+
+		  animate: function(safety, task, ctx) {
+		    var sequencer = this.sequencer;
+
+		    // safety argument is optional
+		    if (typeof safety === 'function') ctx = task, task = safety, safety = null;
+
+		    return this.then(function(result) {
+		      return sequencer.animate({
+		        safety: safety,
+		        arg: result,
+		        task: task,
+		        ctx: ctx
+		      });
+		    });
+		  }
+		};
+
+		/**
+		 * Exports
+		 */
+
+		module.exports = new Sequencer(fastdom);
+
+		/**
+		 * Utils
+		 */
+
+		function on(el, name, fn) { el.addEventListener(name, fn); }
+		function off(el, name, fn) { el.removeEventListener(name, fn); }
+
+		/**
+		 * Returns a Promise that resolves
+		 * after the first `animationend` or
+		 * `transitionend` event fires on
+		 * the given Element.
+		 *
+		 * The are cases when this event cannot
+		 * be trusted to fire. Passing a `safety`
+		 * timeout ensures the Promise resolves
+		 * even if the event never fires.
+		 *
+		 * @param  {HTMLElement}  el
+		 * @param  {Number}  [safety]
+		 * @return {Promise}
+		 */
+		function animationend(el, safety) {
+		  debug('animationend', el.localName, el.className);
+		  var defer = new Deferred();
+		  var timeout;
+
+		  on(el, 'animationend', ended);
+		  on(el, 'transitionend', ended);
+
+		  if (safety) timeout = setTimeout(ended, safety);
+
+		  function ended(e) {
+		    if (e && e.target !== el) return;
+		    debug('animation ended', el.className);
+		    off(el, 'animationend', ended);
+		    off(el, 'transitionend', ended);
+		    clearTimeout(timeout);
+		    defer.resolve();
+		  }
+
+		  return defer.promise;
+		}
+
+		/**
+		 * @constructor
+		 */
+		function Deferred() {
+		  this.promise = new Promise(function(resolve, reject) {
+		    this.resolve = resolve;
+		    this.reject = reject;
+		  }.bind(this));
+		}
+
+		/**
+		 * Remove an item from an Array.
+		 *
+		 * @param  {Array} array
+		 * @param  {*} item
+		 * @return {Boolean}
+		 */
+		function remove(array, item) {
+		  var index = array.indexOf(item);
+		  return !!~index && !!array.splice(index, 1);
+		}
+
+
+	/***/ },
+	/* 1 */
+	/***/ function(module, exports) {
+
+		module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
+
+	/***/ }
+	/******/ ])
+	});
+	;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;!(function(win) {
+
+	/**
+	 * FastDom
+	 *
+	 * Eliminates layout thrashing
+	 * by batching DOM read/write
+	 * interactions.
+	 *
+	 * @author Wilson Page <wilsonpage@me.com>
+	 * @author Kornel Lesinski <kornel.lesinski@ft.com>
+	 */
+
+	'use strict';
+
+	/**
+	 * Mini logger
+	 *
+	 * @return {Function}
+	 */
+	var debug = 0 ? console.log.bind(console, '[fastdom]') : function() {};
+
+	/**
+	 * Normalized rAF
+	 *
+	 * @type {Function}
+	 */
+	var raf = win.requestAnimationFrame
+	  || win.webkitRequestAnimationFrame
+	  || win.mozRequestAnimationFrame
+	  || win.msRequestAnimationFrame
+	  || function(cb) { return setTimeout(cb, 16); };
+
+	/**
+	 * Initialize a `FastDom`.
+	 *
+	 * @constructor
+	 */
+	function FastDom() {
+	  var self = this;
+	  self.reads = [];
+	  self.writes = [];
+	  self.raf = raf.bind(win); // test hook
+	  debug('initialized', self);
+	}
+
+	FastDom.prototype = {
+	  constructor: FastDom,
+
+	  /**
+	   * Adds a job to the read batch and
+	   * schedules a new frame if need be.
+	   *
+	   * @param  {Function} fn
+	   * @public
+	   */
+	  measure: function(fn, ctx) {
+	    debug('measure');
+	    var task = { fn: fn, ctx: ctx };
+	    this.reads.push(task);
+	    scheduleFlush(this);
+	    return task;
+	  },
+
+	  /**
+	   * Adds a job to the
+	   * write batch and schedules
+	   * a new frame if need be.
+	   *
+	   * @param  {Function} fn
+	   * @public
+	   */
+	  mutate: function(fn, ctx) {
+	    debug('mutate');
+	    var task = { fn: fn, ctx: ctx };
+	    this.writes.push(task);
+	    scheduleFlush(this);
+	    return task;
+	  },
+
+	  /**
+	   * Clears a scheduled 'read' or 'write' task.
+	   *
+	   * @param {Object} task
+	   * @return {Boolean} success
+	   * @public
+	   */
+	  clear: function(task) {
+	    debug('clear', task);
+	    return remove(this.reads, task) || remove(this.writes, task);
+	  },
+
+	  /**
+	   * Extend this FastDom with some
+	   * custom functionality.
+	   *
+	   * Because fastdom must *always* be a
+	   * singleton, we're actually extending
+	   * the fastdom instance. This means tasks
+	   * scheduled by an extension still enter
+	   * fastdom's global task queue.
+	   *
+	   * The 'super' instance can be accessed
+	   * from `this.fastdom`.
+	   *
+	   * @example
+	   *
+	   * var myFastdom = fastdom.extend({
+	   *   initialize: function() {
+	   *     // runs on creation
+	   *   },
+	   *
+	   *   // override a method
+	   *   measure: function(fn) {
+	   *     // do extra stuff ...
+	   *
+	   *     // then call the original
+	   *     return this.fastdom.measure(fn);
+	   *   },
+	   *
+	   *   ...
+	   * });
+	   *
+	   * @param  {Object} props  properties to mixin
+	   * @return {FastDom}
+	   */
+	  extend: function(props) {
+	    debug('extend', props);
+	    if (typeof props != 'object') throw new Error('expected object');
+
+	    var child = Object.create(this);
+	    mixin(child, props);
+	    child.fastdom = this;
+
+	    // run optional creation hook
+	    if (child.initialize) child.initialize();
+
+	    return child;
+	  },
+
+	  // override this with a function
+	  // to prevent Errors in console
+	  // when tasks throw
+	  catch: null
+	};
+
+	/**
+	 * Schedules a new read/write
+	 * batch if one isn't pending.
+	 *
+	 * @private
+	 */
+	function scheduleFlush(fastdom) {
+	  if (!fastdom.scheduled) {
+	    fastdom.scheduled = true;
+	    fastdom.raf(flush.bind(null, fastdom));
+	    debug('flush scheduled');
+	  }
+	}
+
+	/**
+	 * Runs queued `read` and `write` tasks.
+	 *
+	 * Errors are caught and thrown by default.
+	 * If a `.catch` function has been defined
+	 * it is called instead.
+	 *
+	 * @private
+	 */
+	function flush(fastdom) {
+	  debug('flush');
+
+	  var writes = fastdom.writes;
+	  var reads = fastdom.reads;
+	  var error;
+
+	  try {
+	    debug('flushing reads', reads.length);
+	    runTasks(reads);
+	    debug('flushing writes', writes.length);
+	    runTasks(writes);
+	  } catch (e) { error = e; }
+
+	  fastdom.scheduled = false;
+
+	  // If the batch errored we may still have tasks queued
+	  if (reads.length || writes.length) scheduleFlush(fastdom);
+
+	  if (error) {
+	    debug('task errored', error.message);
+	    if (fastdom.catch) fastdom.catch(error);
+	    else throw error;
+	  }
+	}
+
+	/**
+	 * We run this inside a try catch
+	 * so that if any jobs error, we
+	 * are able to recover and continue
+	 * to flush the batch until it's empty.
+	 *
+	 * @private
+	 */
+	function runTasks(tasks) {
+	  debug('run tasks');
+	  var task; while (task = tasks.shift()) task.fn.call(task.ctx);
+	}
+
+	/**
+	 * Remove an item from an Array.
+	 *
+	 * @param  {Array} array
+	 * @param  {*} item
+	 * @return {Boolean}
+	 */
+	function remove(array, item) {
+	  var index = array.indexOf(item);
+	  return !!~index && !!array.splice(index, 1);
+	}
+
+	/**
+	 * Mixin own properties of source
+	 * object into the target.
+	 *
+	 * @param  {Object} target
+	 * @param  {Object} source
+	 */
+	function mixin(target, source) {
+	  for (var key in source) {
+	    if (source.hasOwnProperty(key)) target[key] = source[key];
+	  }
+	}
+
+	// There should never be more than
+	// one instance of `FastDom` in an app
+	var exports = win.fastdom = (win.fastdom || new FastDom()); // jshint ignore:line
+
+	// Expose to CJS & AMD
+	if (("function")[0] == 'f') !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return exports; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	else if ((typeof module)[0] == 'o') module.exports = exports;
+
+	})(window);
+
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	var Emitter = __webpack_require__(3);
+	var Emitter = __webpack_require__(6);
 
-	__webpack_require__(4);
+	__webpack_require__(7);
 
 	module.exports = Header;
 
@@ -227,7 +1249,7 @@
 	};
 
 /***/ },
-/* 3 */
+/* 6 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -531,16 +1553,16 @@
 
 
 /***/ },
-/* 4 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(5);
+	var content = __webpack_require__(8);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(7)(content, {});
+	var update = __webpack_require__(10)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -557,10 +1579,10 @@
 	}
 
 /***/ },
-/* 5 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(6)();
+	exports = module.exports = __webpack_require__(9)();
 	// imports
 
 
@@ -571,7 +1593,7 @@
 
 
 /***/ },
-/* 6 */
+/* 9 */
 /***/ function(module, exports) {
 
 	/*
@@ -627,7 +1649,7 @@
 
 
 /***/ },
-/* 7 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -881,7 +1903,7 @@
 
 
 /***/ },
-/* 8 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -889,10 +1911,10 @@
 	 * Dependencies
 	 */
 
-	var Bluetooth = __webpack_require__(9);
-	var metadata = __webpack_require__(11);
-	var Emitter = __webpack_require__(3);
-	var MDNS = __webpack_require__(12);
+	var Bluetooth = __webpack_require__(12);
+	var metadata = __webpack_require__(14);
+	var Emitter = __webpack_require__(6);
+	var MDNS = __webpack_require__(15);
 
 	/**
 	 * Exports
@@ -940,7 +1962,7 @@
 
 
 /***/ },
-/* 9 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -948,8 +1970,8 @@
 	 * Dependencies
 	 */
 
-	var eddystone = __webpack_require__(10);
-	var Emitter = __webpack_require__(3);
+	var eddystone = __webpack_require__(13);
+	var Emitter = __webpack_require__(6);
 
 	var debug = 1 ? console.log.bind(console, '[Bluetooth]') : function() {};
 
@@ -972,12 +1994,12 @@
 	}
 
 	Bluetooth.prototype.start = function() {
-	  // this.enable(this.startScan.bind(this));
+	  this.enable(this.startScan.bind(this));
 
-	  setTimeout(function() {
+	  // setTimeout(function() {
 	    this.emit('found', 'http://twitter.com/wilsonpage');
-	    this.emit('found', 'http://twitter.com/mepartoconmigo');
-	    this.emit('found', 'http://twitter.com/samuelgiles_');
+	    // this.emit('found', 'http://twitter.com/mepartoconmigo');
+	    // this.emit('found', 'http://twitter.com/samuelgiles_');
 	    // this.emit('found', 'http://taltonmill.co.uk');
 	    this.emit('found', 'https://play.google.com/store/apps/details?id=org.mozilla.firefox');
 	    // this.emit('found', 'https://play.google.com/store/apps/details?id=jp.naver.line.android');
@@ -986,12 +2008,12 @@
 	    // this.emit('found', 'https://soundcloud.com/imaginedherbalflows/evolve');
 	    // this.emit('found', 'https://play.spotify.com/track/2zMNWC0kbjfgjWpieSURja');
 	    // this.emit('found', 'http://wilsonpage.github.io/magnet-dummy-apps/tfl-countdown');
-	    this.emit('found', 'http://wilsonpage.github.io/magnet-dummy-apps/sonos');
-	    this.emit('found', 'http://wilsonpage.github.io/magnet-dummy-apps/ics');
+	    // this.emit('found', 'http://wilsonpage.github.io/magnet-dummy-apps/sonos');
+	    // this.emit('found', 'http://wilsonpage.github.io/magnet-dummy-apps/ics');
 	    // this.emit('found', 'https://calendar.google.com/calendar/ical/mozilla.com_2d3638353137343333373332%40resource.calendar.google.com/public/basic.ics');
 	    // this.emit('found', 'http://www.bbc.co.uk/news/business-35416812');
 	    // this.emit('found', 'https://twitter.com/wheresrhys/status/692416923720650754');
-	  }.bind(this));
+	  // }.bind(this));
 
 	  debug('started');
 	};
@@ -1072,7 +2094,7 @@
 
 
 /***/ },
-/* 10 */
+/* 13 */
 /***/ function(module, exports) {
 
 	
@@ -1163,7 +2185,7 @@
 
 
 /***/ },
-/* 11 */
+/* 14 */
 /***/ function(module, exports) {
 
 	
@@ -1174,7 +2196,7 @@
 	 */
 	var debug = 1 ? console.log.bind(console, '[metadata]') : function() {};
 
-	var endpoint = 'http://192.168.0.5:3030'; // endpoint of metadata service
+	var endpoint = 'https://pw.ngrok.com'; // endpoint of metadata service
 
 	function Metadata() {
 	  this.batch = [];
@@ -1292,7 +2314,7 @@
 
 
 /***/ },
-/* 12 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -1300,7 +2322,7 @@
 	 * Dependencies
 	 */
 
-	var Emitter = __webpack_require__(3);
+	var Emitter = __webpack_require__(6);
 
 	var debug = 1 ? console.log.bind(console, '[MDNS]') : function() {};
 
@@ -1358,7 +2380,7 @@
 
 
 /***/ },
-/* 13 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -1366,14 +2388,14 @@
 	 * Dependencies
 	 */
 
-	var debug = __webpack_require__(35)('[tiles-view]', 1);
-	var fastdom = __webpack_require__(16);
+	var debug = __webpack_require__(2)('[tiles-view]', 1);
+	var fastdom = __webpack_require__(3);
 	var registry = {
-	  website: __webpack_require__(14),
-	  embed: __webpack_require__(66)
+	  website: __webpack_require__(17),
+	  embed: __webpack_require__(23)
 	};
 
-	__webpack_require__(42);
+	__webpack_require__(29);
 
 	/**
 	 * Exports
@@ -1492,11 +2514,7 @@
 	    var after = tile.el.nextElementSibling;
 	    var measurements = this.measurements;
 
-	    return fastdom
-	      .animate(function() {
-	        return tile.collapse().then(function(){});
-	      })
-
+	    return fastdom.promise(tile.collapse())
 	      .mutate(function() {
 	        debug('animate', measurements);
 	        var translateY = measurements.translateY;
@@ -1547,7 +2565,7 @@
 
 
 /***/ },
-/* 14 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -1555,8 +2573,8 @@
 	 * Dependencies
 	 */
 
-	var Tile = __webpack_require__(15);
-	__webpack_require__(20);
+	var Tile = __webpack_require__(18);
+	__webpack_require__(21);
 
 	/**
 	 * Logger
@@ -1598,7 +2616,7 @@
 
 	  if (data.description) {
 	    var desc = el('p', 'tile-website-desc', main);
-	    desc.textContent = data.description;
+	    desc.innerHTML = data.description;
 	  }
 
 	  var url = el('p', 'tile-website-url', main);
@@ -1641,7 +2659,7 @@
 
 
 /***/ },
-/* 15 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -1649,9 +2667,9 @@
 	 * Dependencies
 	 */
 
-	var fastdom = __webpack_require__(16);
-	var Emitter = __webpack_require__(3);
-	__webpack_require__(18);
+	var fastdom = __webpack_require__(3);
+	var Emitter = __webpack_require__(6);
+	__webpack_require__(19);
 
 	/**
 	 * Logger
@@ -1722,1004 +2740,16 @@
 
 
 /***/ },
-/* 16 */
-/***/ function(module, exports, __webpack_require__) {
-
-	(function webpackUniversalModuleDefinition(root, factory) {
-		if(true)
-			module.exports = factory(__webpack_require__(17));
-		else if(typeof define === 'function' && define.amd)
-			define(["fastdom"], factory);
-		else if(typeof exports === 'object')
-			exports["sequencer"] = factory(require("fastdom"));
-		else
-			root["sequencer"] = factory(root["fastdom"]);
-	})(this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
-	return /******/ (function(modules) { // webpackBootstrap
-	/******/ 	// The module cache
-	/******/ 	var installedModules = {};
-
-	/******/ 	// The require function
-	/******/ 	function __webpack_require__(moduleId) {
-
-	/******/ 		// Check if module is in cache
-	/******/ 		if(installedModules[moduleId])
-	/******/ 			return installedModules[moduleId].exports;
-
-	/******/ 		// Create a new module (and put it into the cache)
-	/******/ 		var module = installedModules[moduleId] = {
-	/******/ 			exports: {},
-	/******/ 			id: moduleId,
-	/******/ 			loaded: false
-	/******/ 		};
-
-	/******/ 		// Execute the module function
-	/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
-	/******/ 		// Flag the module as loaded
-	/******/ 		module.loaded = true;
-
-	/******/ 		// Return the exports of the module
-	/******/ 		return module.exports;
-	/******/ 	}
-
-
-	/******/ 	// expose the modules object (__webpack_modules__)
-	/******/ 	__webpack_require__.m = modules;
-
-	/******/ 	// expose the module cache
-	/******/ 	__webpack_require__.c = installedModules;
-
-	/******/ 	// __webpack_public_path__
-	/******/ 	__webpack_require__.p = "";
-
-	/******/ 	// Load entry module and return exports
-	/******/ 	return __webpack_require__(0);
-	/******/ })
-	/************************************************************************/
-	/******/ ([
-	/* 0 */
-	/***/ function(module, exports, __webpack_require__) {
-
-
-		var fastdom = __webpack_require__(1);
-
-		var debug = 1 ? console.log.bind(console, '[sequencer]') : function() {};
-		var symbol = Symbol();
-
-		/**
-		 * Intialize a new `Sequencer`
-		 *
-		 * @constructor
-		 * @param {FastDom} fastdom
-		 */
-		function Sequencer(fastdom) {
-		  this.fastdom = fastdom;
-		  this.interactions = [];
-		  this.animations = [];
-		  this.scope = null;
-		}
-
-		Sequencer.prototype = {
-
-		  /**
-		   * Bind a 'protected' callback to an event.
-		   *
-		   * Callbacks are protected from (will delay)
-		   * .measure(), .mutate(), .animate() tasks
-		   * that are scheduled *after* an interaction
-		   * has begun.
-		   *
-		   * An interaction is deemed 'complete' once
-		   * the `Promise` returned from the callback
-		   * resolves. If a Promise is not returned
-		   * the interaction is complete after an
-		   * internal debounce timeout is reached.
-		   *
-		   * Callbacks are run at maximum once a
-		   * frame inside a `fastdom.measure()` task.
-		   *
-		   * @example
-		   *
-		   * sequencer.on('touchstart', e => {
-		   *   return sequencer.animate(element, () => {
-		   *     element.classList.add('grow')
-		   *   });
-		   * })
-		   *
-		   * sequencer.on('touchend', e => {
-		   *   return sequencer.animate(element, () => {
-		   *     element.classList.remove('grow')
-		   *   });
-		   * })
-		   *
-		   * @public
-		   * @param  {HTMLElement} el
-		   * @param  {String} type
-		   * @param  {Function} task
-		   */
-		  on: function(el, type, task) {
-		    debug('on', el.localName, type);
-		    var scoped = this.scopeFn('nested', task);
-		    var data = el[symbol] || (el[symbol] = {
-		      callbacks: {},
-		      pending: {},
-		      interactions: {}
-		    });
-
-		    // only one binding per event type
-		    if (data.callbacks[type]) throw new Error('already listening');
-
-		    data.callbacks[type] = function(e) {
-		      debug('event', type, this.scope);
-		      var interaction = this.createInteraction(el, type);
-		      var pending = data.pending[type];
-
-		      if (pending) this.fastdom.clear(pending);
-
-		      data.pending[type] = this.fastdom.measure(function() {
-		        delete data.pending[type];
-		        interaction.reset(scoped());
-		      });
-		    }.bind(this);
-
-		    // attach the wrapped callback
-		    on(el, type, data.callbacks[type]);
-		  },
-
-		  /**
-		   * Unbind a callback from an event.
-		   *
-		   * If an interaciton is not 'complete'
-		   * unbinding infers completion.
-		   *
-		   * @public
-		   * @param  {HTMLElement} el
-		   * @param  {String} type
-		   * @param  {Function} task
-		   */
-		  off: function(el, type, task) {
-		    var data = el[symbol];
-		    var callback = data.callbacks && data.callbacks[type];
-		    if (!callback) return;
-
-		    var interaction = data.interactions[type];
-		    interaction.resolve();
-
-		    off(el, type, callback);
-		    delete data.callbacks[type];
-		  },
-
-		  /**
-		   * Create an `Interaction` to represent
-		   * a user input and ongoing feedback
-		   * that may be triggered in response.
-		   *
-		   * @param  {HTMLElement} el
-		   * @param  {String} type
-		   * @return {Interaction}
-		   */
-		  createInteraction: function(el, type) {
-		    var interactions = el[symbol].interactions;
-		    var interaction = interactions[type];
-
-		    if (interaction) return interaction;
-		    interaction = new Interaction(type);
-
-		    var complete = interaction.complete
-		      .then(function() {
-		        remove(this.interactions, complete);
-		        delete interactions[type];
-		      }.bind(this));
-
-		    this.interactions.push(complete);
-		    interactions[type] = interaction;
-
-		    debug('created interaction', el.localName, type);
-		    return interaction;
-		  },
-
-		  /**
-		   * Schedule a task that triggers a CSS animation
-		   * or transition on an element.
-		   *
-		   * The returned `Promise` resolves once
-		   * the animation/transition has ended.
-		   *
-		   * Animation tasks are postponed by incomplete:
-		   *   - interactions
-		   *
-		   * IDEA: Perhaps returning the Element would
-		   * be a better way to provide the animation
-		   * target?
-		   *
-		   * @example
-		   *
-		   * sequencer.animate(element, () => {
-		   *   return element.classList.add('slide-in');
-		   * }).then(...)
-		   *
-		   * // with optional safety timeout
-		   * sequencer.animate(element, 400, () => ...)
-		   *
-		   * @public
-		   * @param  {HTMLElement} el
-		   * @param  {Number}      [safety]
-		   * @param  {Function}    task
-		   * @return {Promise}
-		   */
-		  animate: function(safety, task, ctx) {
-		    debug('animate (1)');
-
-		    // support optional first argument: `safety`
-		    if (typeof safety == 'function') ctx = task, task = safety, safety = null;
-
-		    return this.after([this.interactions], function() {
-		      debug('animate (2)');
-		      var promise = this.task('mutate', task, ctx);
-		      var result;
-
-		      var complete = promise
-		        .then(function(el) {
-		          result = el;
-
-		          // if the task returns a
-		          // Promise then use that as
-		          // an indication of completion.
-		          return el instanceof HTMLElement
-		          	? animationend(el, safety)
-		          	: el;
-		        })
-
-		        .then(function() {
-		          remove(this.animations, complete);
-		          return result;
-		        }.bind(this));
-
-		      this.animations.push(complete);
-		      return complete;
-		    }.bind(this));
-		  },
-
-		  task: function(type, fn, ctx) {
-		    var scoped = this.scopeFn('nested', fn);
-		    var task = fastdomTask('mutate', scoped, ctx);
-		    return this.sequencerPromise(task.promise, {
-		      oncancel: function() { fastdom.clear(task.id); }
-		    });
-		  },
-
-		  sequencerPromise: function(promise, options) {
-		    return new SequencerPromise(this, promise, {
-		      wrapper: this.scopeFn.bind(this, this.scope),
-		      oncancel: options && options.oncancel
-		    });
-		  },
-
-		  /**
-		   * Schedule a task that measures the
-		   * size/position of an element.
-		   *
-		   * Measure tasks are postponed by incomplete:
-		   *   - interactions
-		   *   - animations
-		   *
-		   * @example
-		   *
-		   * sequencer.measure(() => {
-		   *   return element.clientWidth;
-		   * }).then(result => ...)
-		   *
-		   * @public
-		   * @param  {Function} task
-		   * @param  {*}        [ctx]
-		   * @return {Promise}
-		   */
-		  measure: function(task, ctx) {
-		    debug('measure (1)');
-		    return this.after([this.interactions, this.animations], function() {
-		      debug('measure (2)');
-		      return this.task('measure', task, ctx);
-		    }.bind(this));
-		  },
-
-		  /**
-		   * Schedule a task that mutates (changes) the DOM.
-		   *
-		   * Mutation tasks are postponed by incomplete
-		   * interactions or animations.
-		   *
-		   * @example
-		   *
-		   * sequencer.mutate(() => {
-		   *   element.innerHTML = 'foo'
-		   * }).then(...)
-		   *
-		   * @public
-		   * @param  {Function} task
-		   * @param  {*}        [ctx]
-		   * @return {Promise}
-		   */
-		  mutate: function(task, ctx) {
-		    debug('mutate (1)');
-		    return this.after([this.interactions, this.animations], function() {
-		      debug('mutate (2)');
-		      return this.task('mutate', task, ctx);
-		    }.bind(this));
-		  },
-
-		  /**
-		   * Clear a pending task.
-		   *
-		   * @public
-		   * @param  {SequencerPromise} promise
-		   */
-		  clear: function(promise) {
-		    debug('clear');
-		    if (promise.cancel) promise.cancel();
-		  },
-
-		  /**
-		   * 'Scope' a function.
-		   *
-		   * @private
-		   * @param  {Function} fn
-		   * @param  {String}   scope
-		   * @return {Function}
-		   */
-		  scopeFn: function(scope, fn) {
-		    var self = this;
-		    return function() {
-		      var previous = self.scope;
-		      var result;
-		      var error;
-
-		      self.scope = scope;
-		      debug('set scope', self.scope);
-
-		      try { result = fn.apply(this, arguments); }
-		      catch (e) { error = e; }
-
-		      self.scope = previous;
-		      debug('restored scope', self.scope);
-		      if (error) throw error;
-
-		      return result;
-		    };
-		  },
-
-		  /**
-		   * Calls the callback once the given
-		   * 'blockers' lists have resolved.
-		   *
-		   * Onces all promises are resolved we wait
-		   * one turn of the event loop and check
-		   * again, this gives the user chance to
-		   * schedule another task via `.then()`.
-		   *
-		   * For example, when chaining animate() tasks,
-		   * we don't want a queued `.mutate()` task
-		   * to be run between stages.
-		   *
-		   * @private
-		   * @param  {Array}     blockers
-		   * @param  {Function}  done
-		   * @param  {String}    [scope]
-		   * @return {Promise|*}
-		   */
-		  after: function(blockers, done, scope) {
-		    scope = scope || this.scope;
-		    if (scope == 'nested') return done();
-		    debug('waiting till after', blockers);
-		    var flattened = [].concat.apply([], blockers);
-		    if (!flattened.length) return done();
-
-		    var promise = Promise.all(flattened)
-		      .then(function() {
-		        return new Promise(function(resolve) { setTimeout(resolve); });
-		      })
-
-		      .then(function() {
-		        return this.after(blockers, done, scope);
-		      }.bind(this));
-
-		     return this.sequencerPromise(promise);
-		  },
-
-		  SequencerPromise: SequencerPromise
-		};
-
-		/**
-		 * Create a fastdom task wrapped in
-		 * a Promise.
-		 *
-		 * @param  {FastDom}  fastdom
-		 * @param  {String}   type - 'measure'|'muatate'
-		 * @param  {Function} fn
-		 * @return {Promise}
-		 */
-		function fastdomTask(type, fn, ctx) {
-		  var id;
-		  var promise = new Promise(function(resolve, reject) {
-		    id = fastdom[type](function() {
-		      try {
-		      	var result = fn.call(ctx);
-		      	resolve(result);
-		      }
-		      catch (e) { reject(e); }
-		    });
-		  });
-
-		  return {
-		    id: id,
-		    promise: promise
-		  };
-		}
-
-		/**
-		 * Represents an interaction that
-		 * can last a period of time.
-		 *
-		 * TODO: Introduce specific paths for 'scroll'
-		 * and 'touchmove' events that listen to
-		 * 'scrollend' amd 'touchend' respectively.
-		 *
-		 * @constructor
-		 * @param {Srting} type
-		 */
-		function Interaction(type) {
-		  this.type = type;
-		  this.defer = new Deferred();
-		  this.complete = this.defer.promise;
-		}
-
-		Interaction.prototype = {
-
-		  /**
-		   * Define when the interaction should
-		   * be deemed 'resolved'.
-		   *
-		   * @example
-		   *
-		   * // each call extends the debounce timer
-		   * interaction.reset();
-		   * interaction.reset();
-		   * interaction.reset();
-		   *
-		   * @example
-		   *
-		   * // no timer is installed, the interaction
-		   * // will resolve once the promise resolves
-		   * interaction.reset(promise)
-		   *
-		   * @private
-		   * @param  {Promise} [promise]
-		   */
-		  reset: function(promise) {
-		    debug('reset interaction');
-		    var self = this;
-
-		    clearTimeout(this.timeout);
-
-		    // redefine the completed promise
-		    this.promise = promise;
-
-		    // if a promise was given then
-		    // we use that to determine when
-		    // the interaction is complete
-		    if (promise && promise.then) {
-		      debug('interaction promise');
-		      return promise.then(done, done);
-		    }
-
-		    function done(result) {
-		      if (self.promise !== promise) return;
-		      self.resolve(result);
-		    }
-
-		    // when no Promise is given we use a
-		    // debounce approach to judge completion
-		    this.timeout = setTimeout(this.resolve.bind(this), 300);
-		  },
-
-		  /**
-		   * Mark the interaction 'complete'.
-		   *
-		   * @param  {*} result
-		   */
-		  resolve: function(result) {
-		    debug('interaction complete');
-		    this.defer.resolve(result);
-		  }
-		};
-
-		var id = 0;
-
-		/**
-		 * Wraps a `Promise`, providing additional
-		 * functionality and hooks to wrap user
-		 * defined callbacks.
-		 *
-		 * A `SequencerPromise` is a link in a
-		 * chain of async tasks to be completed
-		 * in series.
-		 *
-		 * NOTE: Chained syntax is optional and does
-		 * not prevent users from using a familiar
-		 * Promise syntax.
-		 *
-		 * @example
-		 *
-		 * // before: lots of boilerplate
-		 * sequencer.mutate(...)
-		 *   .then(() => sequencer.measure(...))
-		 *   .then(() => sequencer.animate(...))
-		 *   .then(() => sequencer.animate(...))
-		 *   .then(...)
-		 *
-		 * // after: clean/terse
-		 * sequencer
-		 *   .mutate(...)
-		 *   .measure(...)
-		 *   .animate(...)
-		 *   .animate(...)
-		 *   .then(...)
-		 *
-		 * @example
-		 *
-		 * var li;
-		 *
-		 * sequencer
-		 *   .mutate(() => {
-		 *     li = document.createElement('li');
-		 *     list.appendChild(li);
-		 *     return li;
-		 *   })
-		 *
-		 *   // previous return value can be used
-		 *   // as target by omitting first argument
-		 *   .animate(li => li.classList.add('grow'))
-		 *
-		 *   // or pass target as first param
-		 *   .animate(li, () => li.classList.add('slide'));
-		 *
-		 * @constructor
-		 * @param {Sequencer} sequencer
-		 * @param {Promise} promise
-		 * @param {Object} [options]
-		 * @param {Function} [options.wrapper]
-		 * @param {SequencerPromise} [options.parent]
-		 * @param {Function} [options.oncancel]
-		 */
-		function SequencerPromise(sequencer, promise, options) {
-		  options = options || {};
-		  this.sequencer = sequencer;
-		  this.promise = Promise.resolve(promise);
-		  this.oncancel = options.oncancel;
-		  this.parent = options.parent;
-		  this.wrapper = options.wrapper;
-		  this.canceled = false;
-		  this.id = ++id;
-		  debug('created', this.id);
-		}
-
-		SequencerPromise.prototype = {
-		  _wrap: function(callback) {
-		    if (!callback) return;
-		    var self = this;
-		    callback = this.wrapper(callback);
-		    return function(value) {
-		      if (self.canceled) return;
-		      var result = callback(value);
-		      if (result && result.then) self.sibling = result;
-		      return result;
-		    };
-		  },
-
-		  then: function(onsuccess, onerror) {
-		    return this.create(this.promise.then(
-		      this._wrap(onsuccess),
-		      this._wrap(onerror)
-		    ));
-		  },
-
-		  create: function(promise) {
-		    return this.child = new SequencerPromise(this.sequencer, promise, {
-		      parent: this,
-		      wrapper: this.wrapper
-		    });
-		  },
-
-		  catch: function(callback) {
-		    return this.create(this.promise.catch(this._wrap(callback)));
-		  },
-
-		  cancel: function() {
-		    if (this.canceled) return;
-		    this.canceled = true;
-		    if (this.oncancel) this.oncancel();
-		    if (this.parent) this.parent.cancel();
-		    if (this.child) this.child.cancel();
-		    if (this.sibling) this.sibling.cancel();
-		    debug('canceled', this.id);
-		  },
-
-		  measure: function(task, ctx) {
-		    var sequencer = this.sequencer;
-		    return this.create(this.promise.then(
-		      sequencer.scopeFn(sequencer.scope, function(result) {
-		        return sequencer.measure(function() {
-		          return task(result);
-		        }, ctx);
-		      })));
-		  },
-
-		  mutate: function(task, ctx) {
-		    var sequencer = this.sequencer;
-		    return this.create(this.promise.then(
-		      sequencer.scopeFn(sequencer.scope, function(result) {
-		        return sequencer.mutate(function() {
-		          return task(result);
-		        }, ctx);
-		      })));
-		  },
-
-		  animate: function(safety, task, ctx) {
-		    var sequencer = this.sequencer;
-
-		    // el and safety arguments are both optional
-		    if (typeof safety === 'function') ctx = task, task = safety, safety = null;
-
-		    return this.create(this.promise.then(
-		      sequencer.scopeFn(sequencer.scope, function(result) {
-		        return sequencer.animate(safety, task.bind(ctx, result), ctx);
-		      })));
-		  }
-		};
-
-		/**
-		 * Exports
-		 */
-
-		module.exports = new Sequencer(fastdom);
-
-		/**
-		 * Utils
-		 */
-
-		function on(el, name, fn) { el.addEventListener(name, fn); }
-		function off(el, name, fn) { el.removeEventListener(name, fn); }
-
-		/**
-		 * Returns a Promise that resolves
-		 * after the first `animationend` or
-		 * `transitionend` event fires on
-		 * the given Element.
-		 *
-		 * The are cases when this event cannot
-		 * be trusted to fire. Passing a `safety`
-		 * timeout ensures the Promise resolves
-		 * even if the event never fires.
-		 *
-		 * @param  {HTMLElement}  el
-		 * @param  {Number}  [safety]
-		 * @return {Promise}
-		 */
-		function animationend(el, safety) {
-		  debug('animationend', el.localName, el.className);
-		  var defer = new Deferred();
-		  var timeout;
-
-		  on(el, 'animationend', ended);
-		  on(el, 'transitionend', ended);
-
-		  if (safety) timeout = setTimeout(ended, safety);
-
-		  function ended(e) {
-		    if (e && e.target !== el) return;
-		    debug('animation ended', el.className);
-		    off(el, 'animationend', ended);
-		    off(el, 'transitionend', ended);
-		    clearTimeout(timeout);
-		    defer.resolve();
-		  }
-
-		  return defer.promise;
-		}
-
-		/**
-		 * @constructor
-		 */
-		function Deferred() {
-		  this.promise = new Promise(function(resolve, reject) {
-		    this.resolve = resolve;
-		    this.reject = reject;
-		  }.bind(this));
-		}
-
-		/**
-		 * Remove an item from an Array.
-		 *
-		 * @param  {Array} array
-		 * @param  {*} item
-		 * @return {Boolean}
-		 */
-		function remove(array, item) {
-		  var index = array.indexOf(item);
-		  return !!~index && !!array.splice(index, 1);
-		}
-
-
-	/***/ },
-	/* 1 */
-	/***/ function(module, exports) {
-
-		module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
-
-	/***/ }
-	/******/ ])
-	});
-	;
-
-/***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;!(function(win) {
-
-	/**
-	 * FastDom
-	 *
-	 * Eliminates layout thrashing
-	 * by batching DOM read/write
-	 * interactions.
-	 *
-	 * @author Wilson Page <wilsonpage@me.com>
-	 * @author Kornel Lesinski <kornel.lesinski@ft.com>
-	 */
-
-	'use strict';
-
-	/**
-	 * Mini logger
-	 *
-	 * @return {Function}
-	 */
-	var debug = 0 ? console.log.bind(console, '[fastdom]') : function() {};
-
-	/**
-	 * Normalized rAF
-	 *
-	 * @type {Function}
-	 */
-	var raf = win.requestAnimationFrame
-	  || win.webkitRequestAnimationFrame
-	  || win.mozRequestAnimationFrame
-	  || win.msRequestAnimationFrame
-	  || function(cb) { return setTimeout(cb, 16); };
-
-	/**
-	 * Initialize a `FastDom`.
-	 *
-	 * @constructor
-	 */
-	function FastDom() {
-	  var self = this;
-	  self.reads = [];
-	  self.writes = [];
-	  self.raf = raf.bind(win); // test hook
-	  debug('initialized', self);
-	}
-
-	FastDom.prototype = {
-	  constructor: FastDom,
-
-	  /**
-	   * Adds a job to the read batch and
-	   * schedules a new frame if need be.
-	   *
-	   * @param  {Function} fn
-	   * @public
-	   */
-	  measure: function(fn, ctx) {
-	    debug('measure');
-	    var task = { fn: fn, ctx: ctx };
-	    this.reads.push(task);
-	    scheduleFlush(this);
-	    return task;
-	  },
-
-	  /**
-	   * Adds a job to the
-	   * write batch and schedules
-	   * a new frame if need be.
-	   *
-	   * @param  {Function} fn
-	   * @public
-	   */
-	  mutate: function(fn, ctx) {
-	    debug('mutate');
-	    var task = { fn: fn, ctx: ctx };
-	    this.writes.push(task);
-	    scheduleFlush(this);
-	    return task;
-	  },
-
-	  /**
-	   * Clears a scheduled 'read' or 'write' task.
-	   *
-	   * @param {Object} task
-	   * @return {Boolean} success
-	   * @public
-	   */
-	  clear: function(task) {
-	    debug('clear', task);
-	    return remove(this.reads, task) || remove(this.writes, task);
-	  },
-
-	  /**
-	   * Extend this FastDom with some
-	   * custom functionality.
-	   *
-	   * Because fastdom must *always* be a
-	   * singleton, we're actually extending
-	   * the fastdom instance. This means tasks
-	   * scheduled by an extension still enter
-	   * fastdom's global task queue.
-	   *
-	   * The 'super' instance can be accessed
-	   * from `this.fastdom`.
-	   *
-	   * @example
-	   *
-	   * var myFastdom = fastdom.extend({
-	   *   initialize: function() {
-	   *     // runs on creation
-	   *   },
-	   *
-	   *   // override a method
-	   *   measure: function(fn) {
-	   *     // do extra stuff ...
-	   *
-	   *     // then call the original
-	   *     return this.fastdom.measure(fn);
-	   *   },
-	   *
-	   *   ...
-	   * });
-	   *
-	   * @param  {Object} props  properties to mixin
-	   * @return {FastDom}
-	   */
-	  extend: function(props) {
-	    debug('extend', props);
-	    if (typeof props != 'object') throw new Error('expected object');
-
-	    var child = Object.create(this);
-	    mixin(child, props);
-	    child.fastdom = this;
-
-	    // run optional creation hook
-	    if (child.initialize) child.initialize();
-
-	    return child;
-	  },
-
-	  // override this with a function
-	  // to prevent Errors in console
-	  // when tasks throw
-	  catch: null
-	};
-
-	/**
-	 * Schedules a new read/write
-	 * batch if one isn't pending.
-	 *
-	 * @private
-	 */
-	function scheduleFlush(fastdom) {
-	  if (!fastdom.scheduled) {
-	    fastdom.scheduled = true;
-	    fastdom.raf(flush.bind(null, fastdom));
-	    debug('flush scheduled');
-	  }
-	}
-
-	/**
-	 * Runs queued `read` and `write` tasks.
-	 *
-	 * Errors are caught and thrown by default.
-	 * If a `.catch` function has been defined
-	 * it is called instead.
-	 *
-	 * @private
-	 */
-	function flush(fastdom) {
-	  debug('flush');
-
-	  var writes = fastdom.writes;
-	  var reads = fastdom.reads;
-	  var error;
-
-	  try {
-	    debug('flushing reads', reads.length);
-	    runTasks(reads);
-	    debug('flushing writes', writes.length);
-	    runTasks(writes);
-	  } catch (e) { error = e; }
-
-	  fastdom.scheduled = false;
-
-	  // If the batch errored we may still have tasks queued
-	  if (reads.length || writes.length) scheduleFlush(fastdom);
-
-	  if (error) {
-	    debug('task errored', error.message);
-	    if (fastdom.catch) fastdom.catch(error);
-	    else throw error;
-	  }
-	}
-
-	/**
-	 * We run this inside a try catch
-	 * so that if any jobs error, we
-	 * are able to recover and continue
-	 * to flush the batch until it's empty.
-	 *
-	 * @private
-	 */
-	function runTasks(tasks) {
-	  debug('run tasks');
-	  var task; while (task = tasks.shift()) task.fn.call(task.ctx);
-	}
-
-	/**
-	 * Remove an item from an Array.
-	 *
-	 * @param  {Array} array
-	 * @param  {*} item
-	 * @return {Boolean}
-	 */
-	function remove(array, item) {
-	  var index = array.indexOf(item);
-	  return !!~index && !!array.splice(index, 1);
-	}
-
-	/**
-	 * Mixin own properties of source
-	 * object into the target.
-	 *
-	 * @param  {Object} target
-	 * @param  {Object} source
-	 */
-	function mixin(target, source) {
-	  for (var key in source) {
-	    if (source.hasOwnProperty(key)) target[key] = source[key];
-	  }
-	}
-
-	// There should never be more than
-	// one instance of `FastDom` in an app
-	var exports = win.fastdom = (win.fastdom || new FastDom()); // jshint ignore:line
-
-	// Expose to CJS & AMD
-	if (("function")[0] == 'f') !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return exports; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	else if ((typeof module)[0] == 'o') module.exports = exports;
-
-	})(window);
-
-
-/***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(19);
+	var content = __webpack_require__(20);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(7)(content, {});
+	var update = __webpack_require__(10)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -2736,10 +2766,10 @@
 	}
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(6)();
+	exports = module.exports = __webpack_require__(9)();
 	// imports
 
 
@@ -2750,16 +2780,16 @@
 
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(21);
+	var content = __webpack_require__(22);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(7)(content, {});
+	var update = __webpack_require__(10)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -2776,10 +2806,10 @@
 	}
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(6)();
+	exports = module.exports = __webpack_require__(9)();
 	// imports
 
 
@@ -2790,76 +2820,7 @@
 
 
 /***/ },
-/* 22 */,
-/* 23 */,
-/* 24 */,
-/* 25 */,
-/* 26 */,
-/* 27 */,
-/* 28 */,
-/* 29 */,
-/* 30 */,
-/* 31 */,
-/* 32 */,
-/* 33 */,
-/* 34 */,
-/* 35 */
-/***/ function(module, exports) {
-
-	
-	module.exports = function(name, on) {
-	 return on ? console.log.bind(console, '[' + name + ']') : function() {};
-	};
-
-
-/***/ },
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */,
-/* 41 */,
-/* 42 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(43);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(7)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./tiles.css", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./tiles.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(6)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "\n.tiles {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  box-sizing: border-box;\n  width: 100%;\n  height: 100%;\n  padding-top: 14px;\n  overflow-y: scroll;\n  overflow-x: hidden;\n\n  /*will-change: transform;*/ /* breaks fullscreen */\n\n  transition:\n    opacity 180ms 130ms,\n    transform 180ms 130ms;\n}\n\n.tiles.hidden {\n  opacity: 0;\n  transform: scale(0.90);\n\n  transition:\n    opacity 180ms,\n    transform 180ms;\n}\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 44 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -2867,697 +2828,11 @@
 	 * Dependencies
 	 */
 
-	__webpack_require__(45);
-
-	var registry = {
-	  website: __webpack_require__(47),
-	  profile: __webpack_require__(53),
-	  image: __webpack_require__(59),
-	  video: __webpack_require__(60),
-	  audio: __webpack_require__(63)
-	};
-
-	/**
-	 * Logger
-	 *
-	 * @return {Function}
-	 */
-	var debug = 0 ? console.log.bind(console, '[grid-view]') : function() {};
-
-	/**
-	 * Exports
-	 */
-
-	module.exports = GridView;
-
-	function GridView() {
-	  this.el = document.createElement('div');
-	  this.el.className = 'grid';
-	  this.icons = {};
-	  this.els = {};
-	  this.render();
-	}
-
-	GridView.prototype = {
-	  render: function() {
-	    this.els.inner = document.createElement('div');
-	    this.els.inner.className = 'inner';
-	    this.el.appendChild(this.els.inner);
-	  },
-
-	  add: function(id, data) {
-	    debug('add', id, data);
-
-	    if (!data) return;
-	    if (this.icons[id]) return debug('already exists');
-
-	    var Icon = registry[data.type] || registry.website;
-	    var icon = new Icon(data);
-
-	    this.icons[id] = icon;
-	    this.els.inner.appendChild(icon.el);
-	  },
-
-	  toggle: function(value) {
-	    if (value) this.el.classList.remove('hidden');
-	    else this.el.classList.add('hidden');
-	  },
-
-	  remove: function(id) {
-	    debug('remove', id);
-	    var tile = this.tiles[id];
-	    if (tile) tile.remove();
-	  },
-
-	  appendTo: function(parent) {
-	    parent.appendChild(this.el);
-	    return this;
-	  }
-	};
-
-	/**
-	 * Utils
-	 */
-
-	function el(tag, className, parent) {
-	  var result = document.createElement(tag);
-	  result.className = className || '';
-	  if (parent) parent.appendChild(result);
-	  return result;
-	}
-
-
-/***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(46);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(7)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./grid.css", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./grid.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(6)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "\n.grid {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 1;\n\n  margin: 0;\n  width: 100%;\n  height: 100%;\n  overflow-y: scroll;\n  overflow-x: hidden;\n  list-style: none;\n  opacity: 0;\n\n  will-change: transform;\n  animation: grid-zoom-in 240ms 120ms;\n  animation-fill-mode: forwards;\n}\n\n.grid.hidden {\n  animation: grid-zoom-out 160ms;\n  animation-fill-mode: forwards;\n}\n\n.grid > .inner {\n  box-sizing: border-box;\n  flex-flow: row wrap;\n  display: flex;\n  padding: 7px;\n  width: 100%;\n}\n\n@keyframes grid-zoom-in {\n  0% {\n    opacity: 0;\n    transform: scale(1.3);\n  }\n\n  100% {\n    opacity: 1;\n    transform: scale(1);\n  }\n}\n\n@keyframes grid-zoom-out {\n  0% {\n    opacity: 1;\n    transform: scale(1);\n  }\n\n  99% {\n    opacity: 0;\n    transform: scale(1.3);\n  }\n\n  100% {\n    opacity: 0;\n    transform: scale(0.01);\n  }\n}\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Dependencies
-	 */
-
-	var Icon = __webpack_require__(48);
-	__webpack_require__(51);
-
-	/**
-	 * Logger
-	 *
-	 * @return {Function}
-	 */
-	var debug = 1 ? console.log.bind(console, '[website-icon]') : function() {};
-
-	/**
-	 * Exports
-	 */
-
-	module.exports = WebsiteIconView;
-
-	/**
-	 * Extends `Emitter`
-	 */
-
-	WebsiteIconView.prototype = Object.create(Icon.prototype);
-
-	function WebsiteIconView(data) {
-	  Icon.apply(this, arguments);
-	  this.el.className += ' grid-icon-website';
-	}
-
-	WebsiteIconView.prototype.render = function(data) {
-	  Icon.prototype.render.apply(this, arguments); // super
-	  this.els.title.textContent = data.title || data.url;
-	};
-
-
-/***/ },
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Dependencies
-	 */
-
-	var Emitter = __webpack_require__(3);
-	__webpack_require__(49);
-
-	/**
-	 * Exports
-	 */
-
-	module.exports = IconView;
-
-	/**
-	 * Extends `Emitter`
-	 */
-
-	IconView.prototype = Object.create(Emitter.prototype);
-
-	function IconView(data) {
-	  Emitter.call(this);
-	  this.el = el('li', 'grid-icon no-icon');
-	  this.els = {};
-	  this.render(data);
-	}
-
-	IconView.prototype.render = function(data) {
-	  this.els.inner = el('a', 'inner', this.el);
-	  this.els.inner.href = data.url;
-	  this.els.image = el('div', 'grid-icon-image', this.els.inner);
-	  var img = this.els.imageNode = el('img', '', this.els.image);
-	  this.els.title = el('h3', 'grid-icon-title', this.els.inner);
-	  this.els.title.textContent = data.title;
-
-	  // child classes free to override
-	  if (data.icon) this.els.imageNode.src = data.icon;
-
-	  img.onload = function() {
-	    var area = img.naturalWidth * img.naturalHeight;
-	    if (area < 80 * 80) return;
-	    this.els.imageNode.classList.add('loaded');
-	    this.el.classList.remove('no-icon');
-	  }.bind(this);
-	};
-
-	/**
-	 * Utils
-	 */
-
-	function el(tag, className, parent) {
-	  var result = document.createElement(tag);
-	  result.className = className || '';
-	  if (parent) parent.appendChild(result);
-	  return result;
-	}
-
-
-/***/ },
-/* 49 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(50);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(7)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./icon.css", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./icon.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 50 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(6)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "\n\n.grid-icon {\n  display: flex;\n  flex: 0 0 33%;\n  justify-content: center;\n  transition:\n    opacity 200ms 400ms,\n    transform 200ms 400ms;\n}\n\n.grid-icon:active {\n  transition-delay: 0ms;\n  transform: scale(0.95);\n  opacity: 0.7;\n}\n\n.grid-icon > .inner {\n  flex: 0 1 auto;\n  display: block;\n  width: 100px;\n  padding: 8px;\n\n  color: inherit;\n  text-decoration: none;\n}\n\n.grid-icon-image {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100px;\n  height: 100px;\n  border-radius: 6px;\n  font-family: magnet;\n  font-size: 70px;\n  color: #bbb;\n  overflow: hidden;\n}\n\n.no-icon .grid-icon-image {\n  background: #ddd;\n}\n\n.grid-icon-image > img {\n  max-width: 100%;\n}\n\n.no-icon .grid-icon-image > img {\n  display: none;\n}\n\n.grid-icon-title {\n  margin: 0;\n  overflow: hidden;\n\n  font-size: 13px;\n  font-style: italic;\n  font-weight: normal;\n  text-align: center;\n  line-height: 2.6em;\n\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: #555;\n}\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(52);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(7)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./website.css", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./website.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(6)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "\n.grid-icon-website {}\n\n.grid-icon-website.no-icon .grid-icon-image::before {\n  content: '\\E078';\n}\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 53 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Dependencies
-	 */
-
-	var ProfileTwitter = __webpack_require__(54);
-	var ProfileAndroid = __webpack_require__(56);
-	var Profile = __webpack_require__(55);
-
-	/**
-	 * Exports
-	 */
-
-	module.exports = function(data) {
-	  if (data.android) return new ProfileAndroid(data);
-	  else if (data.twitter) return new ProfileTwitter(data);
-	  else return new Profile(data);
-	};
-
-
-/***/ },
-/* 54 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Dependencies
-	 */
-
-	var Profile = __webpack_require__(55);
-
-	/**
-	 * Logger
-	 *
-	 * @return {Function}
-	 */
-	var debug = 1 ? console.log.bind(console, '[icon-profile-twitter]') : function() {};
-
-	/**
-	 * Exports
-	 */
-
-	module.exports = ProfileTwitter;
-
-	/**
-	 * Extends `Emitter`
-	 */
-
-	ProfileTwitter.prototype = Object.create(Profile.prototype);
-
-	function ProfileTwitter(data) {
-	  Profile.apply(this, arguments);
-	  this.el.className += ' icon-profile-twitter';
-	}
-
-	ProfileTwitter.prototype.render = function(data) {
-	  Profile.prototype.render.apply(this, arguments); // super
-	  this.els.imageNode.src = 'images/twitter.png';
-	  this.els.title.textContent = '@' + data.twitter.user_id;
-	  debug('rendered', data);
-	};
-
-
-/***/ },
-/* 55 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Dependencies
-	 */
-
-	var Icon = __webpack_require__(48);
-
-	/**
-	 * Exports
-	 */
-
-	module.exports = IconProfile;
-
-	/**
-	 * Extends `Icon`
-	 */
-
-	IconProfile.prototype = Object.create(Icon.prototype);
-
-	function IconProfile(data) {
-	  Icon.apply(this, arguments);
-	  this.el.className += ' icon-profile';
-	}
-
-
-/***/ },
-/* 56 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Dependencies
-	 */
-
-	var Profile = __webpack_require__(55);
-	__webpack_require__(57);
-
-	var debug = 1 ? console.log.bind(console, '[icon-android]') : function() {};
-
-	/**
-	 * Exports
-	 */
-
-	module.exports = ProfileAndroid;
-
-	/**
-	 * Extends `Emitter`
-	 */
-
-	ProfileAndroid.prototype = Object.create(Profile.prototype);
-
-	function ProfileAndroid(data) {
-	  Profile.apply(this, arguments);
-	  this.el.className += ' grid-icon-android-app';
-	  this.packageId = data.android.package;
-	  this.storeUrl = data.url;
-	}
-
-	ProfileAndroid.prototype.render = function(data) {
-	  Profile.prototype.render.apply(this, arguments); // super
-
-	  if (data.android.icon) {
-	    this.els.imageNode.src = data.android.icon;
-	    this.el.classList.remove('no-icon');
-	  }
-
-	  this.els.title.textContent = data.android.name;
-	  this.els.inner.addEventListener('click', this.onClick.bind(this));
-	};
-
-	ProfileAndroid.prototype.onClick = function(e) {
-	  e.stopPropagation();
-	  navigator.startApp.check(
-	    this.packageId,
-	    this.openApp.bind(this),
-	    this.openStore.bind(this)
-	  );
-	};
-
-	ProfileAndroid.prototype.openApp = function() {
-	  debug('open app');
-	  navigator.startApp.start(this.packageId);
-	};
-
-	ProfileAndroid.prototype.openStore = function() {
-	  debug('open store');
-	  window.open(this.storeUrl, '_system');
-	};
-
-
-/***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(58);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(7)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./profile-android.css", function() {
-				var newContent = require("!!./../../../../node_modules/css-loader/index.js!./profile-android.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 58 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(6)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "\n.grid-icon-android-app {}\n\n.grid-icon-android-app .grid-icon-image {\n  background: none;\n}\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 59 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Dependencies
-	 */
-
-	var Icon = __webpack_require__(48);
-
-	/**
-	 * Exports
-	 */
-
-	module.exports = VideoIcon;
-
-	/**
-	 * Extends `Emitter`
-	 */
-
-	VideoIcon.prototype = Object.create(Icon.prototype);
-
-	function VideoIcon(data) {
-	  Icon.apply(this, arguments);
-	  this.el.className += ' grid-image';
-	}
-
-
-/***/ },
-/* 60 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Dependencies
-	 */
-
-	var Icon = __webpack_require__(48);
-	__webpack_require__(61);
-
-	/**
-	 * Exports
-	 */
-
-	module.exports = VideoIcon;
-
-	/**
-	 * Extends `Emitter`
-	 */
-
-	VideoIcon.prototype = Object.create(Icon.prototype);
-
-	function VideoIcon(data) {
-	  Icon.apply(this, arguments);
-	  this.el.className += ' grid-icon-video';
-	}
-
-	VideoIcon.prototype.render = function(data) {
-	  Icon.prototype.render.apply(this, arguments); // super
-	};
-
-
-/***/ },
-/* 61 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(62);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(7)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./video.css", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./video.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 62 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(6)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "", ""]);
-
-	// exports
-
-
-/***/ },
-/* 63 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Dependencies
-	 */
-
-	var Icon = __webpack_require__(48);
-
-	/**
-	 * Exports
-	 */
-
-	module.exports = AudioIcon;
-
-	/**
-	 * Extends `Emitter`
-	 */
-
-	AudioIcon.prototype = Object.create(Icon.prototype);
-
-	function AudioIcon(data) {
-	  Icon.apply(this, arguments);
-	  this.el.className += ' grid-icon-audio';
-	}
-
-
-/***/ },
-/* 64 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(65);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(7)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./app.css", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./app.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 65 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(6)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "\n* {\n  -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */\n  margin: 0;\n  font: inherit;\n}\n\na {\n  text-decoration: none;\n  color: inherit;\n}\n\nhtml {\n  height: 100%;\n  overflow: hidden;\n\n  font-size: 12px;\n  font-family: FiraSans;\n  background: #f2f2f2;\n}\n\nbody {\n  -webkit-touch-callout: none; /* prevent callout to copy image, etc when tap to hold */\n  -webkit-text-size-adjust: none; /* prevent webkit from resizing text to fit */\n  -webkit-user-select: none; /* prevent copy paste, to allow, change 'none' to 'text' */\n\n  height: 100%;\n  width: 100%;\n  margin: 0;\n  padding: 0;\n\n  color: #444;\n  overflow: hidden;\n}\n\n.app {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  overflow: hidden;\n}\n\n.app > .header {}\n\n.app > .content {\n  position: relative;\n  flex: 1;\n}\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 66 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * Dependencies
-	 */
-
-	var debug = __webpack_require__(35)('tile-embed', 1);
-	var fastdom = __webpack_require__(16);
-	var SpinnerView = __webpack_require__(72);
-	var WebsiteTile = __webpack_require__(14);
-	__webpack_require__(70);
+	var debug = __webpack_require__(2)('tile-embed', 1);
+	var fastdom = __webpack_require__(3);
+	var SpinnerView = __webpack_require__(24);
+	var WebsiteTile = __webpack_require__(17);
+	__webpack_require__(27);
 
 	/**
 	 * Exports
@@ -3615,20 +2890,15 @@
 	};
 
 	WebsiteEmbedTile.prototype.collapse = function() {
-	  return fastdom
+	  return fastdom.promise(this.showImage())
 	    .mutate(function() {
-	      if (this.data.image) {
-	        return this.showImage()
-	          .then(function() {
-	            this.hideLoading();
-	            this.removeEmbed();
-	          }.bind(this));
-	      }
+	      this.hideLoading();
+	      if (this.data.image) this.removeEmbed();
 	    }.bind(this))
 
-	    .animate(function() {
+	    .then(function() {
 	      return this.scrollToTop();
-	    }, this);
+	    }.bind(this));
 	};
 
 	WebsiteEmbedTile.prototype.setFrameApect = function() {
@@ -3778,50 +3048,7 @@
 
 
 /***/ },
-/* 67 */,
-/* 68 */,
-/* 69 */,
-/* 70 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(71);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(7)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./embed.css", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./embed.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 71 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(6)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "\n.tile-embed-frame  {\n  position: relative;\n}\n\n.aspect-set .tile-embed-embed {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n}\n\n.tile-embed-embed table {\n  width: 100%;\n}\n\n.tile-embed-embed tr {\n  padding: 0 7px;\n}\n\n.tile-embed-embed td {\n  padding: 21px 14px;\n  border-top: solid 1px #f2f2f2;\n  text-align: center;\n  font-size: 18px;\n}\n\n.tile-embed-embed tr:first-child td {\n  border-top: 0;\n}\n\n.tile-embed-embed > iframe {\n  position: absolute;\n  left: 0;]\n  top: 0;\n\n  display: block;;\n  width: 100.8%;\n  height: 100.8%;\n  border: 0;\n  background: #000;\n}\n\n.tile-embed-screen {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 2;\n\n  width: 100%;\n  height: 100%;\n\n  background: rgba(255,255,255,0.05);\n  transition: opacity 200ms;\n}\n\n.expanded .tile-embed-screen {\n  opacity: 0;\n  pointer-events: none;\n}\n\n.tile-embed-loading {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 2;\n\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n\n  color: rgba(255,255,255,0.6);\n  background: rgba(0,0,0,0.3);\n}\n\n.tile-embed-image {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 1;\n\n  width: 100%;\n  height: 100%;\n\n  transition: opacity 300ms;\n}\n\n.tile-embed-image[hidden] {\n  display: block;\n  pointer-events: none;\n  opacity: 0;\n}\n\n.tile-embed-image > img {\n  display: block;\n  width: 100.5%;\n  height: 100.5%;\n  object-fit: cover;\n}\n\n.tile-embed .tile-website-main {\n  border-top: solid 1px #f2f2f2;\n}\n\n/*.tile-embed.expanded .tile-website-main {\n  display: block;\n}*/\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 72 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -3829,7 +3056,7 @@
 	 * Dependencies
 	 */
 
-	__webpack_require__(73);
+	__webpack_require__(25);
 
 	/**
 	 * Exports
@@ -3865,16 +3092,16 @@
 
 
 /***/ },
-/* 73 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(74);
+	var content = __webpack_require__(26);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(7)(content, {});
+	var update = __webpack_require__(10)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -3891,15 +3118,781 @@
 	}
 
 /***/ },
-/* 74 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(6)();
+	exports = module.exports = __webpack_require__(9)();
 	// imports
 
 
 	// module
 	exports.push([module.id, ".spinner {\n  width: 55px;\n  height: 44px;\n  margin: 0 auto;\n  text-align: center;\n}\n\n.spinner > div {\n  background-color: currentColor;\n  height: 100%;\n  width: 6px;\n  margin: 1px;\n  display: inline-block;\n  will-change: transform;\n\n  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;\n  animation: sk-stretchdelay 1.2s infinite ease-in-out;\n}\n\n.spinner .rect2 {\n  -webkit-animation-delay: -1.1s;\n  animation-delay: -1.1s;\n}\n\n.spinner .rect3 {\n  -webkit-animation-delay: -1.0s;\n  animation-delay: -1.0s;\n}\n\n.spinner .rect4 {\n  -webkit-animation-delay: -0.9s;\n  animation-delay: -0.9s;\n}\n\n.spinner .rect5 {\n  -webkit-animation-delay: -0.8s;\n  animation-delay: -0.8s;\n}\n\n@-webkit-keyframes sk-stretchdelay {\n  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }\n  20% { -webkit-transform: scaleY(1.0) }\n}\n\n@keyframes sk-stretchdelay {\n  0%, 40%, 100% {\n    transform: scaleY(0.4);\n    -webkit-transform: scaleY(0.4);\n  }\n\n  20% {\n    transform: scaleY(1.0);\n    -webkit-transform: scaleY(1.0);\n  }\n}", ""]);
+
+	// exports
+
+
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(28);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(10)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./embed.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./embed.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 28 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(9)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "\n.tile-embed-frame  {\n  position: relative;\n}\n\n.aspect-set .tile-embed-embed {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n}\n\n.tile-embed-embed table {\n  width: 100%;\n}\n\n.tile-embed-embed tr {\n  padding: 0 7px;\n}\n\n.tile-embed-embed td {\n  padding: 21px 14px;\n  border-top: solid 1px #f2f2f2;\n  text-align: center;\n  font-size: 18px;\n}\n\n.tile-embed-embed tr:first-child td {\n  border-top: 0;\n}\n\n.tile-embed-embed > iframe {\n  position: absolute;\n  left: 0;]\n  top: 0;\n\n  display: block;;\n  width: 100.8%;\n  height: 100.8%;\n  border: 0;\n  background: #000;\n}\n\n.tile-embed-screen {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 2;\n\n  width: 100%;\n  height: 100%;\n\n  background: rgba(255,255,255,0.05);\n  transition: opacity 200ms;\n}\n\n.expanded .tile-embed-screen {\n  opacity: 0;\n  pointer-events: none;\n}\n\n.tile-embed-loading {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 2;\n\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n\n  color: rgba(255,255,255,0.6);\n  background: rgba(0,0,0,0.3);\n}\n\n.tile-embed-image {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 1;\n\n  width: 100%;\n  height: 100%;\n\n  transition: opacity 300ms;\n}\n\n.tile-embed-image[hidden] {\n  display: block;\n  pointer-events: none;\n  opacity: 0;\n}\n\n.tile-embed-image > img {\n  display: block;\n  width: 100.5%;\n  height: 100.5%;\n  object-fit: cover;\n}\n\n.tile-embed .tile-website-main {\n  border-top: solid 1px #f2f2f2;\n}\n\n/*.tile-embed.expanded .tile-website-main {\n  display: block;\n}*/\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(30);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(10)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./tiles.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./tiles.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(9)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "\n.tiles {\n  position: absolute;\n  left: 0;\n  top: 0;\n\n  box-sizing: border-box;\n  width: 100%;\n  height: 100%;\n  padding-top: 14px;\n  overflow-y: scroll;\n  overflow-x: hidden;\n\n  /*will-change: transform;*/ /* breaks fullscreen */\n\n  transition:\n    opacity 180ms 130ms,\n    transform 180ms 130ms;\n}\n\n.tiles.hidden {\n  opacity: 0;\n  transform: scale(0.90);\n\n  transition:\n    opacity 180ms,\n    transform 180ms;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * Dependencies
+	 */
+
+	__webpack_require__(32);
+
+	var registry = {
+	  website: __webpack_require__(34),
+	  profile: __webpack_require__(40),
+	  image: __webpack_require__(46),
+	  video: __webpack_require__(47),
+	  audio: __webpack_require__(50)
+	};
+
+	/**
+	 * Logger
+	 *
+	 * @return {Function}
+	 */
+	var debug = 0 ? console.log.bind(console, '[grid-view]') : function() {};
+
+	/**
+	 * Exports
+	 */
+
+	module.exports = GridView;
+
+	function GridView() {
+	  this.el = document.createElement('div');
+	  this.el.className = 'grid';
+	  this.icons = {};
+	  this.els = {};
+	  this.render();
+	}
+
+	GridView.prototype = {
+	  render: function() {
+	    this.els.inner = document.createElement('div');
+	    this.els.inner.className = 'inner';
+	    this.el.appendChild(this.els.inner);
+	  },
+
+	  add: function(id, data) {
+	    debug('add', id, data);
+
+	    if (!data) return;
+	    if (this.icons[id]) return debug('already exists');
+
+	    var Icon = registry[data.type] || registry.website;
+	    var icon = new Icon(data);
+
+	    this.icons[id] = icon;
+	    this.els.inner.appendChild(icon.el);
+	  },
+
+	  toggle: function(value) {
+	    if (value) this.el.classList.remove('hidden');
+	    else this.el.classList.add('hidden');
+	  },
+
+	  remove: function(id) {
+	    debug('remove', id);
+	    var tile = this.tiles[id];
+	    if (tile) tile.remove();
+	  },
+
+	  appendTo: function(parent) {
+	    parent.appendChild(this.el);
+	    return this;
+	  }
+	};
+
+	/**
+	 * Utils
+	 */
+
+	function el(tag, className, parent) {
+	  var result = document.createElement(tag);
+	  result.className = className || '';
+	  if (parent) parent.appendChild(result);
+	  return result;
+	}
+
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(33);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(10)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./grid.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./grid.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(9)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "\n.grid {\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 1;\n\n  margin: 0;\n  width: 100%;\n  height: 100%;\n  overflow-y: scroll;\n  overflow-x: hidden;\n  list-style: none;\n  opacity: 0;\n\n  will-change: transform;\n  animation: grid-zoom-in 240ms 120ms;\n  animation-fill-mode: forwards;\n}\n\n.grid.hidden {\n  animation: grid-zoom-out 160ms;\n  animation-fill-mode: forwards;\n}\n\n.grid > .inner {\n  box-sizing: border-box;\n  flex-flow: row wrap;\n  display: flex;\n  padding: 7px;\n  width: 100%;\n}\n\n@keyframes grid-zoom-in {\n  0% {\n    opacity: 0;\n    transform: scale(1.3);\n  }\n\n  100% {\n    opacity: 1;\n    transform: scale(1);\n  }\n}\n\n@keyframes grid-zoom-out {\n  0% {\n    opacity: 1;\n    transform: scale(1);\n  }\n\n  99% {\n    opacity: 0;\n    transform: scale(1.3);\n  }\n\n  100% {\n    opacity: 0;\n    transform: scale(0.01);\n  }\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 34 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * Dependencies
+	 */
+
+	var Icon = __webpack_require__(35);
+	__webpack_require__(38);
+
+	/**
+	 * Logger
+	 *
+	 * @return {Function}
+	 */
+	var debug = 1 ? console.log.bind(console, '[website-icon]') : function() {};
+
+	/**
+	 * Exports
+	 */
+
+	module.exports = WebsiteIconView;
+
+	/**
+	 * Extends `Emitter`
+	 */
+
+	WebsiteIconView.prototype = Object.create(Icon.prototype);
+
+	function WebsiteIconView(data) {
+	  Icon.apply(this, arguments);
+	  this.el.className += ' grid-icon-website';
+	}
+
+	WebsiteIconView.prototype.render = function(data) {
+	  Icon.prototype.render.apply(this, arguments); // super
+	  this.els.title.textContent = data.title || data.url;
+	};
+
+
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * Dependencies
+	 */
+
+	var Emitter = __webpack_require__(6);
+	__webpack_require__(36);
+
+	/**
+	 * Exports
+	 */
+
+	module.exports = IconView;
+
+	/**
+	 * Extends `Emitter`
+	 */
+
+	IconView.prototype = Object.create(Emitter.prototype);
+
+	function IconView(data) {
+	  Emitter.call(this);
+	  this.el = el('li', 'grid-icon no-icon');
+	  this.els = {};
+	  this.render(data);
+	}
+
+	IconView.prototype.render = function(data) {
+	  this.els.inner = el('a', 'inner', this.el);
+	  this.els.inner.href = data.url;
+	  this.els.image = el('div', 'grid-icon-image', this.els.inner);
+	  var img = this.els.imageNode = el('img', '', this.els.image);
+	  this.els.title = el('h3', 'grid-icon-title', this.els.inner);
+	  this.els.title.textContent = data.title;
+
+	  // child classes free to override
+	  if (data.icon) this.els.imageNode.src = data.icon;
+
+	  img.onload = function() {
+	    var area = img.naturalWidth * img.naturalHeight;
+	    if (area < 80 * 80) return;
+	    this.els.imageNode.classList.add('loaded');
+	    this.el.classList.remove('no-icon');
+	  }.bind(this);
+	};
+
+	/**
+	 * Utils
+	 */
+
+	function el(tag, className, parent) {
+	  var result = document.createElement(tag);
+	  result.className = className || '';
+	  if (parent) parent.appendChild(result);
+	  return result;
+	}
+
+
+/***/ },
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(37);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(10)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./icon.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./icon.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(9)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "\n\n.grid-icon {\n  display: flex;\n  flex: 0 0 33%;\n  justify-content: center;\n  transition:\n    opacity 200ms 400ms,\n    transform 200ms 400ms;\n}\n\n.grid-icon:active {\n  transition-delay: 0ms;\n  transform: scale(0.95);\n  opacity: 0.7;\n}\n\n.grid-icon > .inner {\n  flex: 0 1 auto;\n  display: block;\n  width: 100px;\n  padding: 8px;\n\n  color: inherit;\n  text-decoration: none;\n}\n\n.grid-icon-image {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100px;\n  height: 100px;\n  border-radius: 6px;\n  font-family: magnet;\n  font-size: 70px;\n  color: #bbb;\n  overflow: hidden;\n}\n\n.no-icon .grid-icon-image {\n  background: #ddd;\n}\n\n.grid-icon-image > img {\n  max-width: 100%;\n}\n\n.no-icon .grid-icon-image > img {\n  display: none;\n}\n\n.grid-icon-title {\n  margin: 0;\n  overflow: hidden;\n\n  font-size: 13px;\n  font-style: italic;\n  font-weight: normal;\n  text-align: center;\n  line-height: 2.6em;\n\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: #555;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 38 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(39);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(10)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./website.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./website.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(9)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "\n.grid-icon-website {}\n\n.grid-icon-website.no-icon .grid-icon-image::before {\n  content: '\\E078';\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * Dependencies
+	 */
+
+	var ProfileTwitter = __webpack_require__(41);
+	var ProfileAndroid = __webpack_require__(43);
+	var Profile = __webpack_require__(42);
+
+	/**
+	 * Exports
+	 */
+
+	module.exports = function(data) {
+	  if (data.android) return new ProfileAndroid(data);
+	  else if (data.twitter) return new ProfileTwitter(data);
+	  else return new Profile(data);
+	};
+
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * Dependencies
+	 */
+
+	var Profile = __webpack_require__(42);
+
+	/**
+	 * Logger
+	 *
+	 * @return {Function}
+	 */
+	var debug = 1 ? console.log.bind(console, '[icon-profile-twitter]') : function() {};
+
+	/**
+	 * Exports
+	 */
+
+	module.exports = ProfileTwitter;
+
+	/**
+	 * Extends `Emitter`
+	 */
+
+	ProfileTwitter.prototype = Object.create(Profile.prototype);
+
+	function ProfileTwitter(data) {
+	  Profile.apply(this, arguments);
+	  this.el.className += ' icon-profile-twitter';
+	}
+
+	ProfileTwitter.prototype.render = function(data) {
+	  Profile.prototype.render.apply(this, arguments); // super
+	  this.els.imageNode.src = 'images/twitter.png';
+	  this.els.title.textContent = '@' + data.twitter.user_id;
+	  debug('rendered', data);
+	};
+
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * Dependencies
+	 */
+
+	var Icon = __webpack_require__(35);
+
+	/**
+	 * Exports
+	 */
+
+	module.exports = IconProfile;
+
+	/**
+	 * Extends `Icon`
+	 */
+
+	IconProfile.prototype = Object.create(Icon.prototype);
+
+	function IconProfile(data) {
+	  Icon.apply(this, arguments);
+	  this.el.className += ' icon-profile';
+	}
+
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * Dependencies
+	 */
+
+	var Profile = __webpack_require__(42);
+	__webpack_require__(44);
+
+	var debug = 1 ? console.log.bind(console, '[icon-android]') : function() {};
+
+	/**
+	 * Exports
+	 */
+
+	module.exports = ProfileAndroid;
+
+	/**
+	 * Extends `Emitter`
+	 */
+
+	ProfileAndroid.prototype = Object.create(Profile.prototype);
+
+	function ProfileAndroid(data) {
+	  Profile.apply(this, arguments);
+	  this.el.className += ' grid-icon-android-app';
+	  this.packageId = data.android.package;
+	  this.storeUrl = data.url;
+	}
+
+	ProfileAndroid.prototype.render = function(data) {
+	  Profile.prototype.render.apply(this, arguments); // super
+
+	  if (data.android.icon) {
+	    this.els.imageNode.src = data.android.icon;
+	    this.el.classList.remove('no-icon');
+	  }
+
+	  this.els.title.textContent = data.android.name;
+	  this.els.inner.addEventListener('click', this.onClick.bind(this));
+	};
+
+	ProfileAndroid.prototype.onClick = function(e) {
+	  e.stopPropagation();
+	  navigator.startApp.check(
+	    this.packageId,
+	    this.openApp.bind(this),
+	    this.openStore.bind(this)
+	  );
+	};
+
+	ProfileAndroid.prototype.openApp = function() {
+	  debug('open app');
+	  navigator.startApp.start(this.packageId);
+	};
+
+	ProfileAndroid.prototype.openStore = function() {
+	  debug('open store');
+	  window.open(this.storeUrl, '_system');
+	};
+
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(45);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(10)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./profile-android.css", function() {
+				var newContent = require("!!./../../../../node_modules/css-loader/index.js!./profile-android.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(9)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "\n.grid-icon-android-app {}\n\n.grid-icon-android-app .grid-icon-image {\n  background: none;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * Dependencies
+	 */
+
+	var Icon = __webpack_require__(35);
+
+	/**
+	 * Exports
+	 */
+
+	module.exports = VideoIcon;
+
+	/**
+	 * Extends `Emitter`
+	 */
+
+	VideoIcon.prototype = Object.create(Icon.prototype);
+
+	function VideoIcon(data) {
+	  Icon.apply(this, arguments);
+	  this.el.className += ' grid-image';
+	}
+
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * Dependencies
+	 */
+
+	var Icon = __webpack_require__(35);
+	__webpack_require__(48);
+
+	/**
+	 * Exports
+	 */
+
+	module.exports = VideoIcon;
+
+	/**
+	 * Extends `Emitter`
+	 */
+
+	VideoIcon.prototype = Object.create(Icon.prototype);
+
+	function VideoIcon(data) {
+	  Icon.apply(this, arguments);
+	  this.el.className += ' grid-icon-video';
+	}
+
+	VideoIcon.prototype.render = function(data) {
+	  Icon.prototype.render.apply(this, arguments); // super
+	};
+
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(49);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(10)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./video.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./video.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(9)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "", ""]);
+
+	// exports
+
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * Dependencies
+	 */
+
+	var Icon = __webpack_require__(35);
+
+	/**
+	 * Exports
+	 */
+
+	module.exports = AudioIcon;
+
+	/**
+	 * Extends `Emitter`
+	 */
+
+	AudioIcon.prototype = Object.create(Icon.prototype);
+
+	function AudioIcon(data) {
+	  Icon.apply(this, arguments);
+	  this.el.className += ' grid-icon-audio';
+	}
+
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(52);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(10)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./app.css", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./app.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(9)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "\n* {\n  -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */\n  margin: 0;\n  font: inherit;\n}\n\na {\n  text-decoration: none;\n  color: inherit;\n}\n\nhtml {\n  height: 100%;\n  overflow: hidden;\n\n  font-size: 12px;\n  font-family: FiraSans;\n  background: #f2f2f2;\n}\n\nbody {\n  -webkit-touch-callout: none; /* prevent callout to copy image, etc when tap to hold */\n  -webkit-text-size-adjust: none; /* prevent webkit from resizing text to fit */\n  -webkit-user-select: none; /* prevent copy paste, to allow, change 'none' to 'text' */\n\n  height: 100%;\n  width: 100%;\n  margin: 0;\n  padding: 0;\n\n  color: #444;\n  overflow: hidden;\n}\n\n.app {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  overflow: hidden;\n}\n\n.app > .header {}\n\n.app > .content {\n  position: relative;\n  flex: 1;\n}\n", ""]);
 
 	// exports
 

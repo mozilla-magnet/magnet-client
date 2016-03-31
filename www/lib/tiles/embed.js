@@ -65,20 +65,15 @@ WebsiteEmbedTile.prototype.expand = function() {
 };
 
 WebsiteEmbedTile.prototype.collapse = function() {
-  return fastdom
+  return fastdom.promise(this.showImage())
     .mutate(function() {
-      if (this.data.image) {
-        return this.showImage()
-          .then(function() {
-            this.hideLoading();
-            this.removeEmbed();
-          }.bind(this));
-      }
+      this.hideLoading();
+      if (this.data.image) this.removeEmbed();
     }.bind(this))
 
-    .animate(function() {
+    .then(function() {
       return this.scrollToTop();
-    }, this);
+    }.bind(this));
 };
 
 WebsiteEmbedTile.prototype.setFrameApect = function() {

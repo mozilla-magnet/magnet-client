@@ -129,11 +129,7 @@ TilesView.prototype = {
     var after = tile.el.nextElementSibling;
     var measurements = this.measurements;
 
-    return fastdom
-      .animate(function() {
-        return tile.collapse().then(function(){});
-      })
-
+    return fastdom.promise(tile.collapse())
       .mutate(function() {
         debug('animate', measurements);
         var translateY = measurements.translateY;

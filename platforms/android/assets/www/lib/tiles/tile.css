@@ -38,10 +38,6 @@
   background-color: #fff;
 }
 
-.tile-expanded {
-  z-index: 1;
-}
-
 .tile-title {
   font-size: 21px;
   font-weight: lighter;
@@ -63,11 +59,13 @@
 
 .tile-collapsed {
   display: none;
-  transform: translateY(-100%);
 }
 
 .expanded .tile-collapsed {
   display: block;
+  transform: translateY(14px);
+  transition-timing-function: ease-in-out;
+  opacity: 0;
 }
 
 .tile-footer {

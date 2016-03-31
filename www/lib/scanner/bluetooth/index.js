@@ -27,12 +27,12 @@ function Bluetooth() {
 }
 
 Bluetooth.prototype.start = function() {
-  // this.enable(this.startScan.bind(this));
+  this.enable(this.startScan.bind(this));
 
-  setTimeout(function() {
+  // setTimeout(function() {
     this.emit('found', 'http://twitter.com/wilsonpage');
-    this.emit('found', 'http://twitter.com/mepartoconmigo');
-    this.emit('found', 'http://twitter.com/samuelgiles_');
+    // this.emit('found', 'http://twitter.com/mepartoconmigo');
+    // this.emit('found', 'http://twitter.com/samuelgiles_');
     // this.emit('found', 'http://taltonmill.co.uk');
     this.emit('found', 'https://play.google.com/store/apps/details?id=org.mozilla.firefox');
     // this.emit('found', 'https://play.google.com/store/apps/details?id=jp.naver.line.android');
@@ -41,12 +41,12 @@ Bluetooth.prototype.start = function() {
     // this.emit('found', 'https://soundcloud.com/imaginedherbalflows/evolve');
     // this.emit('found', 'https://play.spotify.com/track/2zMNWC0kbjfgjWpieSURja');
     // this.emit('found', 'http://wilsonpage.github.io/magnet-dummy-apps/tfl-countdown');
-    this.emit('found', 'http://wilsonpage.github.io/magnet-dummy-apps/sonos');
-    this.emit('found', 'http://wilsonpage.github.io/magnet-dummy-apps/ics');
+    // this.emit('found', 'http://wilsonpage.github.io/magnet-dummy-apps/sonos');
+    // this.emit('found', 'http://wilsonpage.github.io/magnet-dummy-apps/ics');
     // this.emit('found', 'https://calendar.google.com/calendar/ical/mozilla.com_2d3638353137343333373332%40resource.calendar.google.com/public/basic.ics');
     // this.emit('found', 'http://www.bbc.co.uk/news/business-35416812');
     // this.emit('found', 'https://twitter.com/wheresrhys/status/692416923720650754');
-  }.bind(this));
+  // }.bind(this));
 
   debug('started');
 };

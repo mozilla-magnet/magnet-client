@@ -38,8 +38,9 @@
   top: 0;
 
   display: block;;
-  width: 100.5%;
-  height: 100.5%;
+  width: 100.8%;
+  height: 100.8%;
+  border: 0;
   background: #000;
 }
 

@@ -76,10 +76,14 @@ TilesView.prototype = {
         measurements = this.measurements = {
           scrollTop: tile.el.offsetTop,
           translateY: -(top - 50),
-          afterTranslateY: Math.max(tilesHeight - (rect(after).top - 50), 0),
           previousScrollTop: this.el.scrollTop,
           tileHeight: tilesHeight
         };
+
+        if (after) {
+          measurements.afterTranslateY = tilesHeight - (rect(after).top - 50);
+          measurements.afterTranslateY = Math.max(measurements.afterTranslateY, 0);
+        }
       }, this)
 
       .animate(function() {
@@ -92,7 +96,6 @@ TilesView.prototype = {
       }.bind(this))
 
       .mutate(function() {
-        this.el.scrollTop = measurements.scrollTop;
         style(this.el, { overflow: 'hidden' });
 
         style(tile.el, {
@@ -106,6 +109,7 @@ TilesView.prototype = {
           transform: '',
         });
 
+        this.el.scrollTop = measurements.scrollTop;
         tile.el.classList.add('expanded');
       }.bind(this))
 
@@ -125,11 +129,7 @@ TilesView.prototype = {
     var after = tile.el.nextElementSibling;
     var measurements = this.measurements;
 
-    return fastdom
-      .animate(function() {
-        return tile.collapse().then(function(){});
-      })
-
+    return fastdom.promise(tile.collapse())
       .mutate(function() {
         debug('animate', measurements);
         var translateY = measurements.translateY;

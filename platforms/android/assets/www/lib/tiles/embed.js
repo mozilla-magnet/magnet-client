@@ -46,11 +46,12 @@ WebsiteEmbedTile.prototype.expand = function() {
 
   return fastdom
     .mutate(function() {
-      this.els.collapsed.style.transition = 'transform 300ms ease-in-out';
+      this.els.collapsed.style.transition = 'transform 200ms, opacity 200ms';
     }, this)
 
     .animate(function() {
-      this.els.collapsed.style.transform = 'translateY(0%)';
+      this.els.collapsed.style.transform = 'translateY(0px)';
+      this.els.collapsed.style.opacity = 1;
       return this.els.collapsed;
     }, this)
 
@@ -64,21 +65,15 @@ WebsiteEmbedTile.prototype.expand = function() {
 };
 
 WebsiteEmbedTile.prototype.collapse = function() {
-  return fastdom
+  return fastdom.promise(this.showImage())
     .mutate(function() {
-      return this.hideLoading();
+      this.hideLoading();
+      if (this.data.image) this.removeEmbed();
     }.bind(this))
 
-    .mutate(function() {
-      if (this.data.image) {
-        return this.showImage()
-          .then(this.removeEmbed.bind(this));
-      }
-    }.bind(this))
-
-    .animate(function() {
+    .then(function() {
       return this.scrollToTop();
-    }, this);
+    }.bind(this));
 };
 
 WebsiteEmbedTile.prototype.setFrameApect = function() {
@@ -130,6 +125,7 @@ WebsiteEmbedTile.prototype.scrollToTop = function() {
 
     .animate(function() {
       this.els.collapsed.style.transform = '';
+      this.els.collapsed.style.opacity = '';
       this.els.inner.style.transition = 'transform 300ms';
       this.els.inner.style.transform = '';
       return this.els.inner;
