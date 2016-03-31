@@ -1,13 +1,16 @@
 {
-  "name": "magnet",
+  "name": "AwesomeProject",
+  "version": "0.0.1",
+  "private": true,
   "scripts": {
-    "build": "webpack",
-    "watch": "webpack -w"
+    "start": "node node_modules/react-native/local-cli/cli.js start"
   },
-  "license": "ISC",
+  "dependencies": {
+    "eslint": "^2.5.3",
+    "react": "^0.14.7",
+    "react-native": "^0.22.2"
+  },
   "devDependencies": {
-    "css-loader": "^0.23.1",
-    "style-loader": "^0.13.0",
-    "webpack": "^1.12.11"
+    "eslint-plugin-react": "^4.2.3"
   }
 }

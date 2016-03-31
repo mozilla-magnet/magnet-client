@@ -1,6 +1,0 @@
-
-.grid-icon-website {}
-
-.grid-icon-website.no-icon .grid-icon-image::before {
-  content: '\e078';
-}
