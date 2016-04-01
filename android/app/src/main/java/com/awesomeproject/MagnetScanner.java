@@ -8,22 +8,20 @@ import android.content.Context;
 import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+
+import org.json.JSONArray;
 
 import java.util.Arrays;
 
 public class MagnetScanner extends ReactContextBaseJavaModule {
     String TAG = "MagnetScanner";
     BluetoothAdapter bluetoothAdapter;
-    Callback userCallback;
     Context mContext;
-    boolean scanning;
 
     // Stops scanning after 10 seconds.
     long SCAN_PERIOD = 10000;
@@ -49,21 +47,20 @@ public class MagnetScanner extends ReactContextBaseJavaModule {
     private LeScanCallback onFound = new LeScanCallback() {
         @Override
         public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-            ScanRecord parsed = ScanRecord.parseFromBytes(scanRecord);
-            UriBeacon beacon = UriBeacon.parseFromBytes(scanRecord);
-
-            if (beacon == null) {
-                return;
-            }
-
-            String uri = beacon.getUriString();
-            System.out.println(uri);
-
+            Log.d(TAG, "rssi: " + rssi);
+            String json = toJSON(scanRecord);
             WritableMap data = Arguments.createMap();
-            data.putString("url", uri);
-            emit("magnetitemfound", data);
+            data.putInt("rssi", rssi);
+            data.putString("bytes", json);
+            emit("magnet:bledevicefound", data);
         }
     };
+
+    private String toJSON(byte[] bytes) {
+        JSONArray array = new JSONArray();
+        for (byte item:bytes) array.put(item);
+        return array.toString();
+    }
 
     private void emit(String name, WritableMap data) {
         getReactApplicationContext()
