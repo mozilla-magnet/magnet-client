@@ -10,4 +10,4 @@ class Root extends App {
 
 }
 
-AppRegistry.registerComponent('AwesomeProject', () => Root);
+AppRegistry.registerComponent('Magnet', () => Root);

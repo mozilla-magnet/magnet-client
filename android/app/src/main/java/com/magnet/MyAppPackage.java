@@ -1,4 +1,4 @@
-package com.awesomeproject;
+package com.magnet;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JavaScriptModule;
@@ -17,6 +17,7 @@ public class MyAppPackage implements ReactPackage {
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
         modules.add(new MagnetScanner(reactContext));
+        modules.add(new NetworkScanner(reactContext));
         return modules;
     }
 

@@ -22,4 +22,4 @@ const styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('AwesomeProject', () => App);
+AppRegistry.registerComponent('Magnet', () => App);

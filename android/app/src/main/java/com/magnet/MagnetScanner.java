@@ -1,4 +1,4 @@
-package com.awesomeproject;
+package com.magnet;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothAdapter.LeScanCallback;
@@ -15,8 +15,6 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import org.json.JSONArray;
-
-import java.util.Arrays;
 
 public class MagnetScanner extends ReactContextBaseJavaModule {
     String TAG = "MagnetScanner";
