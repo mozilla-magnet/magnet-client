@@ -3,7 +3,7 @@
  * https://github.com/facebook/react-native
  */
 
-import List from './lib/list';
+import List from './lib/views/list';
 import React from 'react-native';
 
 var AppRegistry = React.AppRegistry;
