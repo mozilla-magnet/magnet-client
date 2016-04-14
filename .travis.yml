@@ -1,0 +1,15 @@
+language: objective-c
+env:
+    - BUILD_TYPE=android ANDROID_HOME=/usr/local/opt/android-sdk
+    - BUILD_TYPE=ios
+before_install:
+    - brew update
+    - git clone https://github.com/creationix/nvm.git /tmp/.nvm
+    - source /tmp/.nvm/nvm.sh
+    - nvm install 5.0
+    - nvm use --delete-prefix 5.0
+    - node --version && npm --version
+install:
+    - ./build-scripts/bootstrap.sh
+script:
+    - ./build-scripts/build.sh
