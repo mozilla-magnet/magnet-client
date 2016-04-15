@@ -3,16 +3,19 @@
  * https://github.com/facebook/react-native
  */
 
-import List from './lib/views/list';
-import React from 'react-native';
+var ListView = require('./lib/views/list');
+var React = require('react-native');
 
-var AppRegistry = React.AppRegistry;
-var StyleSheet = React.StyleSheet;
-var Component = React.Component;
+var {
+  AppRegistry,
+  StyleSheet,
+  Component,
+  UIManager
+} = React;
 
 class App extends Component {
   render() {
-    return <List style={styles.list}/>;
+    return <ListView style={styles.list}/>;
   }
 }
 
@@ -21,5 +24,8 @@ const styles = StyleSheet.create({
     flex: 1
   }
 });
+
+// layout-animations are turned off on android by default
+UIManager.setLayoutAnimationEnabledExperimental(true);
 
 AppRegistry.registerComponent('Magnet', () => App);
