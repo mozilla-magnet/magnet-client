@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "eslint": "^2.5.3",
+    "magnet-html-parser": "github:mozilla-magnet/magnet-html-parser#v2.0.1",
     "react": "^0.14.7",
     "react-native": "^0.22.2"
   },
