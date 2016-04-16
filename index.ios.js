@@ -1,1 +1,1 @@
-require('index.android.js');
+require('./index.android.js');
