@@ -17,13 +17,13 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 /**
  * Created by wilsonpage on 12/04/2016.
  */
-public class NetworkScanner extends ReactContextBaseJavaModule {
+public class ScannerNetwork extends ReactContextBaseJavaModule {
     DiscoveryListener discoveryListener;
     NsdManager nsdManager;
-    String TAG = "NetworkScanner";
+    String TAG = "ScannerNetwork";
     String MDNS_SERVICE_TYPE = "_http._tcp.";
 
-    public NetworkScanner(ReactApplicationContext context){
+    public ScannerNetwork(ReactApplicationContext context){
         super(context);
         nsdManager = (NsdManager) context.getSystemService(Context.NSD_SERVICE);
         discoveryListener = createListener();
@@ -38,6 +38,12 @@ public class NetworkScanner extends ReactContextBaseJavaModule {
     public void start() {
         Log.d(TAG, "start");
         nsdManager.discoverServices(MDNS_SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener);
+    }
+
+    @ReactMethod
+    public void stop() {
+        Log.d(TAG, "stop");
+        nsdManager.stopServiceDiscovery(discoveryListener);
     }
 
     public DiscoveryListener createListener() {

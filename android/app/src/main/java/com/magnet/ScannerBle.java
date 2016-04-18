@@ -1,10 +1,12 @@
 package com.magnet;
 
+import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothAdapter.LeScanCallback;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
@@ -16,15 +18,12 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import org.json.JSONArray;
 
-public class MagnetScanner extends ReactContextBaseJavaModule {
-    String TAG = "MagnetScanner";
+public class ScannerBle extends ReactContextBaseJavaModule {
+    String TAG = "ScannerBle";
     BluetoothAdapter bluetoothAdapter;
     Context mContext;
 
-    // Stops scanning after 10 seconds.
-    long SCAN_PERIOD = 10000;
-
-    public MagnetScanner(ReactApplicationContext context) {
+    public ScannerBle(ReactApplicationContext context) {
         super(context);
         mContext = context;
         final BluetoothManager bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
@@ -36,10 +35,18 @@ public class MagnetScanner extends ReactContextBaseJavaModule {
         return TAG;
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     @ReactMethod
     public void start() {
         Log.d(TAG, "start");
         bluetoothAdapter.startLeScan(onFound);
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+    @ReactMethod
+    public void stop() {
+        Log.d(TAG, "stop");
+        bluetoothAdapter.stopLeScan(onFound);
     }
 
     private LeScanCallback onFound = new LeScanCallback() {
