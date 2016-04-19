@@ -6,12 +6,18 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
+    "buffer": "^4.5.1",
     "eslint": "^2.5.3",
     "magnet-html-parser": "github:mozilla-magnet/magnet-html-parser#v2.0.1",
     "react": "^0.14.7",
-    "react-native": "^0.22.2"
+    "react-native": "^0.22.2",
+    "stream-browserify": "^2.0.1"
   },
   "devDependencies": {
     "eslint-plugin-react": "^4.2.3"
+  },
+  "browser": {
+    "stream": "./node_modules/stream-browserify/index.js",
+    "buffer": "./node_modules/buffer/index.js"
   }
 }
