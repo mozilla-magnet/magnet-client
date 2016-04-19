@@ -21,12 +21,12 @@ class MagnetScanner: NSObject, BeaconScannerDelegate {
     self.scanner.startScanning();
   }
   
-  func notify(urls: Set<NSURL>) {
+  func notify(urls: Array<String>) {
     NSLog("Notifying JS context for the following urls");
     for url in urls {
       NSLog("%@", url);
     }
-    self.bridge.eventDispatcher.sendDeviceEventWithName("magnet:bledevicefound", body: urls);
+    self.bridge.eventDispatcher.sendDeviceEventWithName("magnet:urlfound", body: urls);
   }
   
   @objc func stop() -> Void {
@@ -35,6 +35,6 @@ class MagnetScanner: NSObject, BeaconScannerDelegate {
   }
   
   func urlContextChanged(beaconScanner: BeaconScanner) {
-    self.notify(beaconScanner.urlFound);
+    self.notify(beaconScanner.urls);
   }
 }
