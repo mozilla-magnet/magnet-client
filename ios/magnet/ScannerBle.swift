@@ -1,5 +1,5 @@
 //
-//  MagnetScanner.swift
+//  ScannerBle.swift
 //  magnet
 //
 //  Created by Francisco Jordano on 13/04/2016.
@@ -8,14 +8,14 @@
 
 import Foundation
 
-@objc(MagnetScanner)
-class MagnetScanner: NSObject, BeaconScannerDelegate {
+@objc(ScannerBle)
+class ScannerBle: NSObject, BeaconScannerDelegate {
   
   var bridge: RCTBridge!
   var scanner: BeaconScanner!
   
   @objc func start() -> Void {
-    NSLog("Starting scanner");
+    NSLog("Starting btle scanner");
     self.scanner = BeaconScanner();
     self.scanner.delegate = self
     self.scanner.startScanning();
