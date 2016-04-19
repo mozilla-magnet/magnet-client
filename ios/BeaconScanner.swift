@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-/* ==!== Heavily edited for the URL discovery use case + mDNS support ==!== */
+/* ==!== Heavily edited for the URL discovery use case ==!== */
 
 import UIKit
 import CoreBluetooth
@@ -32,12 +32,11 @@ protocol BeaconScannerDelegate {
 /// Scans for Eddystone compliant beacons using Core Bluetooth. To receive notifications of any
 /// sighted beacons, be sure to implement BeaconScannerDelegate and set that on the scanner.
 ///
-class BeaconScanner: NSObject, CBCentralManagerDelegate, NSNetServiceBrowserDelegate, NSNetServiceDelegate {
+class BeaconScanner: NSObject, CBCentralManagerDelegate {
   
   var delegate: BeaconScannerDelegate?
   
   private var centralManager: CBCentralManager!
-  private var serviceBrowser: NSNetServiceBrowser!
   private let beaconOperationsQueue: dispatch_queue_t = dispatch_queue_create("beacon_operations_queue", nil)
   private var shouldBeScanning: Bool = false
   private var _urlFound = Set<NSURL>()
@@ -48,14 +47,22 @@ class BeaconScanner: NSObject, CBCentralManagerDelegate, NSNetServiceBrowserDele
     }
   }
   
+  var urls: Array<String> {
+    get {
+      var urls = Set<String>();
+      for url in _urlFound {
+        urls.insert("\(url)");
+      }
+      return Array(urls);
+    }
+  }
+  
   override init() {
     super.init()
     
     self.centralManager = CBCentralManager(delegate: self, queue: self.beaconOperationsQueue)
     self.centralManager.delegate = self
     
-    self.serviceBrowser = NSNetServiceBrowser()
-    self.serviceBrowser.delegate = self
   }
   
   func startScanning() {
@@ -66,7 +73,6 @@ class BeaconScanner: NSObject, CBCentralManagerDelegate, NSNetServiceBrowserDele
   
   func stopScanning() {
     self.centralManager.stopScan()
-    self.serviceBrowser.stop()
   }
   
   deinit {
@@ -88,24 +94,6 @@ class BeaconScanner: NSObject, CBCentralManagerDelegate, NSNetServiceBrowserDele
     }
   }
   
-  func netServiceBrowser(browser: NSNetServiceBrowser, didFindService service: NSNetService, moreComing: Bool) {
-    service.delegate = self
-    service.resolveWithTimeout(30)
-  }
-  
-  func netServiceBrowser(browser: NSNetServiceBrowser, didRemoveService service: NSNetService, moreComing: Bool) {
-    service.delegate = nil
-  }
-  
-  func netServiceDidResolveAddress(sender: NSNetService) {
-    guard let host = sender.hostName else { return }
-    
-    let urlString = sender.port != 80 ? "http://\(host):\(sender.port)" : "http://\(host)"
-    if let url = NSURL(string: urlString) {
-      self.addURL(url)
-    }
-  }
-  
   private func startScanningSynchronized() {
     dispatch_async(self.beaconOperationsQueue) {
       if self.centralManager.state != CBCentralManagerState.PoweredOn {
@@ -116,8 +104,6 @@ class BeaconScanner: NSObject, CBCentralManagerDelegate, NSNetServiceBrowserDele
         let services = [CBUUID(string: "FEAA")]
         let options = [CBCentralManagerScanOptionAllowDuplicatesKey : true]
         self.centralManager.scanForPeripheralsWithServices(services, options: options)
-        NSLog("Starting to scan for mDNS")
-        self.serviceBrowser.searchForServicesOfType("_http._tcp.", inDomain: "")
       }
     }
   }
