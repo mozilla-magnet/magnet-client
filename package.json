@@ -11,13 +11,13 @@
     "magnet-html-parser": "github:mozilla-magnet/magnet-html-parser#v2.0.1",
     "react": "^0.14.7",
     "react-native": "^0.22.2",
-    "stream-browserify": "^2.0.1"
+    "stream": "0.0.2"
   },
   "devDependencies": {
     "eslint-plugin-react": "^4.2.3"
   },
   "browser": {
-    "stream": "./node_modules/stream-browserify/index.js",
+    "stream": "./node_modules/stream/index.js",
     "buffer": "./node_modules/buffer/index.js"
   }
 }
