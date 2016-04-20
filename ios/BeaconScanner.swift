@@ -15,7 +15,6 @@
 
 /* ==!== Heavily edited for the URL discovery use case ==!== */
 
-import UIKit
 import CoreBluetooth
 
 ///
