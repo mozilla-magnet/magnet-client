@@ -101,7 +101,7 @@ class BeaconScanner: NSObject, CBCentralManagerDelegate {
         self.shouldBeScanning = true
       } else {
         NSLog("Starting to scan for Eddystones")
-        let services = [CBUUID(string: "FEAA")]
+        let services = [CBUUID(string: "FEAA"), CBUUID(string: "FED8")]
         let options = [CBCentralManagerScanOptionAllowDuplicatesKey : true]
         self.centralManager.scanForPeripheralsWithServices(services, options: options)
       }
@@ -123,30 +123,52 @@ class BeaconScanner: NSObject, CBCentralManagerDelegate {
 }
 
 private func isAdvertisingURL(advertisementFrameList: [NSObject : AnyObject]) -> Bool {
-  let uuid = CBUUID(string: "FEAA")
-  guard let frameData = advertisementFrameList[uuid] as? NSData else { return false }
-  guard frameData.length > 1 else { return false }
+  let eddystoneUUID = CBUUID(string: "FEAA")
+  let uribeaconUUID = CBUUID(string: "FED8")
+  let data = advertisementFrameList[uribeaconUUID]
+  if (data == nil) {
+    guard let frameData = advertisementFrameList[eddystoneUUID] as? NSData else { return false }
+    guard frameData.length > 1 else { return false }
+    
+    let count = frameData.length
+    var frameBytes = [UInt8](count: count, repeatedValue: 0)
+    frameData.getBytes(&frameBytes, length: count)
+    
+    return frameBytes[0] == 0x10
+  } else {
+    return data?.length > 0
+  }
   
-  let count = frameData.length
-  var frameBytes = [UInt8](count: count, repeatedValue: 0)
-  frameData.getBytes(&frameBytes, length: count)
-  
-  return frameBytes[0] == 0x10
 }
 
 private func URLForFrame(advertisementFrameList: [NSObject : AnyObject]) -> NSURL? {
-  let uuid = CBUUID(string: "FEAA")
-  guard let frameData = advertisementFrameList[uuid] as? NSData else { return nil }
-  guard frameData.length > 1 else { return nil }
-  
-  var frameBytes = [UInt8](count: frameData.length, repeatedValue: 0)
-  frameData.getBytes(&frameBytes, length: frameData.length)
-  
+  let uribeaconUUID = CBUUID(string: "FED8")
+  var data = advertisementFrameList[uribeaconUUID] as? NSData
+  if (data == nil) {
+    let eddystoneUUID = CBUUID(string: "FEAA")
+    data = advertisementFrameList[eddystoneUUID] as? NSData
+    if (data != nil) {
+      return parseBeacon(data)
+    }
+    return nil
+  } else {
+    return parseBeacon(data)
+  }
+
+}
+
+private func parseBeacon(frameData: NSData?) -> NSURL? {
+  if (frameData == nil || frameData?.length == 0) {
+    return nil
+  }
+  var frameBytes = [UInt8](count: frameData!.length, repeatedValue: 0)
+  frameData!.getBytes(&frameBytes, length: frameData!.length)
+
   let schemeByte = frameBytes[2]
   let scheme = getScheme(schemeByte)
   
   var result = scheme
-  for i in 3..<frameData.length {
+  for i in 3..<frameData!.length {
     result.appendContentsOf(getString(frameBytes[i]))
   }
   
