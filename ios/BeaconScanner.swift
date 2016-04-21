@@ -64,23 +64,23 @@ class BeaconScanner: NSObject, CBCentralManagerDelegate {
     
   }
   
-  func startScanning() {
+  func start() {
     dispatch_async(self.beaconOperationsQueue) {
       self.startScanningSynchronized()
     }
   }
   
-  func stopScanning() {
+  func stop() {
     self.centralManager.stopScan()
   }
   
   deinit {
-    self.stopScanning()
+    self.stop()
   }
   
   func centralManagerDidUpdateState(central: CBCentralManager)  {
     if central.state == CBCentralManagerState.PoweredOn && self.shouldBeScanning {
-      self.startScanning();
+      self.start()
     }
   }
   

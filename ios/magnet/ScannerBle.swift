@@ -18,7 +18,7 @@ class ScannerBle: NSObject, BeaconScannerDelegate {
     NSLog("Starting btle scanner");
     self.scanner = BeaconScanner();
     self.scanner.delegate = self
-    self.scanner.startScanning();
+    self.scanner.start();
   }
   
   func notify(urls: Array<String>) {
@@ -31,7 +31,7 @@ class ScannerBle: NSObject, BeaconScannerDelegate {
   
   @objc func stop() -> Void {
     NSLog("Stoping scanner");
-    self.scanner.stopScanning();
+    self.scanner.stop();
   }
   
   func urlContextChanged(beaconScanner: BeaconScanner) {
