@@ -10,7 +10,8 @@ var {
   AppRegistry,
   StyleSheet,
   Component,
-  UIManager
+  UIManager,
+  Platform
 } = React;
 
 class App extends Component {
@@ -26,6 +27,8 @@ const styles = StyleSheet.create({
 });
 
 // layout-animations are turned off on android by default
-UIManager.setLayoutAnimationEnabledExperimental(true);
+if (Platform.OS === 'android') {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 AppRegistry.registerComponent('Magnet', () => App);
