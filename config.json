@@ -1,0 +1,9 @@
+{
+  "metadataServiceUrl": "https://tengam.org/api/v1/metadata",
+  "adaptors": [
+    {
+      "pattern": "^https?\:\/\/?(?:www\.)?facebook\.com\/.+$",
+      "url": "http://box.wilsonpage.me/magnet-facebook-adaptor"
+    }
+  ]
+}
