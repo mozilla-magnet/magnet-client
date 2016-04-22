@@ -1,6 +1,6 @@
 language: objective-c
 env:
-    - BUILD_TYPE=android ANDROID_HOME=/usr/local/opt/android-sdk
+    - BUILD_TYPE=android ANDROID_HOME=/usr/local/opt/android-sdk ARTIFACT=android/app/build/outputs/apk/app-release-unsigned.apk
     - BUILD_TYPE=ios
 before_install:
     - brew update
@@ -13,3 +13,13 @@ install:
     - ./build-scripts/bootstrap.sh
 script:
     - ./build-scripts/build.sh
+deploy:
+    provider: releases
+    api_key: $GITHUB_OAUTH_TOKEN
+    file: $ARTIFACT
+    skip_cleanup: true
+    overwrite: true
+    on:
+        branch: deploy-nightly-android
+        tags: true
+        condition: $NIGHTLY = "true"
