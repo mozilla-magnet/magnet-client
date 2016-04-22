@@ -2,9 +2,11 @@
 
 # Exit early and don't tag if not building a nightly build
 if [[ "$NIGHTLY" != "true" ]];then
+    echo "Not a nightly build.. skipping tag"
     exit
 fi
 
+echo "Tagging nightly"
 git config --global user.email "builds@travis-ci.com"
 git config --global user.name  "Travis CI"
 
@@ -15,6 +17,7 @@ if [[ "$BUILD_TYPE" != "android" && "$BUILD_TYPE" != "ios" ]]; then
 else
     export TAG=nightly-${BUILD_TYPE}
 fi
+
 
 # Force new 'git tag'
 git tag $TAG -a -m "Nightly - ${BUILD_TYPE}" -f
