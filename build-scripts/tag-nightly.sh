@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 # Exit early and don't tag if not building a nightly build
 if [[ "$NIGHTLY" != "true" ]];then
     echo "Not a nightly build.. skipping tag"
@@ -13,45 +15,25 @@ else
     export TAG=nightly-${BUILD_TYPE}
 fi
 
-function github_post() {
-    # TODO: Use a special account
-    curl -s -X POST \
-        -H "Content-Type: application/json" \
-        -H "Accept: application/vnd.github.v3+json" \
-        -d "$2" \
-        -u samgiles:${GITHUB_AUTH_TOKEN} \
-        https://api.github.com$1
-}
-
+if [[ "$TRAVIS" == "true" ]]; then
+    git config --global user.name "Travis CI"
+    git config --global user.email nobody@mozilla.com
+fi
 
 # POST /repos/:owner/:repo/git/tags
 timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 message="${BUILD_TYPE} nightly - ${timestamp}"
 
-body="{
-  \"tag\":\"${TAG}\",
-  \"message\":\"${message}\",
-  \"object\":\"${TRAVIS_COMMIT}\",
-  \"type\":\"commit\",
-  \"tagger\": {
-    \"name\":\"Travis CI\",
-    \"email\":\"nobody@mozilla.com\",
-    \"data\":\"${timestamp}\"
-  }
-}"
+git tag -fam "${message}" ${TAG}
 
-response=$(github_post /repos/mozilla-magnet/magnet/git/tags "$body")
+# NOTE!!!! MUST grep or the key is exposed by git output.
+git remote add repo \
+    https://samgiles:${GITHUB_AUTH_TOKEN}@github.com/mozilla-magnet/magnet-metadata-service.git 2>&1 | grep -v samgiles || true
 
-# Super hack to get the tag reference out of the json response, this may break
-# if the API response format changes (install a real json parser?)
-TAG_REF=$(echo $response || perl -pe 's/"sha"://; s/^"//; s/",$//; s/"//; s/",//;' | cut -f3 -d" ")
+# First delete the tag
+git push repo :${TAG} 2>&1 | grep -v samgiles
 
-body="{
-  \"ref\":\"refs/tags/${TAG}\",
-  \"sha\":\"${TRAVIS_COMMIT}\"
-}"
+# Then create it
+git push repo ${TAG}:${TAG} 2>&1 | grep -v samgiles
 
-github_post /repos/mozilla-magnet/magnet/git/refs "$body"
-
-# Finally ensure the local is tagged to match
-git tag -a -m "${message}"
+git remote rm repo
