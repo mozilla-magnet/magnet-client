@@ -6,6 +6,11 @@ cache:
         - $HOME/.gradle/caches/
         - $HOME/.gradle/wrapper/
         - node_modules/
+branches:
+    # Don't build these branches/tags
+    except:
+        # These are triggered manually
+        - /^nightly-.*$/
 env:
     - BUILD_TYPE=android
 # Be a good travis citizen while we don't actually run the build on iOS yet.
@@ -21,7 +26,6 @@ install:
     - . build-scripts/bootstrap.sh
 script:
     - ./build-scripts/build.sh
-    - . build-scripts/tag-nightly.sh
 deploy:
     provider: releases
     api_key: $GITHUB_OAUTH_TOKEN
@@ -30,4 +34,5 @@ deploy:
     overwrite: true
     on:
         tags: true
-        condition: $NIGHTLY = "true"
+        # Only deploy if a nightly build or a release (semver tag)
+        condition: $TAG = "nightly-android" || $TAG = "nightly-ios" || $TAG =~ ^[0-9]+\.[0-9]+\.[0-9]
