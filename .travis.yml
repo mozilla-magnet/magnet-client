@@ -21,8 +21,6 @@ install:
     - . build-scripts/bootstrap.sh
 script:
     - ./build-scripts/build.sh
-before_deploy:
-    # noop if $NIGHTLY is not true
     - . build-scripts/tag-nightly.sh
 deploy:
     provider: releases
