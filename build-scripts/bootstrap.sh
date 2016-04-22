@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+# copy the TRAVIS_TAG to the more generic 'TAG' var
+export TAG=$TRAVIS_TAG
+
 echo "Installing dependencies from brew.."
 brew reinstall gradle flow xctool
 
@@ -12,7 +15,7 @@ npm install
 
 if [[ "$BUILD_TYPE" == "android" ]];then
     echo "bootstrapping android build.."
-    ./build-scripts/android/bootstrap.sh
+    source ./build-scripts/android/bootstrap.sh
 elif [[ "$BUILD_TYPE" == "ios" ]]; then
     echo "TODO: bootstrap IOS build"
 else

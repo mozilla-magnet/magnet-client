@@ -12,4 +12,5 @@ elif [[ "$BUILD_TYPE" == "ios" ]]; then
     cd -
 else
     echo "Unknown build type"
+    exit -1
 fi

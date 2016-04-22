@@ -2,7 +2,8 @@
 
 brew reinstall android-sdk
 
-export ANDROID_HOME=/usr/local/opt/android-sdk
+export ANDROID_HOME=$(brew --prefix android-sdk)
+export ARTIFACT=android/app/build/outputs/apk/app-release-unsigned.apk
 
 android=${ANDROID_HOME}/tools/android
 

@@ -1,7 +1,13 @@
 language: objective-c
+cache:
+    directories:
+#       - $HOME/.gradle/caches/
+#       - $HOME/.gradle/wrapper/
+        - node_modules/
 env:
-    - BUILD_TYPE=android ANDROID_HOME=/usr/local/opt/android-sdk
-    - BUILD_TYPE=ios
+    - BUILD_TYPE=android
+# Be a good travis citizen while we don't actually run the build on iOS yet.
+#   - BUILD_TYPE=ios
 before_install:
     - brew update
     - git clone https://github.com/creationix/nvm.git /tmp/.nvm
@@ -10,6 +16,8 @@ before_install:
     - nvm use --delete-prefix 5.0
     - node --version && npm --version
 install:
-    - ./build-scripts/bootstrap.sh
+    - . build-scripts/bootstrap.sh
 script:
     - ./build-scripts/build.sh
+after_success:
+    - ./build-scripts/deploy.sh
