@@ -22,5 +22,4 @@ deploy:
     overwrite: true
     on:
         branch: deploy-nightly-android
-        tags: true
         condition: $NIGHTLY = "true"
