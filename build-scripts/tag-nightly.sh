@@ -26,10 +26,11 @@ function github_post() {
 
 # POST /repos/:owner/:repo/git/tags
 timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+message="${BUILD_TYPE} nightly - ${timestamp}"
 
 body="{
   \"tag\":\"${TAG}\",
-  \"message\":\"${BUILD_TYPE} nightly - ${timestamp}\",
+  \"message\":\"${message}\",
   \"object\":\"${TRAVIS_COMMIT}\",
   \"type\":\"commit\",
   \"tagger\": {
@@ -51,3 +52,6 @@ body="{
 }"
 
 github_post /repos/mozilla-magnet/magnet/git/refs "$body"
+
+# Finally ensure the local is tagged to match
+git tag -a -m "${message}"
