@@ -36,4 +36,4 @@ deploy:
     on:
         tags: false
         # Only deploy if a nightly build or a release (semver tag)
-        condition: $TAG -eq "nightly-android" || $TAG -eq "nightly-ios" || $TAG =~ ^[0-9]+\.[0-9]+\.[0-9]
+        condition: $TAG = "nightly-android" || $TAG = "nightly-ios" || $TAG =~ ^[0-9]+\.[0-9]+\.[0-9]
