@@ -26,7 +26,7 @@ install:
     - . build-scripts/bootstrap.sh
 script:
     - ./build-scripts/build.sh
-    - echo "TAG: ${TAG}"
+    - env
 deploy:
     provider: releases
     api_key: $GITHUB_AUTH_TOKEN
