@@ -6,26 +6,24 @@ cache:
         - $HOME/.gradle/caches/
         - $HOME/.gradle/wrapper/
         - node_modules/
-branches:
-    # Don't build these branches/tags
-    except:
-        # These are triggered manually
-        - /^nightly-.*$/
 env:
     - BUILD_TYPE=android
 # Be a good travis citizen while we don't actually run the build on iOS yet.
 #    - BUILD_TYPE=ios
 before_install:
-    - brew update
-    - git clone https://github.com/creationix/nvm.git /tmp/.nvm
-    - source /tmp/.nvm/nvm.sh
-    - nvm install 5.0
-    - nvm use --delete-prefix 5.0
-    - node --version && npm --version
+#    - brew update
+#   - git clone https://github.com/creationix/nvm.git /tmp/.nvm
+#   - source /tmp/.nvm/nvm.sh
+#   - nvm install 5.0
+#   - nvm use --delete-prefix 5.0
+#   - node --version && npm --version
 install:
-    - . build-scripts/bootstrap.sh
+# Skip the bootstrap an install for testing
+#    - . build-scripts/bootstrap.sh
 script:
-    - ./build-scripts/build.sh
+# Skip the build fo testing
+#    - ./build-scripts/build.sh
+    - touch $ARTIFACT
     - env
 deploy:
     provider: releases
@@ -34,6 +32,6 @@ deploy:
     skip_cleanup: true
     overwrite: true
     on:
-        tags: false
+        tags: true
         # Only deploy if a nightly build or a release (semver tag)
         condition: $TAG = "nightly-android" || $TAG = "nightly-ios" || $TAG =~ ^[0-9]+\.[0-9]+\.[0-9]
