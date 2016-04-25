@@ -26,6 +26,7 @@ install:
     - . build-scripts/bootstrap.sh
 script:
     - ./build-scripts/build.sh
+    - echo "TAG: ${TAG}"
 deploy:
     provider: releases
     api_key: $GITHUB_AUTH_TOKEN
@@ -33,6 +34,6 @@ deploy:
     skip_cleanup: true
     overwrite: true
     on:
-        tags: true
+        tags: false
         # Only deploy if a nightly build or a release (semver tag)
-        condition: $TAG = "nightly-android" || $TAG = "nightly-ios" || $TAG =~ ^[0-9]+\.[0-9]+\.[0-9]
+        condition: $TAG -eq "nightly-android" || $TAG -eq "nightly-ios" || $TAG =~ ^[0-9]+\.[0-9]+\.[0-9]
