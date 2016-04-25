@@ -7,24 +7,20 @@ cache:
         - $HOME/.gradle/wrapper/
         - node_modules/
 env:
-    - BUILD_TYPE=android ARTIFACT=android/app/build/outputs/apk/app-release-unsigned.apk
+    - BUILD_TYPE=android
 # Be a good travis citizen while we don't actually run the build on iOS yet.
-#    - BUILD_TYPE=ios
+#   - BUILD_TYPE=ios
 before_install:
-#    - brew update
-#   - git clone https://github.com/creationix/nvm.git /tmp/.nvm
-#   - source /tmp/.nvm/nvm.sh
-#   - nvm install 5.0
-#   - nvm use --delete-prefix 5.0
-#   - node --version && npm --version
+    - brew update
+    - git clone https://github.com/creationix/nvm.git /tmp/.nvm
+    - source /tmp/.nvm/nvm.sh
+    - nvm install 5.0
+    - nvm use --delete-prefix 5.0
+    - node --version && npm --version
 install:
-# Skip the bootstrap an install for testing
-#    - . build-scripts/bootstrap.sh
+    - . build-scripts/bootstrap.sh
 script:
-# Skip the build fo testing
-#    - ./build-scripts/build.sh
-    - mkdir -p `dirname $ARTIFACT`
-    - touch $ARTIFACT
+    - ./build-scripts/build.sh
     - env
 deploy:
     provider: releases
