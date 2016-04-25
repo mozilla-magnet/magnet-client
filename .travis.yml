@@ -7,7 +7,7 @@ cache:
         - $HOME/.gradle/wrapper/
         - node_modules/
 env:
-    - BUILD_TYPE=android
+    - BUILD_TYPE=android ARTIFACT=android/app/build/outputs/apk/app-release-unsigned.apk
 # Be a good travis citizen while we don't actually run the build on iOS yet.
 #    - BUILD_TYPE=ios
 before_install:
