@@ -23,6 +23,7 @@ install:
 script:
 # Skip the build fo testing
 #    - ./build-scripts/build.sh
+    - mkdir -p `dirname $ARTIFACT`
     - touch $ARTIFACT
     - env
 deploy:
