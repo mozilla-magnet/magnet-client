@@ -1,10 +1,8 @@
 language: objective-c
-before_cache:
-    - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 cache:
     directories:
-        - $HOME/.gradle/caches/
-        - $HOME/.gradle/wrapper/
+#       - $HOME/.gradle/caches/
+#       - $HOME/.gradle/wrapper/
         - node_modules/
 env:
     - BUILD_TYPE=android
