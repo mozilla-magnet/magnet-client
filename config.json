@@ -4,6 +4,14 @@
     {
       "pattern": "^https?\:\/\/?(?:www\.)?facebook\.com\/.+$",
       "url": "http://box.wilsonpage.me/magnet-facebook-adaptor"
+    },
+    {
+      "pattern": "^https?\:\/\/?(?:www\.)?twitter\.com\/.+$",
+      "url": "http://box.wilsonpage.me/magnet-twitter-adaptor"
+    },
+    {
+      "pattern": "^https?:\/\/play\.google\.com\/store\/apps\/details",
+      "url": "http://box.wilsonpage.me/magnet-playstore-adaptor"
     }
   ]
 }
