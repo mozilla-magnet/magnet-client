@@ -71,6 +71,7 @@ function uploadBinary() {
   }).then((release) => {
       return uploadFileToRelease(release, releaseInfo.binaryName, releaseInfo.path);
   }).catch((e) => {
+      // Break error out of Promise chain and throw on main event loop.
       setTimeout(function() {
           throw e;
       }, 0);
@@ -92,11 +93,11 @@ function uploadFileToRelease(release, artifactName, artifactPath) {
           }
         }, function(err, res, body) {
             if (err) {
-                reject(err);
+                return reject(err);
             }
 
             if (res.statusCode < 200 || res.statusCode > 299) {
-                reject(body);
+                return reject(body);
             }
 
             const response = JSON.parse(body);
@@ -104,7 +105,7 @@ function uploadFileToRelease(release, artifactName, artifactPath) {
 
             console.log('Binary uploaded successfully.');
             console.log('  - ', response.browser_download_url);
-            resolve();
+            return resolve();
         });
     });
 }
@@ -125,17 +126,17 @@ function createRelease(options) {
             }
         }, function(err, res, body) {
             if (err) {
-                reject(err);
+                return reject(err);
             }
 
             console.log(body);
 
             if (res.statusCode < 200 || res.statusCode > 299) {
-                reject(body);
+                return reject(body);
             }
 
             console.log("Created release id: ", body.id);
-            resolve({ id: body.id, uploadUrl: body.upload_url });
+            return resolve({ id: body.id, uploadUrl: body.upload_url });
         });
     });
 }
@@ -150,17 +151,17 @@ function tryGetReleaseForTag(tag) {
             }
         }, function(err, res, body) {
             if (err) {
-                reject(err);
+                return reject(err);
             }
 
             if (res.statusCode !== 200) {
                 console.log("Release for tag '", tag, "' not found");
-                resolve(false);
+                return resolve(false);
             }
 
             const parsedBody = JSON.parse(body);
 
-            resolve({ id: parsedBody.id, uploadUrl: parsedBody.upload_url });
+            return resolve({ id: parsedBody.id, uploadUrl: parsedBody.upload_url });
         });
 
     });
