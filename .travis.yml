@@ -16,7 +16,7 @@ before_install:
     - nvm use --delete-prefix 5.0
     - node --version && npm --version
 install:
-    - . build-scripts/bootstrap.sh
+    - source build-scripts/bootstrap.sh
 script:
     - ./build-scripts/build.sh
 after_success:
