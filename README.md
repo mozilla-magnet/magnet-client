@@ -18,5 +18,6 @@
 
 ## Running on iOS
 
-5. Follow the ['running on device' instructions](https://facebook.github.io/react-native/docs/running-on-device-ios.html#content)
+5. Follow the ['running on device' instructions](https://facebook.github.io/react-native/docs/running-on-device-ios.html#content).
+
 If you don't have a team certificate for the Mozilla organization choose your own developer certificate (or create one) and change the bundle indentifier.
