@@ -12,6 +12,10 @@
     {
       "pattern": "^https?:\/\/play\.google\.com\/store\/apps\/details",
       "url": "http://box.wilsonpage.me/magnet-playstore-adaptor"
+    },
+    {
+      "pattern": "^https?:\/\/(?:[^\.]+)\.sched\.org\/venue\/",
+      "url": "https://tengam.org/adaptors/sched/"
     }
   ]
 }
