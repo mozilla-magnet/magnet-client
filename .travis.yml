@@ -1,10 +1,6 @@
 language: objective-c
 cache:
     skip_bundle_clean: true
-    directories:
-        - $HOME/.gradle/caches/
-        - $HOME/.gradle/wrapper/
-        - node_modules/
 env:
     - BUILD_TYPE=android
 # Be a good travis citizen while we don't actually run the build on iOS yet.
