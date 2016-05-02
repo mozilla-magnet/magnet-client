@@ -35,3 +35,6 @@ npm-debug.log
 
 # Never commit a keystore
 *.keystore
+
+# Fastlane
+ios/fastlane/report.xml
