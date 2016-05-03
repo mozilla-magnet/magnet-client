@@ -4,7 +4,7 @@ set -o pipefail
 
 if [[ "$BUILD_TYPE" == "android" ]];then
     cd android
-    ./gradlew assembleRelease | tee
+    ./gradlew assembleRelease --info | tee
     zipalign -c -v 4 $ARTIFACT
 elif [[ "$BUILD_TYPE" == "ios" ]]; then
     cd ios
