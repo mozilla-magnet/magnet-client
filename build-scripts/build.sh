@@ -5,7 +5,7 @@ set -o pipefail
 if [[ "$BUILD_TYPE" == "android" ]];then
     cd android
     ./gradlew assembleRelease | tee
-    zipalign -c -v $ARTIFACT
+    zipalign -c -v 4 $ARTIFACT
 elif [[ "$BUILD_TYPE" == "ios" ]]; then
     cd ios
     echo "TODO: Requires code signing authority to build release"
