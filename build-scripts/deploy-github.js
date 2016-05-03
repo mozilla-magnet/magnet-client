@@ -80,13 +80,19 @@ function uploadBinary() {
 
 function uploadFileToRelease(release, artifactName, artifactPath) {
     return new Promise(function(resolve, reject) {
-        console.log("Uploading file to release...");
+        console.log('Uploading file to release...');
+
+        let contentType = 'application/octet-stream';
+        if (artifactName.endsWith('.apk')) {
+            contentType = 'application/vnd.android.package-archive';
+        }
+
         request.post({
           url: getUploadReleaseAssetUrl(release, artifactName),
           headers: {
             'Authorization': `Token ${githubAuthToken}`,
             'User-Agent': userAgent,
-            'Content-Type': 'application/octet-stream'
+            'Content-Type': contentType
           },
           formData: {
             file: fs.createReadStream(artifactPath)
