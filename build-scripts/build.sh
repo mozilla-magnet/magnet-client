@@ -7,6 +7,11 @@ if [[ "$BUILD_TYPE" == "android" ]];then
     ./gradlew assembleRelease --info | tee
     cd -
     zipalign -c -v 4 $ARTIFACT
+
+    # Hack
+    cp $ARTIFACT ${ARTIFACT}.fixup
+    rm ${ARTIFACT}
+    zip -FFv ${ARTIFACT}.fixup --out $ARTIFACT
 elif [[ "$BUILD_TYPE" == "ios" ]]; then
     cd ios
     echo "TODO: Requires code signing authority to build release"
