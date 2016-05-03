@@ -1,4 +1,4 @@
-package com.magnet;
+package org.mozilla.magnet;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;

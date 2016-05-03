@@ -1,4 +1,4 @@
-package com.magnet;
+package org.mozilla.magnet;
 
 import android.content.Context;
 import android.net.nsd.NsdManager;
