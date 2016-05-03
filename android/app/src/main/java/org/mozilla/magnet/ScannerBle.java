@@ -1,4 +1,4 @@
-package com.magnet;
+package org.mozilla.magnet;
 
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
