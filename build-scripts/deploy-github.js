@@ -82,7 +82,7 @@ function uploadFileToRelease(release, artifactName, artifactPath) {
     return new Promise(function(resolve, reject) {
         console.log('Uploading file to release...');
 
-        let contentType = 'application/octet-stream';
+        var contentType = 'application/octet-stream';
         if (artifactName.endsWith('.apk')) {
             contentType = 'application/vnd.android.package-archive';
         }
