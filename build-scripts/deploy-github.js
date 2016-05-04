@@ -87,31 +87,44 @@ function uploadFileToRelease(release, artifactName, artifactPath) {
             contentType = 'application/vnd.android.package-archive';
         }
 
-        request.post({
-          url: getUploadReleaseAssetUrl(release, artifactName),
-          headers: {
-            'Authorization': `Token ${githubAuthToken}`,
-            'User-Agent': userAgent,
-            'Content-Type': contentType
-          },
-          formData: {
-            file: fs.createReadStream(artifactPath)
-          }
-        }, function(err, res, body) {
-            if (err) {
-                return reject(err);
-            }
+        const fileSize = new Promise((resolve, reject) => {
+            fs.stat(artifactPath, (err, stats) => {
+                if (err) {
+                    return reject(err);
+                }
 
-            if (res.statusCode < 200 || res.statusCode > 299) {
-                return reject(body);
-            }
+                return resolve(stats.size);
+            });
+        });
 
-            const response = JSON.parse(body);
-            console.log(response);
+        fileSize.then((size) => {
+            fs.createReadStream(artifactPath)
+            .pipe(
+                request.post({
+                  url: getUploadReleaseAssetUrl(release, artifactName),
+                  headers: {
+                    'Authorization': `Token ${githubAuthToken}`,
+                    'User-Agent': userAgent,
+                    'Content-Type': contentType,
+                    'Content-Length': size
+                  }
+                }, function(err, res, body) {
+                    if (err) {
+                        return reject(err);
+                    }
 
-            console.log('Binary uploaded successfully.');
-            console.log('  - ', response.browser_download_url);
-            return resolve();
+                    if (res.statusCode < 200 || res.statusCode > 299) {
+                        return reject(body);
+                    }
+
+                    const response = JSON.parse(body);
+                    console.log(response);
+
+                    console.log('Binary uploaded successfully.');
+                    console.log('  - ', response.browser_download_url);
+                    return resolve();
+                })
+            );
         });
     });
 }
