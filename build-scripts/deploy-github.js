@@ -7,7 +7,7 @@ const fs = require('fs'),
 
 const repoInfo = {
     org: 'mozilla-magnet',
-    repo: 'magnet',
+    repo: 'magnet-client',
 };
 
 const userAgent = "mozmagnet Release-Agent";
