@@ -1,12 +1,14 @@
 package com.magnet.webview;
 
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.WebView;
 
 import com.facebook.react.bridge.LifecycleEventListener;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 import javax.annotation.Nullable;
 
@@ -15,7 +17,6 @@ import javax.annotation.Nullable;
  */
 public class MagnetWebView extends WebView implements LifecycleEventListener {
     String TAG = "MagnetWebView";
-    private @Nullable String injectedJS;
     private boolean layoutSet;
 
     /**
@@ -27,6 +28,8 @@ public class MagnetWebView extends WebView implements LifecycleEventListener {
      */
     public MagnetWebView(ThemedReactContext reactContext) {
         super(reactContext);
+        getSettings().setJavaScriptEnabled(true);
+        getSettings().setDomStorageEnabled(true);
     }
 
     @Override
@@ -42,21 +45,6 @@ public class MagnetWebView extends WebView implements LifecycleEventListener {
     @Override
     public void onHostDestroy() {
         cleanupCallbacksAndDestroy();
-    }
-
-    public void setInjectedJavaScript(@Nullable String js) {
-        injectedJS = js;
-    }
-
-    public void callInjectedJavaScript() {
-        if (!canRunJS(injectedJS)) return;
-        runJS(injectedJS);
-    }
-
-    private boolean canRunJS(String js) {
-        return getSettings().getJavaScriptEnabled() &&
-                injectedJS != null &&
-                !TextUtils.isEmpty(js);
     }
 
     public void cleanupCallbacksAndDestroy() {
@@ -79,15 +67,10 @@ public class MagnetWebView extends WebView implements LifecycleEventListener {
         layoutSet = true;
     }
 
-    private void runJS(String script) {
-        Log.d(TAG, "run js:" + script);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            evaluateJavascript(script, null);
-        } else {
-            loadUrl("javascript:(function() {\n" + script + ";\n})();");
-        }
+    public void dispatchEvent(String name, WritableMap event) {
+        ((ReactContext) getContext())
+                .getJSModule(RCTEventEmitter.class)
+                .receiveEvent(getId(), name, event);
     }
-
-    public void dispatchEvent() {}
 
 }
