@@ -1,6 +1,5 @@
-package com.magnet.webview;
+package org.mozilla.magnet.webview;
 
-import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.WebView;
 
@@ -9,8 +8,6 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
-
-import javax.annotation.Nullable;
 
 /**
  * Created by wilsonpage on 03/05/2016.

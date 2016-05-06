@@ -1,4 +1,4 @@
-package com.magnet.webview;
+package org.mozilla.magnet.webview;
 
 import javax.annotation.Nullable;
 
@@ -118,5 +118,10 @@ public class MagnetWebViewManager extends SimpleViewManager<WebView> {
         }
 
         view.loadUrl(BLANK_URL);
+    }
+
+    @ReactProp(name = "scrollEnabled")
+    public void setScrollEnabled(WebView view, boolean enabled) {
+
     }
 }

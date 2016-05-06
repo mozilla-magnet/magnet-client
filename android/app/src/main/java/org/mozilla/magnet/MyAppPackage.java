@@ -5,7 +5,7 @@ import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
-import com.magnet.webview.MagnetWebViewManager;
+import org.mozilla.magnet.webview.MagnetWebViewManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
