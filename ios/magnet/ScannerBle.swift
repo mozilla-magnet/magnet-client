@@ -8,21 +8,20 @@
 
 import Foundation
 
-@objc(ScannerBle)
-class ScannerBle: NSObject, BeaconScannerDelegate {
+@objc(ScannerBle) class ScannerBle: NSObject, BeaconScannerDelegate {
   
   var bridge: RCTBridge!
   var scanner: BeaconScanner!
   
   @objc func start() -> Void {
-    NSLog("Starting btle scanner");
+    NSLog("starting scanner");
     self.scanner = BeaconScanner();
     self.scanner.delegate = self
     self.scanner.start();
   }
   
   func notify(urls: Array<String>) {
-    NSLog("Notifying JS context for the following urls");
+    NSLog("notifying js context for the following urls");
     for url in urls {
       NSLog("%@", url);
     }
@@ -30,7 +29,7 @@ class ScannerBle: NSObject, BeaconScannerDelegate {
   }
   
   @objc func stop() -> Void {
-    NSLog("Stoping scanner");
+    NSLog("stopping scanner");
     self.scanner.stop();
   }
   
