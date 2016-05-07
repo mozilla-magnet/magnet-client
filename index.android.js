@@ -11,14 +11,24 @@ var {
   StyleSheet,
   Component,
   UIManager,
-  Platform
+  Platform,
+  View,
+  StatusBar
 } = React;
 
 class App extends Component {
   render() {
-    return <ListView style={styles.list}/>;
+    return (<View>
+        <StatusBar
+          hidden={statusBar.hidden}/>
+        <ListView style={styles.list}/>
+        </View>);
   }
 }
+
+const statusBar = {
+  hidden: true
+};
 
 const styles = StyleSheet.create({
   list: {
