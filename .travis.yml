@@ -15,6 +15,7 @@ before_install:
 install:
     - source build-scripts/bootstrap.sh
 script:
+    - npm test
     - ./build-scripts/build.sh
 after_success:
     - ./build-scripts/deploy.sh
