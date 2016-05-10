@@ -1,22 +1,16 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- */
-
 var ListView = require('./lib/views/list');
 var React = require('react-native');
 
 var {
-  AppRegistry,
   StyleSheet,
   Component,
   UIManager,
-  Platform
+  AppRegistry
 } = React;
 
 class App extends Component {
   render() {
-    return <ListView style={styles.list}/>;
+    return  <ListView style={styles.list}/>;
   }
 }
 
@@ -27,8 +21,6 @@ const styles = StyleSheet.create({
 });
 
 // layout-animations are turned off on android by default
-if (Platform.OS === 'android') {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-}
+UIManager.setLayoutAnimationEnabledExperimental(true);
 
 AppRegistry.registerComponent('Magnet', () => App);
