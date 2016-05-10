@@ -1,26 +1,24 @@
-var ListView = require('./lib/views/list');
-var React = require('react-native');
+
+/**
+ * Dependencies
+ */
+
+var ReactNative = require('react-native');
+var App = require('./lib/views/app');
+var React = require('react');
 
 var {
-  StyleSheet,
-  Component,
   UIManager,
   AppRegistry
-} = React;
+} = ReactNative;
 
-class App extends Component {
+class AndroidApp extends React.Component {
   render() {
-    return  <ListView style={styles.list}/>;
+    return <App/>;
   }
 }
-
-const styles = StyleSheet.create({
-  list: {
-    flex: 1
-  }
-});
 
 // layout-animations are turned off on android by default
 UIManager.setLayoutAnimationEnabledExperimental(true);
 
-AppRegistry.registerComponent('Magnet', () => App);
+AppRegistry.registerComponent('Magnet', () => AndroidApp);

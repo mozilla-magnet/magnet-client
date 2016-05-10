@@ -1,32 +1,20 @@
-var ListView = require('./lib/views/list');
-var React = require('react-native');
 
-var {
-  AppRegistry,
-  StyleSheet,
-  Component,
-  View,
-  StatusBar
-} = React;
+/**
+ * Dependencies
+ */
 
-class App extends Component {
+var ReactNative = require('react-native');
+var App = require('./lib/views/app');
+var React = require('react');
+
+var { AppRegistry } = ReactNative;
+
+class IOSApp extends React.Component {
   render() {
-    return  (
-      <View style={styles.container}>
-        <ListView style={styles.list}/>
-      </View>);
+    return (
+      <App style={{paddingTop: 20}}/>
+    );
   }
 }
 
-const styles = StyleSheet.create({
-  list: {
-    flex: 1
-  },
-  container: {
-    flex: 1,
-    paddingTop: 20,
-    backgroundColor: '#f2f2f2'
-  }
-});
-
-AppRegistry.registerComponent('Magnet', () => App);
+AppRegistry.registerComponent('Magnet', () => IOSApp);
