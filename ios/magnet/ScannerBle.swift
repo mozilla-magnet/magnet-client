@@ -9,19 +9,18 @@
 import Foundation
 
 @objc(ScannerBle) class ScannerBle: NSObject, BeaconScannerDelegate {
-  
   var bridge: RCTBridge!
   var scanner: BeaconScanner!
   
   @objc func start() -> Void {
-    NSLog("starting scanner");
-    self.scanner = BeaconScanner();
+    print("starting scanner")
+    self.scanner = BeaconScanner()
     self.scanner.delegate = self
-    self.scanner.start();
+    self.scanner.start()
   }
   
   func notify(urls: Array<String>) {
-    NSLog("notifying js context for the following urls");
+    print("notifying js context for the following urls");
     for url in urls {
       NSLog("%@", url);
     }
