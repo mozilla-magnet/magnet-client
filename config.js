@@ -1,5 +1,6 @@
-{
+module.exports = {
   "metadataServiceUrl": "https://tengam.org/api/v1/metadata",
+
   "adaptors": [
     {
       "pattern": "^https?\:\/\/?(?:www\.)?facebook\.com\/.+$",
@@ -21,7 +22,7 @@
 
   "injectTestUrls": false,
   "testUrls": [
-    "https://facebook.com/mozilla');",
+    "https://facebook.com/mozilla",
     "https://twitter.com/wilsonpage",
     "http://smc2016.sched.org/venue/Lecture+Theatre",
     "http://www.bbc.co.uk/news",

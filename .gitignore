@@ -21,6 +21,7 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+magnet.xcscheme
 
 # Android/IJ
 #
@@ -33,8 +34,8 @@ local.properties
 node_modules/
 npm-debug.log
 
-# Never commit a keystore
-*.keystore
-
-# Fastlane
-ios/fastlane/report.xml
+# BUCK
+buck-out/
+\.buckd/
+android/app/libs
+android/keystores/debug.keystore
