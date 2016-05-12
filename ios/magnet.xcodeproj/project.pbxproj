@@ -23,7 +23,7 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		555800971CBE5F7800A21868 /* ScannerBle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555800961CBE5F7800A21868 /* ScannerBle.swift */; };
 		555800A31CBE683D00A21868 /* BeaconScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555800A21CBE683D00A21868 /* BeaconScanner.swift */; };
-		555800A71CBE6A1900A21868 /* ScannerBleBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 555800A61CBE6A1900A21868 /* ScannerBleBridge.m */; };
+		555800A71CBE6A1900A21868 /* ScannerBleExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 555800A61CBE6A1900A21868 /* ScannerBleExport.m */; };
 		55F7DA701CD0C750005E3865 /* FiraSans-Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 55F7DA6D1CD0C750005E3865 /* FiraSans-Book.ttf */; };
 		55F7DA711CD0C750005E3865 /* FiraSans-BookItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 55F7DA6E1CD0C750005E3865 /* FiraSans-BookItalic.ttf */; };
 		55F7DA721CD0C750005E3865 /* FiraSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 55F7DA6F1CD0C750005E3865 /* FiraSans-LightItalic.ttf */; };
@@ -31,6 +31,8 @@
 		8D5722491CDCB16400480505 /* RNMagnetWebViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5722461CDCB16400480505 /* RNMagnetWebViewManager.swift */; };
 		8D57224A1CDCB16400480505 /* RNMagnetWebViewManagerExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5722471CDCB16400480505 /* RNMagnetWebViewManagerExport.m */; };
 		8D57224B1CDCB16400480505 /* RNMagnetWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5722481CDCB16400480505 /* RNMagnetWebView.swift */; };
+		8DA0E3571CE33A5300CE54D9 /* ScannerNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0E3561CE33A5300CE54D9 /* ScannerNetwork.swift */; };
+		8DA0E3591CE33AE300CE54D9 /* ScannerNetworkExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0E3581CE33AE200CE54D9 /* ScannerNetworkExport.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,7 +138,7 @@
 		555800951CBE5F7800A21868 /* Magnet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Magnet-Bridging-Header.h"; sourceTree = "<group>"; };
 		555800961CBE5F7800A21868 /* ScannerBle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScannerBle.swift; path = magnet/ScannerBle.swift; sourceTree = "<group>"; };
 		555800A21CBE683D00A21868 /* BeaconScanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconScanner.swift; sourceTree = "<group>"; };
-		555800A61CBE6A1900A21868 /* ScannerBleBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScannerBleBridge.m; sourceTree = "<group>"; };
+		555800A61CBE6A1900A21868 /* ScannerBleExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScannerBleExport.m; sourceTree = "<group>"; };
 		55F7DA6D1CD0C750005E3865 /* FiraSans-Book.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FiraSans-Book.ttf"; path = "assets/fonts/FiraSans-Book.ttf"; sourceTree = "<group>"; };
 		55F7DA6E1CD0C750005E3865 /* FiraSans-BookItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FiraSans-BookItalic.ttf"; path = "assets/fonts/FiraSans-BookItalic.ttf"; sourceTree = "<group>"; };
 		55F7DA6F1CD0C750005E3865 /* FiraSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FiraSans-LightItalic.ttf"; path = "assets/fonts/FiraSans-LightItalic.ttf"; sourceTree = "<group>"; };
@@ -145,6 +147,8 @@
 		8D5722461CDCB16400480505 /* RNMagnetWebViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNMagnetWebViewManager.swift; sourceTree = "<group>"; };
 		8D5722471CDCB16400480505 /* RNMagnetWebViewManagerExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNMagnetWebViewManagerExport.m; sourceTree = "<group>"; };
 		8D5722481CDCB16400480505 /* RNMagnetWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNMagnetWebView.swift; sourceTree = "<group>"; };
+		8DA0E3561CE33A5300CE54D9 /* ScannerNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannerNetwork.swift; sourceTree = "<group>"; };
+		8DA0E3581CE33AE200CE54D9 /* ScannerNetworkExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScannerNetworkExport.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -334,8 +338,10 @@
 			isa = PBXGroup;
 			children = (
 				555800961CBE5F7800A21868 /* ScannerBle.swift */,
-				555800A61CBE6A1900A21868 /* ScannerBleBridge.m */,
+				555800A61CBE6A1900A21868 /* ScannerBleExport.m */,
 				555800A21CBE683D00A21868 /* BeaconScanner.swift */,
+				8DA0E3561CE33A5300CE54D9 /* ScannerNetwork.swift */,
+				8DA0E3581CE33AE200CE54D9 /* ScannerNetworkExport.m */,
 			);
 			name = Scanner;
 			sourceTree = "<group>";
@@ -594,9 +600,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				555800A71CBE6A1900A21868 /* ScannerBleBridge.m in Sources */,
+				555800A71CBE6A1900A21868 /* ScannerBleExport.m in Sources */,
 				555800A31CBE683D00A21868 /* BeaconScanner.swift in Sources */,
 				8D57224A1CDCB16400480505 /* RNMagnetWebViewManagerExport.m in Sources */,
+				8DA0E3591CE33AE300CE54D9 /* ScannerNetworkExport.m in Sources */,
+				8DA0E3571CE33A5300CE54D9 /* ScannerNetwork.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				555800971CBE5F7800A21868 /* ScannerBle.swift in Sources */,
 				8D57224B1CDCB16400480505 /* RNMagnetWebView.swift in Sources */,
