@@ -10,6 +10,8 @@ fi
 # copy the TRAVIS_TAG to the more generic 'TAG' var
 export TAG=$TRAVIS_TAG
 
+npm install -g react-native-cli
+
 # Install project
 npm install
 
