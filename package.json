@@ -30,7 +30,8 @@
     "react-native-mock": "^0.1.0",
     "request": "^2.72.0",
     "sinon": "^1.17.4",
-    "uri-template": "^1.0.0"
+    "uri-template": "^1.0.0",
+    "react-native-cli": "*"
   },
   "browser": {
     "stream": "./node_modules/stream/index.js",
