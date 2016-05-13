@@ -1,6 +1,6 @@
 language: android
 env:
-    - BUILD_TYPE=android
+    - BUILD_TYPE=android TERM=dumb
 android:
     components:
         - platform-tools
