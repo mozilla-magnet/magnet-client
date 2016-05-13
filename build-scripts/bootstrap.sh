@@ -12,3 +12,5 @@ export TAG=$TRAVIS_TAG
 
 # Install project
 npm install
+
+export PATH=$PATH:./node_modules/.bin
