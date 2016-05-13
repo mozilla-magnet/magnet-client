@@ -1,8 +1,0 @@
-#!/usr/bin/env expect
-set timeout -1;
-set command [lindex $argv 0];
-eval spawn $command;
-expect {
-    "Do you accept the license" { exp_send "y\r" ; exp_continue }
-    eof
-}
