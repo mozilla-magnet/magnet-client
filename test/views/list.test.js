@@ -40,7 +40,108 @@ describe('<ListView>', function() {
   describe('empty and loading', function() {
     it('renders text warning', function() {
       this.wrapper = enzyme.shallow(<ListView items={[]} loading={true}/>);
-      assert(!this.wrapper.contains(<Text>Nothing found</Text>));
+      expect(this.wrapper).to.not.contain('Nothing found');
     });
   });
+
+  describe('layout', function() {
+    beforeEach(function() {
+      this.onItemSwipedCallback = sinon.spy();
+
+      // render test subject
+      var wrapper = enzyme.shallow(<ListView
+        items={[]}
+        onItemSwiped={this.onItemSwipedCallback}
+      />);
+
+      this.scrollView = wrapper.find('ScrollView');
+      this.contentView = wrapper.findWhere(el => el.props().testId === 'content');
+      this.instance = wrapper.instance();
+
+      fakeLayoutEvent(this.scrollView, {
+        width: 300,
+        height: 500
+      });
+
+      fakeLayoutEvent(this.contentView, {
+        width: 300,
+        height: 1200
+      });
+    });
+
+    it('can return the maxScrollY()', function() {
+      assert.equal(this.instance.getMaxScrollY(), 700);
+    });
+
+    describe('scroll to bottom', function() {
+      beforeEach(function() {
+        var maxScrollY = this.instance.getMaxScrollY();
+        var onScroll = this.scrollView.props().onScroll;
+        var y = 0
+
+        // fake scroll
+        while (++y <= maxScrollY) {
+          onScroll({
+            nativeEvent: {
+              contentOffset: { x: 0, y: y }
+            }
+          });
+        }
+      });
+
+      it('stores scrollY value', function() {
+        assert(this.instance.scrollY);
+        assert.equal(this.instance.scrollY, this.instance.getMaxScrollY());
+      });
+
+      it('can return the maxScrollY()', function() {
+        assert.equal(this.instance.getMaxScrollY(), 700);
+      });
+
+      describe('item swiped', function() {
+        beforeEach(function() {
+          this.onItemSwiped = this.instance.onItemSwiped;
+          this.fakeItem = { height: 100 };
+          sinon.stub(this.instance, 'scrollTo');
+
+        });
+
+        describe('needs scroll adjustment', function() {
+          beforeEach(function() {
+            this.onItemSwiped.call(this.instance, this.fakeItem);
+          });
+
+          it('adjusts the scroll to accommodate for missing item', function() {
+            sinon.assert.calledOnce(this.instance.scrollTo);
+            sinon.assert.calledWith(this.instance.scrollTo, 600);
+          });
+
+          it('calls props.onItemSwiped() callback', function() {
+            sinon.assert.calledOnce(this.onItemSwipedCallback);
+          });
+        })
+
+        describe('does not need scroll adjustment', function() {
+          beforeEach(function() {
+            this.instance.scrollY = 0;
+            this.onItemSwiped.call(this.instance, this.fakeItem);
+          });
+
+          it('does not adjust scroll when viewport is not within subtracted scroll area', function() {
+            sinon.assert.notCalled(this.instance.scrollTo);
+          });
+
+          it('calls props.onItemSwiped() callback', function() {
+            sinon.assert.calledOnce(this.onItemSwipedCallback);
+          });
+        });
+      });
+    });
+  });
+
+  function fakeLayoutEvent(instance, layout) {
+    instance.props().onLayout({
+      nativeEvent: { layout }
+    });
+  }
 });

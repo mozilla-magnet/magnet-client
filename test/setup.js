@@ -6,6 +6,7 @@
 const babelConfig = require('../package.json').babel;
 const register = require('babel-core/register');
 const chaiEnzyme = require('chai-enzyme');
+const sinon = require('sinon');
 const path = require('path');
 const chai = require('chai');
 const fs = require('fs');
@@ -36,9 +37,19 @@ const React = require('react-native')
 // add modules missing from react-native-mock
 React.Alert = { alert: React.View };
 React.UIManager.setLayoutAnimationEnabledExperimental = () => {};
-React.NavigationExperimental = {
-  AnimatedView: React.View
+
+// override as default mock was throwing
+React.Animated.decay = function() {
+  this.decay._start = sinon.stub()
+  return { start: this.decay._start };
+}
+
+React.PanResponder = {
+  create: config => {
+    return { panHandlers: config }
+  }
 };
+
 
 /**
  * HACK: support .android.js and .ios.js
