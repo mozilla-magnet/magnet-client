@@ -20,7 +20,7 @@ module.exports = {
     }
   ],
 
-  "injectTestUrls": true,
+  "injectTestUrls": false,
   "testUrls": [
     "https://facebook.com/mozilla",
     "https://twitter.com/wilsonpage",
