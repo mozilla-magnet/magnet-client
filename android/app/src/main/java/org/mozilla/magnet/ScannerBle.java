@@ -1,15 +1,18 @@
 package org.mozilla.magnet;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothAdapter.LeScanCallback;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -18,14 +21,19 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import org.json.JSONArray;
 
-public class ScannerBle extends ReactContextBaseJavaModule {
-    String TAG = "ScannerBle";
+public class ScannerBle extends ReactContextBaseJavaModule implements ActivityEventListener {
+    private static final String TAG = "ScannerBle";
+    private static final int REQUEST_ENABLE_BT = 99;
+
     BluetoothAdapter bluetoothAdapter;
-    Context mContext;
+    final ReactApplicationContext mContext;
+
 
     public ScannerBle(ReactApplicationContext context) {
         super(context);
         mContext = context;
+        mContext.addActivityEventListener(this);
+
         final BluetoothManager bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
         bluetoothAdapter = bluetoothManager.getAdapter();
     }
@@ -39,6 +47,18 @@ public class ScannerBle extends ReactContextBaseJavaModule {
     @ReactMethod
     public void start() {
         Log.d(TAG, "start");
+
+        if (bluetoothAdapter == null) {
+            // Device does not support bluetooth.
+            return;
+        }
+
+        if (!bluetoothAdapter.isEnabled()) {
+            Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            mContext.startActivityForResult(enableBluetoothIntent, REQUEST_ENABLE_BT, null);
+            return;
+        }
+
         bluetoothAdapter.startLeScan(onFound);
     }
 
@@ -71,5 +91,12 @@ public class ScannerBle extends ReactContextBaseJavaModule {
         getReactApplicationContext()
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(name, data);
+    }
+
+    @Override
+    public void onActivityResult(int aRequestCode, int aResultCode, Intent aIntent) {
+        if (aRequestCode == REQUEST_ENABLE_BT && aResultCode == Activity.RESULT_OK) {
+            this.start();
+        }
     }
 }
