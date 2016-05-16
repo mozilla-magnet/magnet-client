@@ -4,7 +4,7 @@ set -o pipefail
 
 if [[ "$BUILD_TYPE" == "android" ]];then
     echo "Building for android"
-    ./build-scripts/android/build.sh
+    source ./build-scripts/android/build.sh
 elif [[ "$BUILD_TYPE" == "ios" ]]; then
     echo "Building for ios"
     cd ios
@@ -13,5 +13,4 @@ elif [[ "$BUILD_TYPE" == "ios" ]]; then
     cd -
 else
     echo "Unknown build type"
-    exit -1
 fi
