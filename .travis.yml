@@ -26,6 +26,7 @@ install:
     - source build-scripts/bootstrap.sh
 script:
     - npm test
+    - env
     - source ./build-scripts/build.sh
 after_success:
     - source ./build-scripts/deploy.sh
