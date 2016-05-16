@@ -27,11 +27,17 @@ import Foundation
   }
   
   func netServiceBrowser(aNetServiceBrowser: NSNetServiceBrowser, didFindService service: NSNetService, moreComing: Bool) {
+    guard isUrl(service.name) else { return }
     print("found service: \(service.name)")
     notify(service.name);
   }
   
   func netServiceBrowser(aNetServiceBrowser: NSNetServiceBrowser, didRemoveService aNetService: NSNetService, moreComing: Bool) {
     print("lost service: \(aNetService.name)")
+  }
+  
+  private func isUrl(url: String) -> Bool {
+    guard let url = NSURL(string: url) else { return false }
+    return !url.scheme.isEmpty
   }
 }
