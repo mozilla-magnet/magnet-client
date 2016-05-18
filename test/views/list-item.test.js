@@ -23,7 +23,8 @@ describe('<ListItemView>', function() {
     this.itemData = {
       title: 'title',
       description: 'description',
-      url: 'http://mozilla.org'
+      url: 'http://goo.gl/abc123',
+      unadaptedUrl: 'http://mozilla.org'
     };
 
     this.onGestureEnd = sinon.spy();
@@ -195,7 +196,7 @@ describe('<ListItemView>', function() {
       });
 
       it('navigates to url when static item pressed', function() {
-        sinon.assert.calledWith(Linking.openURL, this.itemData.url);
+        sinon.assert.calledWith(Linking.openURL, this.itemData.unadaptedUrl);
       });
     });
 
