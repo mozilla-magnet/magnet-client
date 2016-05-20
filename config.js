@@ -28,6 +28,7 @@ module.exports = {
     "http://www.bbc.co.uk/news",
     "https://www.youtube.com/watch?v=sBG8O430uOg",
     // "https://github.com/wilsonpage",
+    "https://codepen.io/mnmxmx/pen/XdwooQ",
     "https://play.google.com/store/apps/details?id=org.mozilla.firefox"
   ]
 }
