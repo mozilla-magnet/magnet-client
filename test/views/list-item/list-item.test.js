@@ -4,7 +4,7 @@
  * Dependencies
  */
 
-const ListItemView = require('../../lib/views/list-item');
+const ListItemView = require('../../../lib/views/list-item');
 const ReactNative = require('react-native');
 const assert = require('assert');
 const enzyme = require('enzyme');
