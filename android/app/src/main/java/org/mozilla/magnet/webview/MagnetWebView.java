@@ -27,6 +27,9 @@ public class MagnetWebView extends WebView implements LifecycleEventListener {
         super(reactContext);
         getSettings().setJavaScriptEnabled(true);
         getSettings().setDomStorageEnabled(true);
+
+        // prevents 1px padding in some embeds (eg. youtube)
+        getSettings().setUseWideViewPort(true);
     }
 
     @Override
