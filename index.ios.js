@@ -4,15 +4,25 @@
  */
 
 var ReactNative = require('react-native');
+var theme = require('./config').theme;
 var App = require('./lib/views/app');
 var React = require('react');
 
-var { AppRegistry } = ReactNative;
+var {
+  AppRegistry,
+  View
+} = ReactNative;
 
 class IOSApp extends React.Component {
   render() {
     return (
-      <App style={{paddingTop: 20}}/>
+      <View style={{
+        backgroundColor: theme.colorBackground,
+        paddingTop: 20,
+        flex: 1
+      }}>
+        <App/>
+      </View>
     );
   }
 }

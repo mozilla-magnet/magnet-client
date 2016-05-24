@@ -19,5 +19,9 @@
     "browser": true,
     "commonjs": true,
     "es6": true
+  },
+
+  "rules": {
+    "comma-dangle": ["always-multiline"]
   }
 }

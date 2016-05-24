@@ -25,21 +25,21 @@ describe('<ListView>', function() {
   describe('populated', function() {
     it('renders a list item view for each', function() {
       var items = [{ id: 1 }, { id: 2 }, { id: 3 }];
-      this.wrapper = enzyme.shallow(<ListView items={items} loading={false}/>);
+      this.wrapper = enzyme.shallow(<ListView items={items} scanning={false}/>);
       expect(this.wrapper.find('ListItem')).to.have.length(3);
     });
   });
 
-  describe('empty and not-loading', function() {
+  describe('empty and not-scanning', function() {
     it('renders text warning', function() {
-      this.wrapper = enzyme.shallow(<ListView items={[]} loading={false}/>);
+      this.wrapper = enzyme.shallow(<ListView items={[]} scanning={false}/>);
       expect(this.wrapper).to.contain('Nothing found');
     });
   });
 
-  describe('empty and loading', function() {
+  describe('empty and scanning', function() {
     it('renders text warning', function() {
-      this.wrapper = enzyme.shallow(<ListView items={[]} loading={true}/>);
+      this.wrapper = enzyme.shallow(<ListView items={[]} scanning={true}/>);
       expect(this.wrapper).to.not.contain('Nothing found');
     });
   });
