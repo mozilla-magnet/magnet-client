@@ -20,6 +20,11 @@ module.exports = {
     }
   ],
 
+  theme: {
+    colorBackground: '#f2f2f2',
+    colorPrimary: '#00A2D4'
+  },
+
   "injectTestUrls": false,
   "testUrls": [
     "https://facebook.com/mozilla",
