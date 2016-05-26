@@ -19,8 +19,8 @@ cache:
 before_install:
     - git clone https://github.com/creationix/nvm.git /tmp/.nvm
     - source /tmp/.nvm/nvm.sh
-    - nvm install 5.0
-    - nvm use --delete-prefix 5.0
+    - nvm install 6.0
+    - nvm use --delete-prefix 6.0
     - node --version && npm --version
 install:
     - source build-scripts/bootstrap.sh

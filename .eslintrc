@@ -9,19 +9,19 @@
   ],
 
   "parserOptions": {
-    sourceType": "module",
+    "sourceType": "module",
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true
     }
+  },
+
+  "rules": {
+    "comma-dangle": ["warn", "only-multiline"]
   },
 
   "env": {
     "browser": true,
     "commonjs": true,
     "es6": true
-  },
-
-  "rules": {
-    "comma-dangle": ["always-multiline"]
   }
 }
