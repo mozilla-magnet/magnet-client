@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 const fs = require('fs'),
-      os = require('os'),
       request = require('request'),
       uritemplate  = require('uri-template'),
       path = require('path');
@@ -12,7 +11,10 @@ const repoInfo = {
 
 const userAgent = "mozmagnet Release-Agent";
 
-const githubAuthToken = process.env.GITHUB_AUTH_TOKEN;
+/* eslint "no-warning-comments": [1, { "terms": ["todo", "fixme"] }] */
+/* eslint-disable no-undef */
+const githubAuthToken = process.env.GITHUB_AUTH_TOKEN; //ToDo Define process
+/* eslint-enable no-undef */
 
 const rootUrl = getRepoUrl();
 
@@ -34,20 +36,19 @@ function getUploadReleaseAssetUrl(release, binaryName) {
 }
 
 function getReleaseInfo() {
-    const artifact = process.env.ARTIFACT;
+    const artifact = process.env.ARTIFACT; // eslint-disable-line no-undef
     if (!artifact) {
         throw new Error("No ARTIFACT environment variable");
     }
 
-    const tag = process.env.TAG;
+    const tag = process.env.TAG; // eslint-disable-line no-undef
     if (!tag) {
         throw new Error("No TAG environment variable");
     }
-
     return {
         binaryName: path.basename(artifact),
         path: artifact,
-        tag: process.env.TAG
+        tag: process.env.TAG // eslint-disable-line no-undef
     };
 }
 
@@ -184,13 +185,6 @@ function tryGetReleaseForTag(tag) {
         });
 
     });
-}
-
-
-function throwFormattedError (err) {
-  throw new Error([
-    'Error uploading release asset.',
-    'The server returned:', "", err].join(os.EOL));
 }
 
 uploadBinary();

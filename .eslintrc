@@ -16,7 +16,8 @@
   },
 
   "rules": {
-    "comma-dangle": ["warn", "only-multiline"]
+    "comma-dangle": ["warn", "only-multiline"],
+    "no-console": 0
   },
 
   "env": {
