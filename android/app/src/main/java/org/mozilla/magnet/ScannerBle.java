@@ -53,7 +53,8 @@ public class ScannerBle extends ReactContextBaseJavaModule implements ActivityEv
             return;
         }
 
-        if (!bluetoothAdapter.isEnabled()) {
+        // Try and start bluetooth
+        if (!isBluetoothEnabled()) {
             Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             mContext.startActivityForResult(enableBluetoothIntent, REQUEST_ENABLE_BT, null);
             return;
@@ -66,7 +67,16 @@ public class ScannerBle extends ReactContextBaseJavaModule implements ActivityEv
     @ReactMethod
     public void stop() {
         Log.d(TAG, "stop");
+        if (!isBluetoothEnabled()) {
+            // Device does not support bluetooth, or is not enabled
+            return;
+        }
+
         bluetoothAdapter.stopLeScan(onFound);
+    }
+
+    private boolean isBluetoothEnabled() {
+        return bluetoothAdapter != null && bluetoothAdapter.isEnabled();
     }
 
     private LeScanCallback onFound = new LeScanCallback() {
