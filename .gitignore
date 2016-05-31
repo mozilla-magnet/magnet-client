@@ -39,5 +39,5 @@ buck-out/
 android/app/libs
 android/keystores/debug.keystore
 
-# Gradel
+# Gradle
 *.iml
