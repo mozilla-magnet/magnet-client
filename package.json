@@ -19,27 +19,22 @@
   },
   "devDependencies": {
     "babel-core": "^6.8.0",
-    "babel-preset-airbnb": "^2.0.0",
-    "babel-preset-react-native": "^1.7.0",
+    "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "chai": "^3.5.0",
     "chai-enzyme": "^0.4.2",
     "enzyme": "^2.3.0",
     "eslint-plugin-react": "^4.2.3",
-    "mocha": "^2.4.5",
+    "mocha": "^2.5.3",
+    "module-replace": "github:wilsonpage/module-replace",
     "react-dom": "^0.14.0",
+    "react-native-cli": "*",
     "react-native-mock": "^0.1.0",
     "request": "^2.72.0",
     "sinon": "^1.17.4",
-    "uri-template": "^1.0.0",
-    "react-native-cli": "*"
+    "uri-template": "^1.0.0"
   },
   "browser": {
     "stream": "./node_modules/stream/index.js",
     "buffer": "./node_modules/buffer/index.js"
-  },
-  "babel": {
-    "presets": [
-      "react-native"
-    ]
   }
 }

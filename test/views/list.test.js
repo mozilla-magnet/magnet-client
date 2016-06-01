@@ -5,12 +5,13 @@
  */
 
 const ListView = require('../../lib/views/list');
-const ReactNative = require('react-native');
 const assert = require('assert');
 const enzyme = require('enzyme');
 const sinon = require('sinon');
 const React = require('react');
-const Text = ReactNative.Text;
+
+const LIST_VIEW_WIDTH = 300;
+const LIST_VIEW_HEIGHT = 500;
 
 describe('<ListView>', function() {
   beforeEach(function() {
@@ -49,22 +50,23 @@ describe('<ListView>', function() {
       this.onItemSwipedCallback = sinon.spy();
 
       // render test subject
-      var wrapper = enzyme.shallow(<ListView
-        items={[]}
+      this.wrapper = enzyme.shallow(<ListView
+        items={[{ id: 1 }, { id: 2 }, { id: 3 }]}
         onItemSwiped={this.onItemSwipedCallback}
+        contentOffsetY={50}
       />);
 
-      this.scrollView = wrapper.find('ScrollView');
-      this.contentView = wrapper.findWhere(el => el.props().testId === 'content');
-      this.instance = wrapper.instance();
+      this.scrollView = this.wrapper.find('ScrollView');
+      this.contentView = this.wrapper.findWhere(el => el.props().testId === 'content');
+      this.instance = this.wrapper.instance();
 
       fakeLayoutEvent(this.scrollView, {
-        width: 300,
-        height: 500
+        width: LIST_VIEW_WIDTH,
+        height: LIST_VIEW_HEIGHT
       });
 
       fakeLayoutEvent(this.contentView, {
-        width: 300,
+        width: LIST_VIEW_WIDTH,
         height: 1200
       });
     });
@@ -137,11 +139,112 @@ describe('<ListView>', function() {
         });
       });
     });
+
+    describe('.expand()', function() {
+      beforeEach(function() {
+        this.sinon.spy(this.instance, 'setState');
+        return this.instance.expand({ props: { id: 1 }})
+          .then(() => {
+            this.stateUpdate = this.instance.setState.lastCall.args[0];
+          });
+      });
+
+      it('it updates the `expandedItem` state', function() {
+        assert.equal(this.stateUpdate.expandedItem.id, 1);
+        assert.equal(this.stateUpdate.expandedItem.viewportOffsetY, 100);
+      });
+
+      it('prevents the container scrolling', function() {
+        assert.equal(this.stateUpdate.scrollable, false);
+      });
+
+      describe('expanded', function() {
+        beforeEach(function() {
+          this.wrapper.setState(this.stateUpdate);
+        });
+
+        it('adds padding-top to expanded item to push previous item up', function() {
+          var expandedItem = this.wrapper.find('[testId="item-wrapper"]').first();
+          var style = getStyle(expandedItem);
+          assert.equal(style.paddingTop, 50);
+        });
+
+        it('offsets the list content', function() {
+          var content = this.wrapper.find('[testId="content"]').first();
+          var style = getStyle(content);
+          assert.equal(style.marginTop, -100);
+        });
+
+        it('expands the item to fill the scroll viewport height', function() {
+          var expandedItem = this.wrapper.find('[testId="item-wrapper"]').first();
+          var style = getStyle(expandedItem);
+          assert.equal(style.height, LIST_VIEW_HEIGHT);
+        });
+
+        describe('expanding the same item', function() {
+          beforeEach(function() {
+            this.instance.setState.reset();
+            return this.instance.expand({ props: { id: 1 }});
+          });
+
+          it('does nothing', function() {
+            sinon.assert.notCalled(this.instance.setState);
+          });
+        });
+
+        describe('.contract()', function() {
+          beforeEach(function() {
+            this.instance.setState.reset();
+            return this.instance.contract()
+              .then(() => {
+                this.stateUpdate = this.instance.setState.lastCall.args[0];
+              });
+          });
+
+          it('clears the expandedItem state', function() {
+            assert.equal(this.stateUpdate.expandedItem, null);
+          });
+
+          it('makes the item scrollable again', function() {
+            assert.equal(this.stateUpdate.scrollable, true);
+          });
+
+          describe('contracted', function() {
+            beforeEach(function() {
+              this.wrapper.setState(this.stateUpdate);
+            });
+
+            it('removes padding-top from expanded item', function() {
+              var expandedItem = this.wrapper.find('[testId="item-wrapper"]').first();
+              var style = getStyle(expandedItem);
+              assert.equal(style.paddingTop, undefined);
+            });
+
+            it('removes the the list content offset', function() {
+              var content = this.wrapper.find('[testId="content"]').first();
+              var style = getStyle(content);
+              assert.equal(style.marginTop, undefined);
+            });
+
+            it('returns the item-wrapper to its natural height', function() {
+              var expandedItem = this.wrapper.find('[testId="item-wrapper"]').first();
+              var style = getStyle(expandedItem);
+              assert.equal(style.height, undefined);
+            });
+          });
+        });
+      });
+    });
   });
 
   function fakeLayoutEvent(instance, layout) {
     instance.props().onLayout({
       nativeEvent: { layout }
     });
+  }
+
+  function getStyle(el) {
+    var style = [].concat(el.props().style);
+    return Object.assign.apply(null, style);
   }
 });

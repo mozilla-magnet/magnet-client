@@ -5,7 +5,6 @@
  */
 
 const ContentViewStatic = require('../../../../lib/views/list-item/content/static');
-const ReactNative = require('react-native');
 const assert = require('assert');
 const enzyme = require('enzyme');
 const sinon = require('sinon');
