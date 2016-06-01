@@ -25,7 +25,7 @@ module.exports = {
     colorPrimary: '#00A2D4'
   },
 
-  "injectTestUrls": false,
+  "injectTestUrls": true,
   "testUrls": [
     "https://facebook.com/mozilla",
     // "http://twitter.com/wilsonpage",

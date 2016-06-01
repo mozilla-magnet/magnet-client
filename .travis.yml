@@ -10,6 +10,12 @@ android:
         - appcompat-v7
         - extra-android-support
         - extra-android-m2repository
+
+        # Specify at least one system image,
+        # if you need to run emulator(s) during your tests
+        - sys-img-armeabi-v7a-android-23
+        - sys-img-x86-android-23
+
 before_cache:
       - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 cache:
@@ -22,6 +28,13 @@ before_install:
     - nvm install 6.0
     - nvm use --delete-prefix 6.0
     - node --version && npm --version
+
+before_script:
+   - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
+   - emulator -avd test -no-audio -no-window &
+   - android-wait-for-emulator
+   - adb shell input keyevent 82 &
+
 install:
     - source build-scripts/bootstrap.sh
 script:
@@ -30,3 +43,4 @@ script:
     - source ./build-scripts/build.sh
 after_success:
     - source ./build-scripts/deploy.sh
+    - source ./test-scripts/test.sh
