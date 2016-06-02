@@ -6,7 +6,6 @@
 
 const replace = require('module-replace')({ root: __dirname });
 const ReactNative = require('react-native');
-const assert = require('assert');
 const enzyme = require('enzyme');
 const sinon = require('sinon');
 const React = require('react');
