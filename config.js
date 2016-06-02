@@ -34,6 +34,7 @@ module.exports = {
     "https://www.youtube.com/watch?v=sBG8O430uOg",
     "https://github.com/wilsonpage",
     "https://mozillalondonallhands2016.sched.org/venue/The+Brasserie",
+    //"https://tengam.org/oembed/?url=https%3A%2F%2Fmozilla-magnet.github.io%2Ftwitter-search-embed%2F%3Fhashtag%3Dmozlondon%26widget-id%3D738359369146961920&width=600&height=600",
     // "https://codepen.io/mnmxmx/pen/XdwooQ",
     // "https://play.google.com/store/apps/details?id=org.mozilla.firefox"
   ]
