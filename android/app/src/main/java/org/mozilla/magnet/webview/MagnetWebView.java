@@ -1,5 +1,6 @@
 package org.mozilla.magnet.webview;
 
+import android.os.Build;
 import android.util.Log;
 import android.webkit.WebView;
 
@@ -30,6 +31,10 @@ public class MagnetWebView extends WebView implements LifecycleEventListener {
 
         // prevents 1px padding in some embeds (eg. youtube)
         getSettings().setUseWideViewPort(true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            setWebContentsDebuggingEnabled(true);
+        }
     }
 
     @Override
@@ -64,6 +69,7 @@ public class MagnetWebView extends WebView implements LifecycleEventListener {
         if (layoutSet) return;
         getLayoutParams().width = LayoutParams.MATCH_PARENT;
         getLayoutParams().height = LayoutParams.MATCH_PARENT;
+
         layoutSet = true;
     }
 

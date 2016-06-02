@@ -3,6 +3,7 @@ package org.mozilla.magnet.webview;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
+import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -10,6 +11,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 
 public class MagnetWebViewClient extends WebViewClient {
+    private static final String LOG_TAG = "MagnetWebviewClient";
     private final static int MS_UNTIL_RENDERED = 500;
     private boolean loaded = false;
 
@@ -50,7 +52,8 @@ public class MagnetWebViewClient extends WebViewClient {
     @Override
     public boolean shouldOverrideUrlLoading(WebView webView, String url) {
         MagnetWebView magnetWebView = (MagnetWebView) webView;
-        if (!loaded || url == null || !url.startsWith("http")) {
+        Log.d(LOG_TAG, "Current URL: " + webView.getUrl() + " new URL: " + url);
+        if (!loaded || url == null || !url.startsWith("http") || webView.getUrl().equals(url)) {
             return false;
         }
 
