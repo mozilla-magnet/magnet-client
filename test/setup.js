@@ -82,3 +82,7 @@ ReactNative.findNodeHandle = function() {
 ReactNative.UIManager.configureNextLayoutAnimation = function(config, callback) {
   callback();
 };
+
+ReactNative.NativeModules.RNDeviceInfo = {
+  systemManufacturer: 'Apple'
+};
