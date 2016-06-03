@@ -36,8 +36,8 @@ public class MainActivity extends ReactActivity {
     @Override
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
-            new RNDeviceInfo(),
             new MainReactPackage(),
+                new RNDeviceInfo(),
                 new MyAppPackage()
         );
     }
