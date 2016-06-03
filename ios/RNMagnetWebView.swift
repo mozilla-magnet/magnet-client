@@ -48,7 +48,7 @@ class MagnetWebView : UIWebView, UIWebViewDelegate {
   }
   
   func loadHtml(html: String, baseUrl: String?) {
-    NSLog("load html: \(html) \(baseUrl)")
+    print("load html: \(html) \(baseUrl)")
     let url = NSURL(string: baseUrl ?? "about:blank");
     loadHTMLString(html, baseURL: url)
   }
@@ -57,7 +57,7 @@ class MagnetWebView : UIWebView, UIWebViewDelegate {
     guard !webview.loading else { return }
     let contentHeight = scrollView.contentSize.height
     onMagnetWebViewLoaded?(["height": contentHeight])
-    NSLog("webview loaded")
+    print("webview loaded")
   }
   
   required init?(coder aDecoder: NSCoder) {

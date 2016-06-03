@@ -65,6 +65,24 @@ describe('<ContentViewEmbed>', function() {
       });
     });
 
+    describe('iframe with other attrs', function() {
+      beforeEach(function() {
+        this.props = {
+          embed: {
+            html: '<iframe width="480" height="270" src="https://www.youtube.com/embed/ojcNcvb1olg?feature=oembed" frameborder="0" allowfullscreen></iframe>'
+          }
+        };
+
+        this.wrapper = enzyme.shallow(<ContentViewEmbed {...this.props}/>);
+        this.instance = this.wrapper.instance();
+      });
+
+      it('extracts the src from the iframe', function() {
+        var source = this.wrapper.find('WebView').props().source;
+        assert.equal(source.uri, 'https://www.youtube.com/embed/ojcNcvb1olg?feature=oembed');
+      });
+    });
+
     describe('iframe single quotes', function() {
       beforeEach(function() {
         this.props = {
