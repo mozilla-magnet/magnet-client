@@ -28,7 +28,7 @@
     "enzyme": "^2.3.0",
     "eslint-plugin-react": "^4.2.3",
     "mocha": "^2.5.3",
-    "module-replace": "github:wilsonpage/module-replace",
+    "module-replace": "github:wilsonpage/module-replace#v1.1.0",
     "react-dom": "^0.14.0",
     "react-native-cli": "*",
     "react-native-mock": "^0.1.0",
