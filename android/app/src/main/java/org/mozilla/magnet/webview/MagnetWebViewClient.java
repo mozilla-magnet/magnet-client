@@ -40,6 +40,8 @@ public class MagnetWebViewClient extends WebViewClient {
      * We want any http:// navigation change *after*
      * the initial load, to open in the browser.
      * This primarily means link clicks.
+     * However, if the navigation is to the same URL,
+     * ie. a refresh, then the URL is loaded.
      *
      * If we don't check for `loaded`, initial http
      * redirects can end up opening in the browser.
@@ -48,7 +50,6 @@ public class MagnetWebViewClient extends WebViewClient {
      * @param url
      * @return boolean
      */
-
     @Override
     public boolean shouldOverrideUrlLoading(WebView webView, String url) {
         MagnetWebView magnetWebView = (MagnetWebView) webView;

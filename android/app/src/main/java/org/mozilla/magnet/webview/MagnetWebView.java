@@ -32,6 +32,8 @@ public class MagnetWebView extends WebView implements LifecycleEventListener {
         // prevents 1px padding in some embeds (eg. youtube)
         getSettings().setUseWideViewPort(true);
 
+        // From version 4.4 WebViews are not debuggable with DevTools
+        // by default, this turns on WebView debugging.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setWebContentsDebuggingEnabled(true);
         }
