@@ -3,6 +3,7 @@ package org.mozilla.magnet.webview;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
+import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -10,6 +11,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 
 public class MagnetWebViewClient extends WebViewClient {
+    private static final String LOG_TAG = "MagnetWebviewClient";
     private final static int MS_UNTIL_RENDERED = 500;
     private boolean loaded = false;
 
@@ -38,6 +40,8 @@ public class MagnetWebViewClient extends WebViewClient {
      * We want any http:// navigation change *after*
      * the initial load, to open in the browser.
      * This primarily means link clicks.
+     * However, if the navigation is to the same URL,
+     * ie. a refresh, then the URL is loaded.
      *
      * If we don't check for `loaded`, initial http
      * redirects can end up opening in the browser.
@@ -46,11 +50,11 @@ public class MagnetWebViewClient extends WebViewClient {
      * @param url
      * @return boolean
      */
-
     @Override
     public boolean shouldOverrideUrlLoading(WebView webView, String url) {
         MagnetWebView magnetWebView = (MagnetWebView) webView;
-        if (!loaded || url == null || !url.startsWith("http")) {
+        Log.d(LOG_TAG, "Current URL: " + webView.getUrl() + " new URL: " + url);
+        if (!loaded || url == null || !url.startsWith("http") || webView.getUrl().equals(url)) {
             return false;
         }
 
