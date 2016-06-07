@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # BUild release = 1 if the tests will be launched only with the release build
 if [[ $BUILD_RELEASE == 0 ]]; then
-    ./tests-scripts/launch_test.js
+    ./test-scripts/launch_tests.js
 else
     echo "Skipping ui tests, not a release build..."
 fi
