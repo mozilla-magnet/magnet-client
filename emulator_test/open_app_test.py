@@ -2,8 +2,6 @@
 from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice, MonkeyImage
 
 # Connects to the current device, returning a MonkeyDevice object
-SCR = '/Users/irios/Documents/Magnet/MRunner/screenshot2.png'
-REF = '/Users/irios/Documents/Magnet/MRunner/error.png'
 
 def main():
     print('Starting')
