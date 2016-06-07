@@ -29,18 +29,20 @@ before_install:
     - nvm use --delete-prefix 6.0
     - node --version && npm --version
 
-before_script:
-   - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
-   - emulator -avd test -no-audio -no-window &
-   - android-wait-for-emulator
-   - adb shell input keyevent 82 &
-
 install:
     - source build-scripts/bootstrap.sh
 script:
     - npm test
     - env
     - source ./build-scripts/build.sh
+
+after_script:
+      # Emulator Management: Create, Start and Wait
+    - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
+    - emulator -avd test -no-skin -no-audio -no-window &
+    - android-wait-for-emulator
+    - adb shell input keyevent 82 &
+    - source ./test-scripts/test.sh
+
 after_success:
     - source ./build-scripts/deploy.sh
-    - source ./test-scripts/test.sh
