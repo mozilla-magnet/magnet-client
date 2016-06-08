@@ -106,12 +106,12 @@ describe('<HeaderBarView>', function() {
       });
     });
 
-    describe('more-button', function() {
+    describe.skip('more-button', function() {
       beforeEach(function() {
         this.moreButton = findNode(this.wrapper, 'more-button');
       });
 
-      it.skip('renders the more button', function() {
+      it('renders the more button', function() {
         expect(this.moreButton).to.have.length(1);
       });
 
