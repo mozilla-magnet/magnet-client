@@ -64,7 +64,7 @@ describe('<HeaderBarView>', function() {
         this.hamburgerButton = findNode(this.wrapper, 'hamburger-button');
       });
 
-      it('renders the hamburger button', function() {
+      it.skip('renders the hamburger button', function() {
         expect(this.hamburgerButton).to.have.length(1);
       });
     });
