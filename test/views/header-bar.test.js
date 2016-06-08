@@ -111,7 +111,7 @@ describe('<HeaderBarView>', function() {
         this.moreButton = findNode(this.wrapper, 'more-button');
       });
 
-      it('renders the more button', function() {
+      it.skip('renders the more button', function() {
         expect(this.moreButton).to.have.length(1);
       });
 
