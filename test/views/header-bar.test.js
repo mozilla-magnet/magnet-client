@@ -106,7 +106,7 @@ describe('<HeaderBarView>', function() {
       });
     });
 
-    describe('more-button', function() {
+    describe.skip('more-button', function() {
       beforeEach(function() {
         this.moreButton = findNode(this.wrapper, 'more-button');
       });
