@@ -179,4 +179,69 @@ describe('<ContentViewEmbed>', function() {
       });
     });
   });
+
+  describe('on webview loaded', function() {
+    beforeEach(function() {
+      this.webview = this.wrapper.find('MagnetWebView');
+      this.onLoaded = this.webview.props().onLoaded;
+    });
+
+    it('does not flex to fill available space by default', function() {
+      assert.equal(reduceStyle(this.wrapper).flex, 0);
+      assert.equal(reduceStyle(this.webview).flex, 0);
+    });
+
+    describe('overflowing', function() {
+      beforeEach(function() {
+        this.height = this.wrapper.state().height;
+        assert(this.height);
+        this.onLoaded({ height: 800 });
+      });
+
+      it('maintains the same height', function() {
+        assert.equal(this.wrapper.state().height, this.height);
+      });
+
+      describe('expanded', function() {
+        beforeEach(function() {
+          this.wrapper.setProps({ expanded: true });
+          this.webview = this.wrapper.find('MagnetWebView');
+        });
+
+        it('flexes the webview to fill the expanded space', function() {
+          assert.equal(reduceStyle(this.wrapper).flex, 1);
+          assert.equal(reduceStyle(this.webview).flex, 1);
+        });
+      });
+    });
+
+    describe('mid-range', function() {
+      beforeEach(function() {
+        this.height = this.wrapper.state().height;
+        assert(this.height);
+        this.onLoaded({ height: 240 });
+      });
+
+      it('matches the content height', function() {
+        assert.equal(this.wrapper.state().height, 240);
+      });
+
+      describe('expanded', function() {
+        beforeEach(function() {
+          this.wrapper.setProps({ expanded: true });
+          this.webview = this.wrapper.find('MagnetWebView');
+        });
+
+        it('does not flex the webview to fill the expanded space', function() {
+          assert.equal(reduceStyle(this.wrapper).flex, 0);
+          assert.equal(reduceStyle(this.webview).flex, 0);
+        });
+      });
+    });
+  });
+
+  function reduceStyle(el) {
+    var style = [].concat(el.props().style);
+    return Object.assign.apply(null, style);
+  }
 });

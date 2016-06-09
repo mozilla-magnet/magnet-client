@@ -142,6 +142,7 @@ describe('<ListView>', function() {
 
     describe('.expand()', function() {
       beforeEach(function() {
+        this.FIRST_ITEM_MARGIN_TOP = 4;
         this.sinon.spy(this.instance, 'setState');
         return this.instance.expand({ props: { id: 1 }})
           .then(() => {
@@ -172,7 +173,7 @@ describe('<ListView>', function() {
         it('offsets the list content', function() {
           var content = this.wrapper.find('[testId="content"]').first();
           var style = getStyle(content);
-          assert.equal(style.marginTop, -100);
+          assert.equal(style.marginTop, -(100 - this.FIRST_ITEM_MARGIN_TOP));
         });
 
         it('expands the item to fill the scroll viewport height', function() {
@@ -217,13 +218,13 @@ describe('<ListView>', function() {
             it('removes padding-top from expanded item', function() {
               var expandedItem = this.wrapper.find('[testId="item-wrapper"]').first();
               var style = getStyle(expandedItem);
-              assert.equal(style.paddingTop, undefined);
+              assert.equal(style.paddingTop, 0);
             });
 
             it('removes the the list content offset', function() {
               var content = this.wrapper.find('[testId="content"]').first();
               var style = getStyle(content);
-              assert.equal(style.marginTop, undefined);
+              assert.equal(style.marginTop, 0);
             });
 
             it('returns the item-wrapper to its natural height', function() {
