@@ -32,8 +32,8 @@ replace
   .with('react-native-mock/build/react-native');
 
 replace
-  .module('NativeMethodsMixin')
-  .with('./mocks/NativeMethodsMixin');
+  .module('UIManager')
+  .with('./mocks/UIManager');
 
 replace
   .module('../lib/views/spinner/index')
@@ -54,7 +54,7 @@ global.__DEV__ = true;
 const ReactNative = require('react-native')
 
 // add modules missing from reactNative-native-mock
-ReactNative.Alert = { alert: ReactNative.View };
+ReactNative.Alert = { alert: () => {} };
 ReactNative.UIManager.setLayoutAnimationEnabledExperimental = () => {};
 
 // override as default mock seems broken

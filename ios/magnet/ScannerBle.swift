@@ -24,7 +24,7 @@ import Foundation
     for url in urls {
       NSLog("%@", url);
     }
-    self.bridge.eventDispatcher.sendDeviceEventWithName("magnet:urlfound", body: urls);
+    self.bridge.eventDispatcher().sendDeviceEventWithName("magnet:urlfound", body: urls);
   }
   
   @objc func stop() -> Void {
