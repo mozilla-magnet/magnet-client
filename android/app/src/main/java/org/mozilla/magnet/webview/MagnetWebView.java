@@ -69,9 +69,8 @@ public class MagnetWebView extends WebView implements LifecycleEventListener {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         Log.d(TAG, "on layout");
-        setLayout();
-
         super.onLayout(changed, left, top, right, bottom);
+        setLayout();
 
         // Force size change AFTER layout, see `onSizeChanged`
         forceSizeChanged();
@@ -86,8 +85,8 @@ public class MagnetWebView extends WebView implements LifecycleEventListener {
     public void forceSizeChanged() {
         // If the height and width have been set by onSizeChanged already,
         // i.e. are non-negative, call onSizeChanged again
-        if (mLastSawHeight >= 0 && mLastSawWidth >= 0) {
-            onSizeChanged(mLastSawWidth, mLastSawHeight, 0, 0);
+        if (mLastSeenHeight >= 0 && mLastSeenWidth >= 0) {
+            onSizeChanged(mLastSeenWidth, mLastSeenHeight, 0, 0);
         }
     }
 
@@ -97,8 +96,8 @@ public class MagnetWebView extends WebView implements LifecycleEventListener {
         // Record the last reported size, we then need to use this to force a
         // size change AFTER onLayout. This then updates the underlying Chrome
         // content target.
-        mLastSawWidth = aWidth;
-        mLastSawHeight = aHeight;
+        mLastSeenWidth = aWidth;
+        mLastSeenHeight = aHeight;
 
         super.onSizeChanged(aWidth, aHeight, aOldWidth, aOldHeight);
     }
