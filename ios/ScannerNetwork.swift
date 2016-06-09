@@ -23,7 +23,7 @@ import Foundation
   
   func notify(url: String) {
     print("notify", url);
-    self.bridge.eventDispatcher.sendDeviceEventWithName("magnet:urlfound", body: [url]);
+    self.bridge.eventDispatcher().sendDeviceEventWithName("magnet:urlfound", body: [url]);
   }
   
   func netServiceBrowser(aNetServiceBrowser: NSNetServiceBrowser, didFindService service: NSNetService, moreComing: Bool) {
