@@ -4,8 +4,6 @@ import android.os.Build;
 import android.util.Log;
 import android.webkit.WebView;
 
-import android.view.View;
-
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
