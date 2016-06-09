@@ -103,12 +103,6 @@ public class MagnetWebView extends WebView implements LifecycleEventListener {
         super.onSizeChanged(aWidth, aHeight, aOldWidth, aOldHeight);
     }
 
-    @Override
-    protected void onMeasure(int aWidthMeasureSpec, int aHeightMeasureSpec) {
-        Log.d(TAG, "onMeasure(" + View.MeasureSpec.getSize(aWidthMeasureSpec) + ", " + View.MeasureSpec.getSize(aHeightMeasureSpec) +")");
-        super.onMeasure(aWidthMeasureSpec, aHeightMeasureSpec);
-    }
-
     public void dispatchEvent(String name, WritableMap event) {
         ((ReactContext) getContext())
                 .getJSModule(RCTEventEmitter.class)
