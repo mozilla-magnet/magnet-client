@@ -74,7 +74,8 @@ public class MagnetWebViewManager extends SimpleViewManager<WebView> {
     @Override
     public void onDropViewInstance(WebView webView) {
         MagnetWebView magnetWebView = (MagnetWebView) webView;
-        mContext.removeLifecycleEventListener(magnetWebView);
+        ThemedReactContext reactContext = (ThemedReactContext) webView.getContext();
+        reactContext.removeLifecycleEventListener(magnetWebView);
         magnetWebView.destroy();
     }
 
