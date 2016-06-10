@@ -2,9 +2,12 @@ package org.mozilla.magnet.webview;
 
 import javax.annotation.Nullable;
 
+import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.webkit.WebView;
 
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.common.MapBuilder;
@@ -18,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MagnetWebViewManager extends SimpleViewManager<WebView> {
+    private static final String TAG = "MagnetWebViewManager";
     private static final String REACT_CLASS = "MagnetWebView";
     private static final String HTML_ENCODING = "UTF-8";
     private static final String HTML_MIME_TYPE = "text/html; charset=utf-8";
@@ -27,6 +31,13 @@ public class MagnetWebViewManager extends SimpleViewManager<WebView> {
     // state and release page resources (including any running JavaScript).
     private static final String BLANK_URL = "about:blank";
 
+    private ReactContext mContext;
+
+    public MagnetWebViewManager(ReactContext reactContext) {
+        Log.d(TAG, "new");
+        mContext = reactContext;
+    }
+
     @Override
     public String getName() {
         return REACT_CLASS;
@@ -34,20 +45,22 @@ public class MagnetWebViewManager extends SimpleViewManager<WebView> {
 
     @Override
     protected WebView createViewInstance(ThemedReactContext reactContext) {
-        MagnetWebView webView = new MagnetWebView(reactContext);
-        reactContext.addLifecycleEventListener(webView);
+        MagnetWebView magnetWebView = new MagnetWebView(mContext);
+        reactContext.addLifecycleEventListener(magnetWebView);
+
+        Context otherContext = magnetWebView.getContext();
 
         if (ReactBuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(true);
         }
 
-        return webView;
+        return magnetWebView;
     }
 
     @Override
-    protected void addEventEmitters(ThemedReactContext reactContext, WebView view) {
+    protected void addEventEmitters(ThemedReactContext reactContext, WebView webView) {
+        Log.d(TAG, "add event emitters");
         // Do not register default touch emitter and let WebView implementation handle touches
-        view.setWebViewClient(new MagnetWebViewClient());
     }
 
     @Override
@@ -60,8 +73,10 @@ public class MagnetWebViewManager extends SimpleViewManager<WebView> {
 
     @Override
     public void onDropViewInstance(WebView webView) {
-        ((ThemedReactContext) webView.getContext()).removeLifecycleEventListener((MagnetWebView) webView);
-        ((MagnetWebView) webView).cleanupCallbacksAndDestroy();
+        MagnetWebView magnetWebView = (MagnetWebView) webView;
+        ThemedReactContext reactContext = (ThemedReactContext) webView.getContext();
+        reactContext.removeLifecycleEventListener(magnetWebView);
+        magnetWebView.destroy();
     }
 
     @ReactProp(name = "source")

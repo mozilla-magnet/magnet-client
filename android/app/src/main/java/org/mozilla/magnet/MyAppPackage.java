@@ -30,7 +30,7 @@ public class MyAppPackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Arrays.<ViewManager>asList(
-            new MagnetWebViewManager()
+            new MagnetWebViewManager(reactContext)
         );
     }
 }

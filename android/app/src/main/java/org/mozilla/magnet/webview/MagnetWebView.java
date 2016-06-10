@@ -7,7 +7,6 @@ import android.webkit.WebView;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 /**
@@ -15,6 +14,7 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
  */
 public class MagnetWebView extends WebView implements LifecycleEventListener {
     private static final String TAG = "MagnetWebView";
+    private MagnetWebViewClient client;
     private boolean layoutSet;
 
     // Record the last seen size changed event so we can update the webview content target,
@@ -29,10 +29,15 @@ public class MagnetWebView extends WebView implements LifecycleEventListener {
      * Reactive Native needed for access to ReactNative internal system functionality
      *
      */
-    public MagnetWebView(ThemedReactContext reactContext) {
+    public MagnetWebView(ReactContext reactContext) {
         super(reactContext);
+
         getSettings().setJavaScriptEnabled(true);
         getSettings().setDomStorageEnabled(true);
+
+        client = new MagnetWebViewClient();
+        setWebViewClient(client);
+        setWebChromeClient(new MagnetWebChromeClient(reactContext));
 
         // prevents 1px padding in some embeds (eg. youtube)
         getSettings().setUseWideViewPort(true);
@@ -56,12 +61,13 @@ public class MagnetWebView extends WebView implements LifecycleEventListener {
 
     @Override
     public void onHostDestroy() {
-        cleanupCallbacksAndDestroy();
+        destroy();
     }
 
-    public void cleanupCallbacksAndDestroy() {
+    @Override
+    public void destroy() {
+        super.destroy();
         setWebViewClient(null);
-        destroy();
     }
 
     @Override
