@@ -8,12 +8,19 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 
 public class MagnetWebViewClient extends WebViewClient {
     private static final String LOG_TAG = "MagnetWebviewClient";
     private final static int MS_UNTIL_RENDERED = 500;
     private boolean loaded = false;
+    private ReactContext mReactContext;
+
+    public MagnetWebViewClient(ReactContext reactContext) {
+        super();
+        mReactContext = reactContext;
+    }
 
     @Override
     public void onPageFinished(final WebView webView, String url) {
@@ -52,13 +59,14 @@ public class MagnetWebViewClient extends WebViewClient {
      */
     @Override
     public boolean shouldOverrideUrlLoading(WebView webView, String url) {
-        MagnetWebView magnetWebView = (MagnetWebView) webView;
         Log.d(LOG_TAG, "Current URL: " + webView.getUrl() + " new URL: " + url);
         if (!loaded || url == null || !url.startsWith("http") || webView.getUrl().equals(url)) {
             return false;
         }
 
-        webView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mReactContext.startActivity(intent);
         return true;
     }
 }

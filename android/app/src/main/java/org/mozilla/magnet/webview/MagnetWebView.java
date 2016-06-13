@@ -35,7 +35,7 @@ public class MagnetWebView extends WebView implements LifecycleEventListener {
         getSettings().setJavaScriptEnabled(true);
         getSettings().setDomStorageEnabled(true);
 
-        client = new MagnetWebViewClient();
+        client = new MagnetWebViewClient(reactContext);
         setWebViewClient(client);
         setWebChromeClient(new MagnetWebChromeClient(reactContext));
 
