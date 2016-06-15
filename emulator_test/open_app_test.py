@@ -1,6 +1,10 @@
 # Imports the monkeyrunner modules used by this program
 from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice, MonkeyImage
 
+# Images to compare
+SCR = '/home/travis/build/mozilla-magnet/magnet-client/emulator_test/images/screenshot.png'
+REF = '/home/travis/build/mozilla-magnet/magnet-client/emulator_test/images/MainPage.png'
+
 # Connects to the current device, returning a MonkeyDevice object
 
 def main():
@@ -28,8 +32,12 @@ def main():
     # Wait for the UI
     MonkeyRunner.sleep(5.0)
 
-    # Presses the Menu button
-    device.press('KEYCODE_MENU', MonkeyDevice.DOWN_AND_UP)
+   result.writeToFile(SCR)
+    reference = MonkeyRunner.loadImageFromFile(REF)
+    if not result.sameAs(reference, 0.5):
+       print('Images do not match')
+    else:
+        print('Test Passes')
 
 #start
 main()
