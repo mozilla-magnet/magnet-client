@@ -32,7 +32,7 @@ def main():
     # Wait for the UI
     MonkeyRunner.sleep(5.0)
 
-   result.writeToFile(SCR)
+    result.writeToFile(SCR)
     reference = MonkeyRunner.loadImageFromFile(REF)
     if not result.sameAs(reference, 0.5):
        print('Images do not match')
