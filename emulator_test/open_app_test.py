@@ -6,7 +6,6 @@ SCR = '/home/travis/build/mozilla-magnet/magnet-client/emulator_test/images/scre
 REF = '/home/travis/build/mozilla-magnet/magnet-client/emulator_test/images/MainPage.png'
 
 # Connects to the current device, returning a MonkeyDevice object
-
 def main():
     print('Starting')
     device = MonkeyRunner.waitForConnection()
