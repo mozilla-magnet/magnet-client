@@ -11,7 +11,6 @@ export TAG=$TRAVIS_TAG
 #fi
 
 export BUILD_RELEASE=0
-fi
 
 npm install -g react-native-cli
 
