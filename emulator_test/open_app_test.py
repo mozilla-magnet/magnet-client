@@ -14,7 +14,7 @@ def main():
     # Installs the Android package. Notice that this method returns a boolean, so you can test
     # to see if the installation worked.
     
-    device.installPackage('/home/travis/build/mozilla-magnet/magnet-client/android/app/build/outputs/apk/app-release.apk')
+    device.installPackage('/home/travis/build/mozilla-magnet/magnet-client/android/app/build/outputs/apk/app-debug.apk')
 
     # sets a variable with the package's internal name
     package = 'org.mozilla.magnet'
