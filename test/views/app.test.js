@@ -30,6 +30,7 @@ describe('<App>', function() {
     });
 
     this.wrapper = enzyme.shallow(<App scanner={this.scanner}/>);
+    this.instance = this.wrapper.instance();
   });
 
   afterEach(function() {
@@ -44,38 +45,28 @@ describe('<App>', function() {
     });
   });
 
-  describe('scan', function() {
+  describe('componentDidMount', function() {
     beforeEach(function() {
-      sinon.assert.notCalled(this.scanner.scan);
-      this.clock.tick(500);
+      sinon.assert.notCalled(this.scanner.start);
+      this.instance.componentDidMount();
     });
 
-    it('starts scanning after 500ms', function() {
-      sinon.assert.calledOnce(this.scanner.scan);
-    });
-
-    it('sets the scanning state to true', function() {
-      assert.equal(this.wrapper.state('scanning'), true);
-    });
-
-    describe('after scan', function() {
-      beforeEach(function() {
-        this.clock.tick(8000);
-        return this.scanDefer.promise;
+    describe('scan', function() {
+      it('starts scanning after 500ms', function() {
+        sinon.assert.calledOnce(this.scanner.start);
       });
 
-      it('scans for 10 seconds', function() {
-        assert.equal(this.wrapper.state('scanning'), false);
+      it('sets the `initialScanPeriod` to true', function() {
+        assert.equal(this.wrapper.state('initialScanPeriod'), true);
       });
 
-      describe('after wait', function() {
+      describe('after 8 secs', function() {
         beforeEach(function() {
-          assert.equal(this.wrapper.state('scanning'), false);
-          this.clock.tick(30000);
+          this.clock.tick(8000);
         });
 
-        it('waits 30 seconds between scans', function() {
-          assert.equal(this.wrapper.state('scanning'), true);
+        it('sets the `initialScanPeriod` to `false`', function() {
+          assert.equal(this.wrapper.state('initialScanPeriod'), false);
         });
       });
     });

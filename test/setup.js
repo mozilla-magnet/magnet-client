@@ -24,6 +24,14 @@ global.expect = chai.expect;
 chai.use(chaiEnzyme());
 
 /**
+ * fetch() stub
+ */
+
+global.fetch = sinon.spy(() => {
+  return Promise.resolve();
+});
+
+/**
  * Module replacements
  */
 
@@ -38,7 +46,6 @@ replace
 replace
   .module('../lib/views/spinner/index')
   .with(`../lib/views/spinner/index.${platform}`);
-
 
 /**
  * Required for react-native

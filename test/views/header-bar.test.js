@@ -127,45 +127,6 @@ describe('<HeaderBarView>', function() {
     });
   });
 
-  describe('scanning', function() {
-    beforeEach(function() {
-      this.sinon.spy(this.instance, 'animateLoading');
-      this.props.scanning = true;
-      this.wrapper.setProps(this.props);
-    });
-
-    it('it animates the loading indicator', function() {
-      sinon.assert.calledOnce(this.instance.animateLoading);
-    });
-
-    it('it loops until !scanning ', function() {
-
-      // first
-      sinon.assert.calledOnce(this.instance.animateLoading);
-      this.instance.animateLoading.reset()
-      Animated.timing._start.yield(); // << done callback
-      this.clock.tick(1000);
-
-      // second
-      sinon.assert.calledOnce(this.instance.animateLoading);
-      this.instance.animateLoading.reset()
-      Animated.timing._start.yield(); // << done callback
-      this.clock.tick(1000);
-
-      // third
-      sinon.assert.calledOnce(this.instance.animateLoading);
-      this.instance.animateLoading.reset()
-
-      // stop scanning
-      this.wrapper.setProps({ scanning: false });
-
-      Animated.timing._start.yield(); // << done callback
-      this.clock.tick(1000);
-
-      sinon.assert.notCalled(this.instance.animateLoading);
-    });
-  });
-
   /**
    * Utils
    */
