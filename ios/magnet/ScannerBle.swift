@@ -8,31 +8,29 @@
 
 import Foundation
 
-@objc(ScannerBle) class ScannerBle: NSObject, BeaconScannerDelegate {
+class ScannerBle: NSObject, Scanner, BeaconScannerDelegate {
   var bridge: RCTBridge!
   var scanner: BeaconScanner!
   
-  @objc func start() -> Void {
+  func start() {
     print("starting scanner")
-    self.scanner = BeaconScanner()
-    self.scanner.delegate = self
-    self.scanner.start()
+    scanner = BeaconScanner()
+    scanner.delegate = self
+    scanner.start()
   }
   
   func notify(urls: Array<String>) {
     print("notifying js context for the following urls");
-    for url in urls {
-      NSLog("%@", url);
-    }
-    self.bridge.eventDispatcher().sendDeviceEventWithName("magnet:urlfound", body: urls);
+    for url in urls { NSLog("%@", url) }
+    
   }
   
-  @objc func stop() -> Void {
-    NSLog("stopping scanner");
-    self.scanner.stop();
+  func stop() -> Void {
+    print("stopping scanner");
+    scanner.stop();
   }
   
   func urlContextChanged(beaconScanner: BeaconScanner) {
-    self.notify(beaconScanner.urls);
+    notify(beaconScanner.urls);
   }
 }

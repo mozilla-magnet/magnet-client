@@ -1,29 +1,35 @@
 import Foundation
 
-@objc(ScannerNetwork) class ScannerNetwork: NSObject, NSNetServiceBrowserDelegate {
-  let MDNS_SERVICE_TYPE = "_http._tcp."
-  var serviceBrowser: NSNetServiceBrowser!
-  var bridge: RCTBridge!
+class ScannerNetwork: NSObject, Scanner, NSNetServiceBrowserDelegate {
+  private var callback: ((Dictionary<String, AnyObject>) -> Void)!
+  private let MDNS_SERVICE_TYPE = "_http._tcp."
+  private var serviceBrowser: NSNetServiceBrowser!
+  private var bridge: RCTBridge!
   
-  override init() {
+  init(callback: (Dictionary<String, AnyObject>) -> Void) {
     super.init()
     serviceBrowser = NSNetServiceBrowser()
     serviceBrowser.delegate = self
+    self.callback = callback
   }
 
-  @objc func start() -> Void {
+  func start() -> Void {
     print("starting scanner")
     serviceBrowser.searchForServicesOfType(MDNS_SERVICE_TYPE, inDomain: "")
   }
 
-  @objc func stop() -> Void {
+  func stop() -> Void {
     print("stopping scanner");
     serviceBrowser.stop()
   }
   
-  func notify(url: String) {
-    print("notify", url);
-    self.bridge.eventDispatcher().sendDeviceEventWithName("magnet:urlfound", body: [url]);
+
+  private func notify(url: String) {
+    print("notify", url)
+    callback([
+      "url": url,
+      "distance": -1
+    ])
   }
   
   func netServiceBrowser(aNetServiceBrowser: NSNetServiceBrowser, didFindService service: NSNetService, moreComing: Bool) {
