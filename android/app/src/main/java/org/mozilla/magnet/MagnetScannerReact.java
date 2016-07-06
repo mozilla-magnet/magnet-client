@@ -79,7 +79,7 @@ public class MagnetScannerReact extends ReactContextBaseJavaModule implements Sc
         WritableMap data = Arguments.createMap();
         data.putString("url", item.getUrl());
         data.putDouble("distance", item.getDistance());
-        emit("magnet:urlfound", data);
+        emit("magnetscanner:itemfound", data);
     }
 
     private void emit(String name, WritableMap data) {
