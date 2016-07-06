@@ -26,7 +26,13 @@ import java.util.concurrent.TimeUnit;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 
 public class MainActivity extends ReactActivity {
-    private final long ALARM_INTERVAL_MS = TimeUnit.MINUTES.toMillis(10);
+    private final String TAG = MainActivity.class.getName();
+
+    /**
+     * The alarm runs every 10 minutes. We may
+     * decide to tweak this as we evolve the UX.
+     */
+    private static final long ALARM_INTERVAL_MS = TimeUnit.MINUTES.toMillis(10);
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -62,7 +68,7 @@ public class MainActivity extends ReactActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupAlarm();
+        MainActivity.setAlarm(getApplicationContext());
     }
 
     /**
@@ -71,6 +77,7 @@ public class MainActivity extends ReactActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(TAG, "on resume");
         clearNotifications();
         setActive(true);
     }
@@ -80,6 +87,7 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected void onPause() {
+        Log.d(TAG, "on pause");
         super.onPause();
         setActive(false);
     }
@@ -94,10 +102,11 @@ public class MainActivity extends ReactActivity {
      * @param active
      */
     private void setActive(boolean active) {
+        Log.d(TAG, "set active: " + active);
         SharedPreferences prefs = getSharedPreferences("MAGNET", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("active", active);
-        editor.apply();
+        editor.commit();
     }
 
     /**
@@ -105,8 +114,7 @@ public class MainActivity extends ReactActivity {
      * which in-turn triggers`NotificationService` to perform a
      * short background scan and dispatch system notifications.
      */
-    private void setupAlarm() {
-        Context context = getApplicationContext();
+    public static void setAlarm(Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);

@@ -36,6 +36,7 @@ public class NotificationService extends Service implements ScannerService.Scann
         // background scanning isn't required
         // if the app is 'active' (in foreground)
         if (appActive()) {
+            Log.d(TAG, "app is active, terminating ...");
             stopSelf();
             return;
         }
