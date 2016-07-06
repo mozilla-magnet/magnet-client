@@ -44,8 +44,8 @@ public class ScannerService extends IntentService implements MagnetScannerCallba
         Log.d(TAG, "on create");
         mMagnetScanner = new MagnetScanner(this);
         mMagnetScanner
-                .useBTLE(null)
-                .usemDNS(null);
+                .useBLE(null)
+                .useMDNS(null);
     }
 
     @Override
