@@ -32,7 +32,6 @@ public class ScannerService extends IntentService implements MagnetScannerCallba
     private ExpiringMap<String, MagnetScannerItem> mItems = ExpiringMap.builder()
             .expiration(30, TimeUnit.SECONDS)
             .build();
-//    private HashMap<String, MagnetScannerItem> mItems = new HashMap();
 
     public ScannerService() {
         super("ScannerService");
