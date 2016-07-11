@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 
 public class MainActivity extends ReactActivity {
-    private final String TAG = MainActivity.class.getName();
+    private final static String TAG = MainActivity.class.getName();
 
     /**
      * The alarm runs every 10 minutes. We may
@@ -117,19 +117,27 @@ public class MainActivity extends ReactActivity {
      * Notifications can be enabled/disabled via `res/values/flags.xml`.
      */
     public static void setAlarm(Context context) {
-        if (!context.getResources().getBoolean(R.bool.notifications_enabled)) {
-            return;
-        }
-
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        boolean enabled = context.getResources().getBoolean(R.bool.notifications_enabled);
 
+        // cancel any previously set alarms
+        // if notifications are disabled
+        if (!enabled) {
+            Log.d(TAG, "alarm canceled");
+            alarmManager.cancel(pendingIntent);
+            return;
+        }
+
+        // set the alarm
         alarmManager.setInexactRepeating(
                 AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime() + ALARM_INTERVAL_MS,
                 ALARM_INTERVAL_MS,
                 pendingIntent);
+
+        Log.d(TAG, "alarm set");
     }
 
     /**
