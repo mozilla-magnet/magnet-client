@@ -117,7 +117,7 @@ public class MainActivity extends ReactActivity {
      * Notifications can be enabled/disabled via `res/values/flags.xml`.
      */
     public static void setAlarm(Context context) {
-        if (context.getResources().getBoolean(R.bool.notifications_enabled)) {
+        if (!context.getResources().getBoolean(R.bool.notifications_enabled)) {
             return;
         }
 
