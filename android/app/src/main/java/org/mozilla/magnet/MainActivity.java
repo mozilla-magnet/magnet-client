@@ -113,8 +113,14 @@ public class MainActivity extends ReactActivity {
      * Schedule a repeating alarm used to activate `AlarmReceiver`
      * which in-turn triggers`NotificationService` to perform a
      * short background scan and dispatch system notifications.
+     *
+     * Notifications can be enabled/disabled via `res/values/flags.xml`.
      */
     public static void setAlarm(Context context) {
+        if (context.getResources().getBoolean(R.bool.notifications_enabled)) {
+            return;
+        }
+
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
