@@ -142,6 +142,10 @@ public class ScannerService extends IntentService implements MagnetScannerCallba
      * very frequent (like mdns) and a client that
      * has just bound may have missed the broadcast.
      *
+     * A `HashMap` copy is returned. The `ExpiringMap`
+     * implementation seems to require that this copy
+     * be built manually, hence the loop.
+     *
      * @return HashMap
      */
     public HashMap getItems() {
