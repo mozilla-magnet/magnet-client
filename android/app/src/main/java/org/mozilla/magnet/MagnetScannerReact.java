@@ -18,7 +18,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import org.mozilla.magnet.net.scanner.MagnetScannerItem;
 
 public class MagnetScannerReact extends ReactContextBaseJavaModule implements ScannerService.ScannerServiceCallback {
-    String TAG = "MagnetScannerReact";
+    private final static String TAG = "MagnetScannerReact";
     Boolean mNeedsStarting = false;
     ScannerService mService;
     Boolean mBound = false;

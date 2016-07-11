@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class ScannerService extends IntentService implements MagnetScannerCallback {
-    String TAG = "ScannerService";
+    private final static String TAG = "ScannerService";
     private List<ScannerServiceCallback> mCallbacks = new ArrayList<>();
     private LocalBinder mBinder = new LocalBinder();
     private MagnetScanner mMagnetScanner;
