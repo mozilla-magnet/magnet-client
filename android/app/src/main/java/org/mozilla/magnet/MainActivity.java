@@ -1,15 +1,22 @@
 package org.mozilla.magnet;
 
+import android.Manifest;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -27,6 +34,7 @@ import com.learnium.RNDeviceInfo.RNDeviceInfo;
 
 public class MainActivity extends ReactActivity {
     private final static String TAG = MainActivity.class.getName();
+    private final static int PERMISSION_REQUEST_COARSE_LOCATION = 1;
 
     /**
      * The alarm runs every 10 minutes. We may
@@ -69,6 +77,7 @@ public class MainActivity extends ReactActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MainActivity.setAlarm(getApplicationContext());
+        checkPermissions();
     }
 
     /**
@@ -146,5 +155,70 @@ public class MainActivity extends ReactActivity {
     private void clearNotifications() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.cancel(NotificationService.NOTIFICATION_ID);
+    }
+
+    /**
+     * Checks for existence of required permissions
+     * and prompts user if need be.
+     *
+     * Android M requires additional location permissions
+     * to perform bluetooth scanning in a background
+     * service.
+     */
+    private void checkPermissions() {
+        if (hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) { return; }
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("This app needs location access");
+        builder.setMessage("Please grant location access so this app can detect beacons.");
+        builder.setPositiveButton(android.R.string.ok, null);
+        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+             @Override
+             public void onDismiss(DialogInterface dialog) {
+                 ActivityCompat.requestPermissions(
+                         MainActivity.this,
+                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                         PERMISSION_REQUEST_COARSE_LOCATION);
+             }
+        });
+
+        builder.show();
+    }
+
+    /**
+     * Responds to a permission request result.
+     *
+     * The user will be warned if they declined a permission
+     *
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_COARSE_LOCATION: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d(TAG, "coarse location permission granted");
+                    return;
+                }
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Functionality limited");
+                builder.setMessage("Since location access has not been granted, this app will not be able to discover beacons when in the background.");
+                builder.setPositiveButton(android.R.string.ok, null);
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                    }
+                });
+
+                builder.show();
+            }
+        }
+    }
+
+    private boolean hasPermission(String permission) {
+        return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
     }
 }

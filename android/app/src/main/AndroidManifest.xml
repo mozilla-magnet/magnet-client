@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" tools:remove="${excludeSystemAlertWindowPermission}"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <uses-sdk tools:overrideLibrary="org.mozilla.magnet.net.scanner"/>
 
