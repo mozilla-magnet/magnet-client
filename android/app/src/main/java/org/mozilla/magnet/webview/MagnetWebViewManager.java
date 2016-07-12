@@ -48,8 +48,6 @@ public class MagnetWebViewManager extends SimpleViewManager<WebView> {
         MagnetWebView magnetWebView = new MagnetWebView(mContext);
         reactContext.addLifecycleEventListener(magnetWebView);
 
-        Context otherContext = magnetWebView.getContext();
-
         if (ReactBuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(true);
         }
