@@ -18,50 +18,22 @@
 import CoreBluetooth
 
 ///
-/// BeaconScannerDelegate
-///
-/// Implement this to receive notifications about beacons.
-protocol BeaconScannerDelegate {
-  func urlContextChanged(beaconScanner: BeaconScanner)
-}
-
-///
 /// BeaconScanner
 ///
 /// Scans for Eddystone compliant beacons using Core Bluetooth. To receive notifications of any
 /// sighted beacons, be sure to implement BeaconScannerDelegate and set that on the scanner.
 ///
-class BeaconScanner: NSObject, CBCentralManagerDelegate {
-  
-  var delegate: BeaconScannerDelegate?
-  
+class BeaconScanner: NSObject, Scanner, CBCentralManagerDelegate {
   private var centralManager: CBCentralManager!
   private let beaconOperationsQueue: dispatch_queue_t = dispatch_queue_create("beacon_operations_queue", nil)
   private var shouldBeScanning: Bool = false
-  private var _urlFound = Set<NSURL>()
+  private var callback: ((Dictionary<String, AnyObject>) -> Void)!
   
-  var urlFound: Set<NSURL> {
-    get {
-      return _urlFound
-    }
-  }
-  
-  var urls: Array<String> {
-    get {
-      var urls = Set<String>();
-      for url in _urlFound {
-        urls.insert("\(url)");
-      }
-      return Array(urls);
-    }
-  }
-  
-  override init() {
+  init(callback: (Dictionary<String, AnyObject>) -> Void) {
     super.init()
-    
-    self.centralManager = CBCentralManager(delegate: self, queue: self.beaconOperationsQueue)
-    self.centralManager.delegate = self
-    
+    centralManager = CBCentralManager(delegate: self, queue: self.beaconOperationsQueue)
+    centralManager.delegate = self
+    self.callback = callback
   }
   
   func start() {
@@ -71,16 +43,16 @@ class BeaconScanner: NSObject, CBCentralManagerDelegate {
   }
   
   func stop() {
-    self.centralManager.stopScan()
+    centralManager.stopScan()
   }
   
   deinit {
-    self.stop()
+    stop()
   }
   
   func centralManagerDidUpdateState(central: CBCentralManager)  {
     if central.state == CBCentralManagerState.PoweredOn && self.shouldBeScanning {
-      self.start()
+      start()
     }
   }
   
@@ -89,7 +61,10 @@ class BeaconScanner: NSObject, CBCentralManagerDelegate {
     guard isAdvertisingURL(serviceData) else { return }
     
     if let url = URLForFrame(serviceData) {
-      self.addURL(url)
+      callback([
+        "url": url.absoluteString,
+        "distance": -1
+      ])
     }
   }
   
@@ -105,19 +80,6 @@ class BeaconScanner: NSObject, CBCentralManagerDelegate {
         self.centralManager.scanForPeripheralsWithServices(services, options: options)
       }
     }
-  }
-  
-  private func addURL(url: NSURL) {
-    let count = self._urlFound.count
-    self._urlFound.insert(url)
-    if self._urlFound.count != count {
-      self.delegate?.urlContextChanged(self)
-    }
-  }
-  
-  //TODO: add support for the URL eviction
-  private func removeURL(url: NSURL) {
-    self._urlFound.remove(url)
   }
 }
 
@@ -137,7 +99,6 @@ private func isAdvertisingURL(advertisementFrameList: [NSObject : AnyObject]) ->
   } else {
     return data?.length > 0
   }
-  
 }
 
 private func URLForFrame(advertisementFrameList: [NSObject : AnyObject]) -> NSURL? {
@@ -153,7 +114,6 @@ private func URLForFrame(advertisementFrameList: [NSObject : AnyObject]) -> NSUR
   } else {
     return parseBeacon(data)
   }
-
 }
 
 private func parseBeacon(frameData: NSData?) -> NSURL? {

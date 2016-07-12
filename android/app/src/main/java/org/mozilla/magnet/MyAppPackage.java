@@ -17,8 +17,7 @@ public class MyAppPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new ScannerBle(reactContext));
-        modules.add(new ScannerNetwork(reactContext));
+        modules.add(new MagnetScannerReact(reactContext));
         return modules;
     }
 
