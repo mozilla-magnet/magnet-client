@@ -25,7 +25,9 @@ import CoreBluetooth
 ///
 class BeaconScanner: NSObject, Scanner, CBCentralManagerDelegate {
   private var centralManager: CBCentralManager!
-  private let beaconOperationsQueue: dispatch_queue_t = dispatch_queue_create("beacon_operations_queue", nil)
+  // As we are going to background we will need to dispatch our queue for attending BTLE operaions in a serial queue.
+  // more information: https://developer.apple.com/library/ios/documentation/General/Conceptual/ConcurrencyProgrammingGuide/OperationQueues/OperationQueues.html
+  private let beaconOperationsQueue: dispatch_queue_t = dispatch_queue_create("beacon_operations_queue", DISPATCH_QUEUE_SERIAL)
   private var shouldBeScanning: Bool = false
   private var callback: ((Dictionary<String, AnyObject>) -> Void)!
   

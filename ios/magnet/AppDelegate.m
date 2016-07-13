@@ -11,6 +11,9 @@
 
 #import "RCTRootView.h"
 
+// Include the project headers for swift code. (<project-name>-Swift.h)
+#import "magnet-Swift.h"
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -52,8 +55,19 @@
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
+  [NotificationsHelper register];
   [self.window makeKeyAndVisible];
   return YES;
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+  [NotificationsHelper clearNotifications];
+  [NotificationsHelper disable];
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+  [NotificationsHelper clearNotifications];
+  [NotificationsHelper enable];
 }
 
 @end
