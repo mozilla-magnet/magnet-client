@@ -8,6 +8,7 @@ import android.util.Log;
 
 import net.jodah.expiringmap.ExpiringMap;
 
+import org.mozilla.magnet.db.History;
 import org.mozilla.magnet.net.scanner.MagnetScanner;
 import org.mozilla.magnet.net.scanner.MagnetScannerCallback;
 import org.mozilla.magnet.net.scanner.MagnetScannerItem;
@@ -19,9 +20,11 @@ import java.util.concurrent.TimeUnit;
 
 public class ScannerService extends IntentService implements MagnetScannerCallback {
     private final static String TAG = "ScannerService";
+    private final static long ITEM_EXPIRATION_TIME_SECS = 30;
     private List<ScannerServiceCallback> mCallbacks = new ArrayList<>();
     private LocalBinder mBinder = new LocalBinder();
     private MagnetScanner mMagnetScanner;
+    private History mHistory;
     private int mClients = 0;
 
     /**
@@ -30,17 +33,21 @@ public class ScannerService extends IntentService implements MagnetScannerCallba
      * Items expire after a short period of time.
      */
     private ExpiringMap<String, MagnetScannerItem> mItems = ExpiringMap.builder()
-            .expiration(30, TimeUnit.SECONDS)
+            .expiration(ITEM_EXPIRATION_TIME_SECS, TimeUnit.SECONDS)
             .build();
 
     public ScannerService() {
         super("ScannerService");
     }
 
+    /**
+     * Called once, when the `Service` is created.
+     */
     @Override
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "on create");
+        mHistory = new History(this);
         mMagnetScanner = new MagnetScanner(this);
         mMagnetScanner
                 .useBLE(null)
@@ -61,7 +68,7 @@ public class ScannerService extends IntentService implements MagnetScannerCallba
 
     @Override
     public void onHandleIntent(Intent intent) {
-        // service only supports binding
+        // no-op, service only supports binding
     }
 
     /**
@@ -79,16 +86,21 @@ public class ScannerService extends IntentService implements MagnetScannerCallba
     /**
      * Called when an item is discovered.
      *
-     * We store the items in a hash for a duration
-     * of time, after which they are considered
-     * expired (or lost).
+     * We store the items in a hash for a duration of time,
+     * after which they are considered expired (or lost).
+     *
+     * The History database is instructed to record
+     * the detection of a URL to allow us to make
+     * more intelligent notification decisions.
      *
      * @param item
      */
     @Override
     public void onItemFound(MagnetScannerItem item) {
-        Log.d(TAG, "on item found: " + item.getUrl());
-        mItems.put(item.getUrl(), item);
+        String url = item.getUrl();
+        Log.d(TAG, "on item found: " + url);
+        mItems.put(url, item);
+        mHistory.record(url);
 
         for (ScannerServiceCallback callback : mCallbacks) {
             callback.onItemFound(item);
