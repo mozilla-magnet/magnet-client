@@ -1,4 +1,4 @@
-package org.mozilla.magnet.db;
+package org.mozilla.magnet.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,26 +7,24 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import org.mozilla.magnet.db.Schema.HistoryEntry;
+import org.mozilla.magnet.database.Schema.HistoryEntry;
 
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import static android.provider.BaseColumns._ID;
-import static org.mozilla.magnet.db.Schema.HistoryEntry.COLUMN_NAME_TIME_LAST_SEEN;
-import static org.mozilla.magnet.db.Schema.HistoryEntry.COLUMN_NAME_URL;
-import static org.mozilla.magnet.db.Schema.HistoryEntry.COLUMN_NAME_TIME_FIRST_SEEN;
+import static org.mozilla.magnet.database.Schema.HistoryEntry.COLUMN_NAME_TIME_LAST_SEEN;
+import static org.mozilla.magnet.database.Schema.HistoryEntry.COLUMN_NAME_URL;
+import static org.mozilla.magnet.database.Schema.HistoryEntry.COLUMN_NAME_TIME_FIRST_SEEN;
 
-public class History extends SQLiteOpenHelper {
+public class HistoryDatabaseSQL extends SQLiteOpenHelper implements HistoryDatabase {
     private static final String TAG = History.class.getName();
-    private static final long RECENT_TIME_PERIOD = TimeUnit.HOURS.toMillis(1);
 
     /**
      * Create a new `History` interface.
      *
      * @param context
      */
-    public History(Context context) {
+    public HistoryDatabaseSQL(Context context) {
         super(context, Schema.DATABASE_NAME, null, Schema.DATABASE_VERSION);
     }
 
@@ -67,31 +65,11 @@ public class History extends SQLiteOpenHelper {
     }
 
     /**
-     * Record the detection of a URL in the history database.
-     *
-     * When a URL has been 'recently' seen prior, we update
-     * the 'last-seen' value instead of creating a new entry.
-     * This prevents us from filling the table with 1000s of
-     * rows and allows us to easily discern: 'url x was in
-     * range of the device for y minutes'.
-     *
-     * If the 'recent' time period between detections is
-     * exceeded, a new database entry is made.
+     * Insert a new record.
      *
      * @param url
      */
-    public void record(String url) {
-        Log.d(TAG, "add: " + url);
-        HistoryRecord recentRecord = getRecent(url);
-
-        // when a recent record has been found just
-        // update it instead of creating another
-        if (recentRecord != null) {
-            Log.d(TAG, "found recent record");
-            updateLastSeen(recentRecord.id);
-            return;
-        }
-
+    public void insert(String url) {
         SQLiteDatabase db = this.getWritableDatabase();
         long now = System.currentTimeMillis() / 1000;
 
@@ -110,7 +88,7 @@ public class History extends SQLiteOpenHelper {
      *
      * @param id
      */
-    private void updateLastSeen(int id) {
+    public void updateLastSeen(int id) {
         Log.d(TAG, "update last seen: " + id);
         long now = System.currentTimeMillis() / 1000;
         ContentValues values = new ContentValues();
@@ -137,18 +115,6 @@ public class History extends SQLiteOpenHelper {
     }
 
     /**
-     * Attempt to find a row of the given URL in
-     * the 'recent' time period.
-     *
-     * @param url
-     * @return HistoryRecord
-     */
-    private HistoryRecord getRecent(String url) {
-        Date date = new Date(System.currentTimeMillis() - RECENT_TIME_PERIOD);
-        return getSince(url, date);
-    }
-
-    /**
      * Attempt to find a single row with the given url
      * that was last seen since the given date.
      *
@@ -156,7 +122,7 @@ public class History extends SQLiteOpenHelper {
      * @param date
      * @return HistoryRecord
      */
-    private HistoryRecord getSince(String url, Date date) {
+    public HistoryRecord getSince(String url, Date date) {
         String query = "SELECT * FROM " + HistoryEntry.TABLE_NAME
                 + " WHERE " + COLUMN_NAME_TIME_LAST_SEEN + " > " + date.getTime() / 1000
                 + " AND " + COLUMN_NAME_URL + " = '" + url + "'"

@@ -1,6 +1,4 @@
-package org.mozilla.magnet.db;
-
-import org.mozilla.magnet.db.History;
+package org.mozilla.magnet.database;
 
 public class HistoryRecord {
     public int id;

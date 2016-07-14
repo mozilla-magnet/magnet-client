@@ -1,4 +1,4 @@
-package org.mozilla.magnet.db;
+package org.mozilla.magnet.database;
 
 import android.provider.BaseColumns;
 

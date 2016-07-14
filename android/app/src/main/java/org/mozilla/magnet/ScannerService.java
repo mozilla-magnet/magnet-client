@@ -8,7 +8,7 @@ import android.util.Log;
 
 import net.jodah.expiringmap.ExpiringMap;
 
-import org.mozilla.magnet.db.History;
+import org.mozilla.magnet.database.History;
 import org.mozilla.magnet.net.scanner.MagnetScanner;
 import org.mozilla.magnet.net.scanner.MagnetScannerCallback;
 import org.mozilla.magnet.net.scanner.MagnetScannerItem;
@@ -47,7 +47,7 @@ public class ScannerService extends IntentService implements MagnetScannerCallba
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "on create");
-        mHistory = new History(this);
+        mHistory = History.create(this);
         mMagnetScanner = new MagnetScanner(this);
         mMagnetScanner
                 .useBLE(null)
