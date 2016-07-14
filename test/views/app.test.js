@@ -19,6 +19,8 @@ describe('<App>', function() {
 
     this.scanner = sinon.createStubInstance(Scanner);
 
+    this.scanner.start.returns(Promise.resolve());
+
     // re-enable event emitter for testing
     this.scanner.emit.restore();
     this.scanner.on.restore();
@@ -52,7 +54,7 @@ describe('<App>', function() {
     });
 
     describe('scan', function() {
-      it('starts scanning after 500ms', function() {
+      it('starts scanning', function() {
         sinon.assert.calledOnce(this.scanner.start);
       });
 

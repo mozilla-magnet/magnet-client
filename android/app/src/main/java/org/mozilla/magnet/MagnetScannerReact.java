@@ -19,9 +19,10 @@ import org.mozilla.magnet.net.scanner.MagnetScannerItem;
 
 public class MagnetScannerReact extends ReactContextBaseJavaModule implements ScannerService.ScannerServiceCallback {
     private final static String TAG = "MagnetScannerReact";
-    Boolean mNeedsStarting = false;
-    ScannerService mService;
-    Boolean mBound = false;
+    private ReactApplicationContext mContext;
+    private Boolean mNeedsStarting = false;
+    private ScannerService mService;
+    private Boolean mBound = false;
 
     private ServiceConnection mConnection = new ServiceConnection() {
 
@@ -44,6 +45,7 @@ public class MagnetScannerReact extends ReactContextBaseJavaModule implements Sc
 
     public MagnetScannerReact(ReactApplicationContext context) {
         super(context);
+        mContext = context;
         Intent intent = new Intent(context, ScannerService.class);
         context.bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
@@ -53,17 +55,27 @@ public class MagnetScannerReact extends ReactContextBaseJavaModule implements Sc
         return TAG;
     }
 
+    /**
+     * Start the ScannerService scanning.
+     */
     @ReactMethod
     public void start() {
+
+        // if service hasn't connected yet set a
+        // flag to start the scanner once it has
         if (!mBound) {
             mNeedsStarting = true;
             return;
         }
 
+        // start scanning
         mService.start();
         mNeedsStarting = false;
     }
 
+    /**
+     * Stop the ScannerService scanning.
+     */
     @ReactMethod
     public void stop() {
         if (!mBound) {
@@ -82,8 +94,14 @@ public class MagnetScannerReact extends ReactContextBaseJavaModule implements Sc
         emit("magnetscanner:itemfound", data);
     }
 
+    /**
+     * Emit an event back to ReactNative JS context.
+     *
+     * @param name
+     * @param data
+     */
     private void emit(String name, WritableMap data) {
-        getReactApplicationContext()
+        mContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(name, data);
     }
