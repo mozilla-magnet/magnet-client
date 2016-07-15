@@ -46,8 +46,8 @@ public class ScannerService extends IntentService implements MagnetScannerCallba
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(TAG, "on create");
-        mHistory = History.create(this);
+        Log.d(TAG, "on get");
+        mHistory = History.get(this);
         mMagnetScanner = new MagnetScanner(this);
         mMagnetScanner
                 .useBLE(null)

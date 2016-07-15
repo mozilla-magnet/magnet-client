@@ -72,7 +72,7 @@ public class MagnetWebChromeClient extends WebChromeClient implements ActivityEv
             return null;
         }
 
-        // create the File where the photo should go
+        // get the File where the photo should go
         File photoFile = null;
 
         try {
@@ -80,7 +80,7 @@ public class MagnetWebChromeClient extends WebChromeClient implements ActivityEv
             takePictureIntent.putExtra("PhotoPath", mCameraPhotoPath);
         } catch (IOException ex) {
             // Error occurred while creating the File
-            Log.e(TAG, "Unable to create Image File", ex);
+            Log.e(TAG, "Unable to get Image File", ex);
             return null;
         }
 

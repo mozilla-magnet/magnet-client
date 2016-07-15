@@ -12,17 +12,17 @@ public class History {
     private HistoryDatabase mDB;
 
     /**
-     * Factory to create new `History` interface.
+     * Factory to get new `History` object.
      *
      * @param context
      * @return History
      */
-    public static History create(Context context) {
-        return new History(new HistoryDatabaseSQL(context));
+    public static History get(Context context) {
+        return new History(new DatabaseSQL.HistoryTable(context));
     }
 
     /**
-     * Create a new `History` interface passing
+     * Create a new `History` object passing
      * a `HistoryDatabase` abstraction.
      *
      * @param db

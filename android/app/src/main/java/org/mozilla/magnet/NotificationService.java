@@ -31,7 +31,7 @@ public class NotificationService extends Service implements ScannerService.Scann
      */
     @Override
     public void onCreate() {
-        Log.d(TAG, "on create");
+        Log.d(TAG, "on get");
 
         // background scanning isn't required
         // if the app is 'active' (in foreground)
@@ -148,7 +148,7 @@ public class NotificationService extends Service implements ScannerService.Scann
             return;
         }
 
-        // create intent to launch the app when the notification is tapped
+        // get intent to launch the app when the notification is tapped
         Intent launchIntent = new Intent(this, MainActivity.class);
         launchIntent.setAction(Intent.ACTION_MAIN);
         launchIntent.addCategory(Intent.CATEGORY_LAUNCHER);
