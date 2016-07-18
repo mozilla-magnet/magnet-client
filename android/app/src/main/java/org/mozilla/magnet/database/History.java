@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 public class History {
     private static final String TAG = History.class.getName();
     private static final long RECENT_TIME_PERIOD = TimeUnit.HOURS.toMillis(1);
+    private static History mHistory;
     private HistoryStore mStore;
 
     /**
@@ -23,8 +24,10 @@ public class History {
      * @return History
      */
     public static History get(Context context) {
+        if (mHistory != null) { return mHistory; }
         HistoryStore store = DatabaseSQL.get(context).getHistoryTable();
-        return new History(store);
+        mHistory = new History(store);
+        return mHistory;
     }
 
     /**
