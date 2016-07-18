@@ -9,26 +9,32 @@ import java.util.concurrent.TimeUnit;
 public class History {
     private static final String TAG = History.class.getName();
     private static final long RECENT_TIME_PERIOD = TimeUnit.HOURS.toMillis(1);
-    private HistoryDatabase mDB;
+    private HistoryStore mStore;
 
     /**
      * Factory to get new `History` object.
+     *
+     * We use a factory here instead of calling the
+     * constructor directly to allow us to pass
+     * a mock `HistoryStore` object into the
+     * constructor for testing.
      *
      * @param context
      * @return History
      */
     public static History get(Context context) {
-        return new History(new DatabaseSQL.HistoryTable(context));
+        HistoryStore store = DatabaseSQL.get(context).getHistoryTable();
+        return new History(store);
     }
 
     /**
      * Create a new `History` object passing
-     * a `HistoryDatabase` abstraction.
+     * a `HistoryStore` abstraction.
      *
-     * @param db
+     * @param store
      */
-    public History(HistoryDatabase db) {
-        mDB = db;
+    public History(HistoryStore store) {
+        mStore = store;
     }
 
     /**
@@ -53,12 +59,12 @@ public class History {
         // update it instead of creating another
         if (recentRecord != null) {
             Log.d(TAG, "found recent record");
-            mDB.updateLastSeen(recentRecord.id);
+            mStore.updateLastSeen(recentRecord.id);
             return;
         }
 
         // insert new record
-        mDB.insert(url);
+        mStore.insert(url);
     }
 
     /**
@@ -70,6 +76,6 @@ public class History {
      */
     private HistoryRecord getRecent(String url) {
         Date date = new Date(System.currentTimeMillis() - RECENT_TIME_PERIOD);
-        return mDB.getSince(url, date);
+        return mStore.getSince(url, date);
     }
 }

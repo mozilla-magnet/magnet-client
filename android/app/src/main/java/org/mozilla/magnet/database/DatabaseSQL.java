@@ -1,39 +1,32 @@
 package org.mozilla.magnet.database;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.BaseColumns;
-import android.util.Log;
-
-import java.util.Date;
 
 /**
  * Represents the entire application database.
+ * All tables should be accessed through this class.
  */
 public class DatabaseSQL extends SQLiteOpenHelper {
-    private static final String TAG = HistoryTable.class.getName();
+    private static final String TAG = History.class.getName();
     private static final String DATABASE_NAME = "magnet.db";
     private static final int DATABASE_VERSION = 2;
-    private static SQLiteDatabase mReadableDB;
-    private static SQLiteDatabase mWritableDB;
+    private HistorySQLTable mHistory;
     private static DatabaseSQL mDB;
 
+    /**
+     * Factory to get `DatabaseSQL` object.
+     *
+     * It's designed to ensure only one instance
+     * is ever created across and app context.
+     *
+     * @param context
+     * @return
+     */
     public static synchronized DatabaseSQL get(Context context) {
         if (mDB == null) { mDB = new DatabaseSQL(context); }
         return mDB;
-    }
-
-    public static synchronized SQLiteDatabase getWritable(Context context) {
-        if (mWritableDB == null) { mWritableDB = DatabaseSQL.get(context).getWritableDatabase(); }
-        return mWritableDB;
-    }
-
-    public static synchronized SQLiteDatabase getReadable(Context context) {
-        if (mReadableDB == null) { mReadableDB = DatabaseSQL.get(context).getReadableDatabase(); }
-        return mReadableDB;
     }
 
     /**
@@ -43,6 +36,7 @@ public class DatabaseSQL extends SQLiteOpenHelper {
      */
     public DatabaseSQL(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        mHistory = new HistorySQLTable(this);
     }
 
     /**
@@ -54,14 +48,7 @@ public class DatabaseSQL extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_CONTACTS_TABLE = "CREATE TABLE " + HistoryTable.Schema.TABLE_NAME + "("
-                + HistoryTable.Schema._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + HistoryTable.Schema.COLUMN_NAME_URL + " TEXT,"
-                + HistoryTable.Schema.COLUMN_NAME_TIME_FIRST_SEEN + " INT,"
-                + HistoryTable.Schema.COLUMN_NAME_TIME_LAST_SEEN + " INT"
-                + ")";
-
-        db.execSQL(CREATE_CONTACTS_TABLE);
+        mHistory.onCreate(db);
     }
 
     /**
@@ -78,120 +65,20 @@ public class DatabaseSQL extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + HistoryTable.Schema.TABLE_NAME);
-        onCreate(db);
+        mHistory.onUpgrade(db, oldVersion, newVersion);
     }
 
     /**
-     * Interface for the 'history' table
+     * Get the history table interface from the database.
+     *
+     * @return HistoryStore
      */
-    public static class HistoryTable implements HistoryDatabase {
-        private final String TAG = HistoryTable.class.getName();
-        private Context mContext;
+    public HistoryStore getHistoryTable() {
+        return mHistory;
+    }
 
-        /**
-         * Table contents
-         */
-        public static abstract class Schema implements BaseColumns {
-            public static final String TABLE_NAME = "history";
-            public static final String COLUMN_NAME_URL = "url";
-            public static final String COLUMN_NAME_TIME_FIRST_SEEN = "timefirstseen";
-            public static final String COLUMN_NAME_TIME_LAST_SEEN = "timelastseen";
-        }
-
-        /**
-         * Create a new `History` object.
-         *
-         * @param context
-         */
-        public HistoryTable(Context context) {
-            mContext = context;
-        }
-
-        /**
-         * Insert a new record.
-         *
-         * @param url
-         */
-        public void insert(String url) {
-            SQLiteDatabase db = DatabaseSQL.getWritable(mContext);
-            long now = System.currentTimeMillis() / 1000;
-
-            ContentValues values = new ContentValues();
-            values.put(Schema.COLUMN_NAME_URL, url);
-            values.put(Schema.COLUMN_NAME_TIME_FIRST_SEEN, now);
-            values.put(Schema.COLUMN_NAME_TIME_LAST_SEEN, now);
-
-            db.insert(HistoryTable.Schema.TABLE_NAME, null, values);
-        }
-
-        /**
-         * Update the last-seen column for a previously
-         * recorded entry.
-         *
-         * @param id
-         */
-        public void updateLastSeen(int id) {
-            Log.d(TAG, "update last seen: " + id);
-            long now = System.currentTimeMillis() / 1000;
-            ContentValues values = new ContentValues();
-            values.put(Schema.COLUMN_NAME_TIME_LAST_SEEN, now);
-            update(id, values);
-        }
-
-        /**
-         * Update a row with the given values.
-         *
-         * @param id
-         * @param values
-         */
-        private void update(int id, ContentValues values) {
-            SQLiteDatabase db = DatabaseSQL.getWritable(mContext);
-
-            db.update(
-                    HistoryTable.Schema.TABLE_NAME,
-                    values,
-                    HistoryTable.Schema._ID + " = ?",
-                    new String[]{String.valueOf(id)});
-        }
-
-        /**
-         * Attempt to find a single row with the given url
-         * that was last seen since the given date.
-         *
-         * @param url
-         * @param date
-         * @return HistoryRecord
-         */
-        public HistoryRecord getSince(String url, Date date) {
-            String query = "SELECT * FROM " + Schema.TABLE_NAME
-                    + " WHERE " + Schema.COLUMN_NAME_TIME_LAST_SEEN + " > " + date.getTime() / 1000
-                    + " AND " + Schema.COLUMN_NAME_URL + " = '" + url + "'"
-                    + " LIMIT 1";
-
-            SQLiteDatabase db = DatabaseSQL.getReadable(mContext);
-            Cursor cursor = db.rawQuery(query, null);
-
-            // return null if nothing was found
-            if (!cursor.moveToFirst()) {
-                return null;
-            }
-
-            return toHistoryRecord(cursor);
-        }
-
-        /**
-         * Return a HistoryRecord from the given cursor.
-         *
-         * @param cursor
-         * @return HistoryRecord
-         */
-        private HistoryRecord toHistoryRecord(Cursor cursor) {
-            int id = cursor.getInt(cursor.getColumnIndex(Schema._ID));
-            String url = cursor.getString(cursor.getColumnIndex(Schema.COLUMN_NAME_URL));
-            long firstSeen = cursor.getLong(cursor.getColumnIndex(Schema.COLUMN_NAME_TIME_FIRST_SEEN));
-            long lastSeen = cursor.getLong(cursor.getColumnIndex(Schema.COLUMN_NAME_TIME_LAST_SEEN));
-            return new HistoryRecord(id, url, firstSeen, lastSeen);
-        }
+    public static interface Table {
+        public void onCreate(SQLiteDatabase db);
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion);
     }
 }
