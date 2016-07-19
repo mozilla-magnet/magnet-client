@@ -24,16 +24,23 @@ import Foundation
   }
   
   func onItemFound(item: Dictionary<String, AnyObject>) {
-    print("item found", item["url"])
+    debugPrint("item found", item["url"])
     bridge.eventDispatcher()
       .sendDeviceEventWithName("magnetscanner:itemfound", body: item)
     
-    notifyUser(item["url"] as! String)
+    let url = item["url"] as! String
+    notifyUser(url)
+    History.getInstance().record(url)
   }
   
   // Throttles the notification process, waiting for 1 minute until
   // setting up the badge with the number of elements nearby.
   func notifyUser(url: String) {
+    let recent = History.getInstance().getRecent(url)
+    if (recent != nil) {
+      return;
+    }
+    
     if (toNotify.contains(url)) {
       return;
     }
@@ -43,11 +50,11 @@ import Foundation
     }
     
     // We need to throttle the notifications, waiting for receive more nearby web pages,
-    // so we use NSTimer to wait for 1 minute and after that we trigger the action, in
+    // so we use NSTimer to wait for 10 seconds and after that we trigger the action, in
     // this case doNotifyUser, that notifies depending on the number of web pages found
     // during the waiting period.
     notifyTimer = NSTimer.init(
-      timeInterval: 60 ,
+      timeInterval: 10 ,
       target: self,
       selector: #selector(MagnetScannerReact.doNotifyUser),
       userInfo: nil,
@@ -59,7 +66,7 @@ import Foundation
   }
   
   func doNotifyUser() {
-    NotificationsHelper.updateBadge(toNotify.count);
+    NotificationsHelper.updateNotifications(toNotify.count);
     toNotify = [];
   }
 }

@@ -12,18 +12,23 @@ import UIKit
   static var enabled: Bool = true
   
   @objc class func register() {
-    let notificationsSettings = UIUserNotificationSettings(forTypes: [.Badge], categories: nil)
+    let notificationsSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge], categories: nil)
     UIApplication.sharedApplication().registerUserNotificationSettings(notificationsSettings)
   }
   
-  class func updateBadge(num: Int) {
+  class func updateNotifications(num: Int) {
     if (enabled) {
-      UIApplication.sharedApplication().applicationIconBadgeNumber = num;
+      UIApplication.sharedApplication().cancelAllLocalNotifications()
+      UIApplication.sharedApplication().applicationIconBadgeNumber = num
+      let notification = UILocalNotification()
+      notification.alertBody = "There are web pages around you"
+      UIApplication.sharedApplication().presentLocalNotificationNow(notification)
     }
   }
   
   @objc class func clearNotifications() {
-    self.updateBadge(0);
+    UIApplication.sharedApplication().cancelAllLocalNotifications()
+    self.updateNotifications(0)
   }
   
   @objc class func enable() {
