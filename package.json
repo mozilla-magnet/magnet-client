@@ -6,7 +6,8 @@
     "lint": "eslint lib/",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "mocha --opts test/mocha.opts 'test/**/*.test.js'",
-    "posttest": "npm run lint"
+    "posttest": "npm run lint",
+    "postinstall": "cd ios && carthage bootstrap --platform iOS >/dev/null 2>&1 || { echo >&2 \"I require Carthage to build the iOS dependenices. Follow README to learn more about this.\";}"
   },
   "dependencies": {
     "babel-plugin-transform-es2015-constants": "^6.1.4",
