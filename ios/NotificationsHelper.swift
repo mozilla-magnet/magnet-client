@@ -16,10 +16,11 @@ import UIKit
     UIApplication.sharedApplication().registerUserNotificationSettings(notificationsSettings)
   }
   
-  class func updateNotifications(num: Int) {
+  class func updateNotifications() {
     if (enabled) {
       UIApplication.sharedApplication().cancelAllLocalNotifications()
-      UIApplication.sharedApplication().applicationIconBadgeNumber = num
+      // Clean any badge
+      UIApplication.sharedApplication().applicationIconBadgeNumber = 0
       let notification = UILocalNotification()
       notification.alertBody = "There are web pages around you"
       UIApplication.sharedApplication().presentLocalNotificationNow(notification)
@@ -28,7 +29,7 @@ import UIKit
   
   @objc class func clearNotifications() {
     UIApplication.sharedApplication().cancelAllLocalNotifications()
-    self.updateNotifications(0)
+    self.updateNotifications()
   }
   
   @objc class func enable() {

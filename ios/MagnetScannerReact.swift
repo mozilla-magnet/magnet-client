@@ -66,7 +66,7 @@ import Foundation
   }
   
   func doNotifyUser() {
-    NotificationsHelper.updateNotifications(toNotify.count);
+    NotificationsHelper.updateNotifications();
     toNotify = [];
   }
 }
