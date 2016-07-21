@@ -17,10 +17,7 @@ import Foundation
   }
   
   @objc func stop() {
-    // We don't stop scanning when the app goes into the background as we want bluetooth scanning to continue.
-    // If we stop scanning we have no way of starting again until the app comes to the foreground.
-    // When the app is in the background and the scanner is still running,
-    // the OS will periodically call the scan-callback with results.
+    scanner.stop()
   }
   
   func onItemFound(item: Dictionary<String, AnyObject>) {

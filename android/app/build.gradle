@@ -145,6 +145,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-linear-gradient')
     compile project(':react-native-device-info')
     compile project(':magnet-scanner-android')
     compile fileTree(dir: "libs", include: ["*.jar", "*.aar"])

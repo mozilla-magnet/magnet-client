@@ -93,3 +93,7 @@ ReactNative.UIManager.configureNextLayoutAnimation = function(config, callback) 
 ReactNative.NativeModules.RNDeviceInfo = {
   systemManufacturer: 'Apple'
 };
+
+replace
+  .module('react-native-linear-gradient')
+  .exports(ReactNative.View);
