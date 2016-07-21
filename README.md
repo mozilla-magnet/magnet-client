@@ -22,7 +22,7 @@
 ```bash
 carthage bootstrap --platform iOS
 ```
-If you alread have Carthage installed, this step has been added as part of the `postInstall` npm scripts.
+If you already have Carthage installed, this step has been added as part of the `postinstall` npm scripts.
 
 6. Follow the ['running on device' instructions](https://facebook.github.io/react-native/docs/running-on-device-ios.html#content).
 

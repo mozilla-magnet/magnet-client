@@ -13,7 +13,6 @@ import Foundation
 class History {
   private static var sharedInstance: History!
   private var db: HistorySQLite
-  private let RECENT_PERIOD = 60 * 60
   private init() {
     db = HistorySQLite()
   }

@@ -17,14 +17,14 @@ import UIKit
   }
   
   class func updateNotifications() {
-    if (enabled) {
-      UIApplication.sharedApplication().cancelAllLocalNotifications()
-      // Clean any badge
-      UIApplication.sharedApplication().applicationIconBadgeNumber = 0
-      let notification = UILocalNotification()
-      notification.alertBody = "There are web pages around you"
-      UIApplication.sharedApplication().presentLocalNotificationNow(notification)
-    }
+    guard enabled else { return }
+    
+    UIApplication.sharedApplication().cancelAllLocalNotifications()
+    // Clean any badge
+    UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+    let notification = UILocalNotification()
+    notification.alertBody = "There are web pages around you"
+    UIApplication.sharedApplication().presentLocalNotificationNow(notification)
   }
   
   @objc class func clearNotifications() {

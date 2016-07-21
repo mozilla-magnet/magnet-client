@@ -63,15 +63,12 @@ class HistorySQLite {
     if (result.count == 0) {
       return nil
     }
-    else {
-      let record = result[0]
-      return HistoryRecord(id: record[id], url: record[url], lastSeen: record[lastSeen], firstSeen: record[firstSeen])
-    }
-  }
-  
-  func getRecent(theUrl: String) -> HistoryRecord! {
-    let date = NSDate()
-    return getSince(theUrl, sinceDate: date)
+
+    let record = result[0]
+    return HistoryRecord(id: record[id],
+            url: record[url],
+            lastSeen: record[lastSeen],
+            firstSeen: record[firstSeen])
   }
   
   func clear() {
