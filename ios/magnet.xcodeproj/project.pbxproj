@@ -23,6 +23,10 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		550CECBF1D3536F80076D807 /* NotificationsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550CECBE1D3536F80076D807 /* NotificationsHelper.swift */; };
 		555800A31CBE683D00A21868 /* ScannerBle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555800A21CBE683D00A21868 /* ScannerBle.swift */; };
+		5583EF0E1D3D55AD00852649 /* HistoryRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF0D1D3D55AD00852649 /* HistoryRecord.swift */; };
+		5583EF101D3D565200852649 /* HistorySQLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF0F1D3D565200852649 /* HistorySQLite.swift */; };
+		5583EF121D3E36C300852649 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF111D3E36C300852649 /* History.swift */; };
+		5583EF161D3E4A8400852649 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5583EF151D3E4A8400852649 /* SQLite.framework */; };
 		55A853D81D019A48004EC4B7 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 553624A01CFF28B100141940 /* libRNDeviceInfo.a */; };
 		55F7DA701CD0C750005E3865 /* FiraSans-Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 55F7DA6D1CD0C750005E3865 /* FiraSans-Book.ttf */; };
 		55F7DA711CD0C750005E3865 /* FiraSans-BookItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 55F7DA6E1CD0C750005E3865 /* FiraSans-BookItalic.ttf */; };
@@ -149,6 +153,10 @@
 		553624911CFF28B100141940 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		555800951CBE5F7800A21868 /* Magnet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Magnet-Bridging-Header.h"; sourceTree = "<group>"; };
 		555800A21CBE683D00A21868 /* ScannerBle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannerBle.swift; sourceTree = "<group>"; };
+		5583EF0D1D3D55AD00852649 /* HistoryRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryRecord.swift; sourceTree = "<group>"; };
+		5583EF0F1D3D565200852649 /* HistorySQLite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistorySQLite.swift; sourceTree = "<group>"; };
+		5583EF111D3E36C300852649 /* History.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
+		5583EF151D3E4A8400852649 /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = Carthage/Build/iOS/SQLite.framework; sourceTree = "<group>"; };
 		55F7DA6D1CD0C750005E3865 /* FiraSans-Book.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FiraSans-Book.ttf"; path = "assets/fonts/FiraSans-Book.ttf"; sourceTree = "<group>"; };
 		55F7DA6E1CD0C750005E3865 /* FiraSans-BookItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FiraSans-BookItalic.ttf"; path = "assets/fonts/FiraSans-BookItalic.ttf"; sourceTree = "<group>"; };
 		55F7DA6F1CD0C750005E3865 /* FiraSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FiraSans-LightItalic.ttf"; path = "assets/fonts/FiraSans-LightItalic.ttf"; sourceTree = "<group>"; };
@@ -176,6 +184,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5583EF161D3E4A8400852649 /* SQLite.framework in Frameworks */,
 				55A853D81D019A48004EC4B7 /* libRNDeviceInfo.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
@@ -269,6 +278,7 @@
 		13B07FAE1A68108700A75B9A /* Magnet */ = {
 			isa = PBXGroup;
 			children = (
+				5583EF0A1D3D519D00852649 /* History */,
 				8D5722441CDCAF6B00480505 /* Scanner */,
 				8D5722451CDCAFA400480505 /* MagnetWebView */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -298,6 +308,16 @@
 				553624A01CFF28B100141940 /* libRNDeviceInfo.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		5583EF0A1D3D519D00852649 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				5583EF0D1D3D55AD00852649 /* HistoryRecord.swift */,
+				5583EF0F1D3D565200852649 /* HistorySQLite.swift */,
+				5583EF111D3E36C300852649 /* History.swift */,
+			);
+			name = History;
 			sourceTree = "<group>";
 		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
@@ -337,6 +357,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				5583EF151D3E4A8400852649 /* SQLite.framework */,
 				55F7DA6D1CD0C750005E3865 /* FiraSans-Book.ttf */,
 				55F7DA6E1CD0C750005E3865 /* FiraSans-BookItalic.ttf */,
 				55F7DA6F1CD0C750005E3865 /* FiraSans-LightItalic.ttf */,
@@ -410,6 +431,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				5583EF141D3E46FC00852649 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -621,6 +643,20 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/packager/react-native-xcode.sh";
 		};
+		5583EF141D3E46FC00852649 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/SQLite.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -636,13 +672,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5583EF101D3D565200852649 /* HistorySQLite.swift in Sources */,
 				555800A31CBE683D00A21868 /* ScannerBle.swift in Sources */,
 				8D57224A1CDCB16400480505 /* RNMagnetWebViewManagerExport.m in Sources */,
+				5583EF0E1D3D55AD00852649 /* HistoryRecord.swift in Sources */,
 				550CECBF1D3536F80076D807 /* NotificationsHelper.swift in Sources */,
 				8D75672D1D2BF33500315AEE /* MagnetScanner.swift in Sources */,
 				8DA0E3571CE33A5300CE54D9 /* ScannerNetwork.swift in Sources */,
 				8D75672F1D2BF6A500315AEE /* Scanner.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				5583EF121D3E36C300852649 /* History.swift in Sources */,
 				8D7567201D2BF30400315AEE /* MagnetScannerReactExport.m in Sources */,
 				8D57224B1CDCB16400480505 /* RNMagnetWebView.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
@@ -721,6 +760,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -748,6 +791,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,

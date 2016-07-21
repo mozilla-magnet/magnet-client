@@ -41,3 +41,7 @@ android/keystores/debug.keystore
 
 # Gradle
 *.iml
+
+# Carthage
+ios/Cartfile.resolved
+ios/Carthage/
