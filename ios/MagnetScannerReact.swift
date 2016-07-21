@@ -36,9 +36,8 @@ import Foundation
   // Throttles the notification process, waiting for 1 minute until
   // setting up the badge with the number of elements nearby.
   func notifyUser(url: String) {
-    guard let _ = History.getInstance().getRecent(url) else { return }
-    
-    guard toNotify.contains(url) else { return }
+    guard History.getInstance().getRecent(url) == nil else { return }
+    guard toNotify.contains(url) == false else { return }
     
     toNotify.append(url)
     if (notifyTimer != nil) {
