@@ -39,6 +39,7 @@
 		8D75672F1D2BF6A500315AEE /* Scanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D75672E1D2BF6A500315AEE /* Scanner.swift */; };
 		8D7567311D2BF7F300315AEE /* MagnetScannerReact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D7567301D2BF7F300315AEE /* MagnetScannerReact.swift */; };
 		8DA0E3571CE33A5300CE54D9 /* ScannerNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0E3561CE33A5300CE54D9 /* ScannerNetwork.swift */; };
+		8DF931921D4BA2B400612680 /* FiraSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8DF931911D4BA2B400612680 /* FiraSans-LightItalic.ttf */; };
 		AA85BDA14B4C4D9A8524DCAD /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0097C20A4D7D4123BF8820C5 /* libBVLinearGradient.a */; };
 /* End PBXBuildFile section */
 
@@ -178,6 +179,7 @@
 		8D7567301D2BF7F300315AEE /* MagnetScannerReact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagnetScannerReact.swift; sourceTree = "<group>"; };
 		8DA0E3561CE33A5300CE54D9 /* ScannerNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannerNetwork.swift; sourceTree = "<group>"; };
 		8DF6981FBE0A4B8D8545B9A5 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
+		8DF931911D4BA2B400612680 /* FiraSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FiraSans-LightItalic.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -398,6 +400,7 @@
 		8D32004F1D4B659700C334F1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8DF931911D4BA2B400612680 /* FiraSans-LightItalic.ttf */,
 				8D32005C1D4B65CE00C334F1 /* FiraSans-Book.otf */,
 				8D32005D1D4B65CE00C334F1 /* FiraSans-LightItalic.otf */,
 			);
@@ -657,6 +660,7 @@
 				8D32005F1D4B65CE00C334F1 /* FiraSans-LightItalic.otf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				8D32005E1D4B65CE00C334F1 /* FiraSans-Book.otf in Resources */,
+				8DF931921D4BA2B400612680 /* FiraSans-LightItalic.ttf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
