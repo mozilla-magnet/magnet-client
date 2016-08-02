@@ -5,7 +5,7 @@
 
 var ReactNative = require('react-native');
 var theme = require('./config').theme;
-var App = require('./lib/views/app');
+var App = require('./lib/app');
 var React = require('react');
 
 var {
@@ -20,7 +20,7 @@ class IOSApp extends React.Component {
         backgroundColor: theme.colorBackground,
         paddingTop: 20,
         flex: 1
-      }}>
+        }}>
         <App/>
       </View>
     );

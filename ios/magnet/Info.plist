@@ -31,9 +31,8 @@
 	<string></string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>FiraSans-Book.ttf</string>
+		<string>FiraSans-Book.otf</string>
 		<string>FiraSans-LightItalic.ttf</string>
-		<string>FiraSans-BookItalic.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -47,9 +46,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-        <key>UIBackgroundModes</key>
-        <array>
-               <string>bluetooth-central</string>
-        </array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-central</string>
+	</array>
 </dict>
 </plist>

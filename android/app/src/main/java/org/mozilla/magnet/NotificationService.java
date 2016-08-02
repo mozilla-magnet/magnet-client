@@ -159,8 +159,8 @@ public class NotificationService extends Service implements ScannerService.Scann
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_stat_notify)
-                .setContentTitle(itemCount + " items near you")
-                .setContentText("Tap to view")
+                .setContentTitle("Content found nearby")
+                .setContentText("Tap to explore")
                 .setAutoCancel(true)
                 .setShowWhen(false)
                 .setContentIntent(pendingIntent);

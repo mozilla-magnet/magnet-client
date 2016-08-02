@@ -17,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.facebook.react.ReactActivity;
+import com.BV.LinearGradient.LinearGradientPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -61,6 +62,7 @@ public class MainActivity extends ReactActivity {
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
                 new MainReactPackage(),
+            new LinearGradientPackage(),
                 new RNDeviceInfo(),
                 new MyAppPackage()
         );

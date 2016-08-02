@@ -3,11 +3,11 @@
  * Dependencies
  */
 
-var ReactNative = require('react-native');
-var App = require('./lib/views/app');
-var React = require('react');
+const ReactNative = require('react-native');
+const App = require('./lib/app');
+const React = require('react');
 
-var {
+const {
   UIManager,
   AppRegistry
 } = ReactNative;

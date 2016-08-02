@@ -23,7 +23,7 @@ import UIKit
     // Clean any badge
     UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     let notification = UILocalNotification()
-    notification.alertBody = "There are web pages around you"
+    notification.alertBody = "Content found nearby"
     UIApplication.sharedApplication().presentLocalNotificationNow(notification)
   }
   
