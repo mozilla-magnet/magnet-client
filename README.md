@@ -1,7 +1,7 @@
 [![Stories in Ready](https://badge.waffle.io/mozilla-magnet/magnet.png?label=ready&title=Ready)](https://waffle.io/mozilla-magnet/magnet)
 # Magnet
 
-> A nearby content discovery client for Android (iOS support coming) built with React-Native
+> A nearby content discovery client for Android and iOS built with React-Native.
 
 ## Setup
 
