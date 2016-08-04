@@ -5,6 +5,15 @@ module.exports = {
     "itemsSwipable": false
   },
 
+  "settings": {
+    "links": {
+      "about": "https://trymagnet.org",
+      "t&c": "https://trymagnet.org/terms/",
+      "privacy": "https://trymagnet.org/privacy/",
+      "feedback": "https://trymagnet.org/#contact"
+    }
+  },
+
   "metadataServiceUrl": "https://tengam.org/api/v1/metadata",
 
   "adaptors": [
