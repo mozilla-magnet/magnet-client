@@ -478,7 +478,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 730;
 				LastUpgradeCheck = 730;
-				ORGANIZATIONNAME = Facebook;
+				ORGANIZATIONNAME = "Project Magnet";
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
