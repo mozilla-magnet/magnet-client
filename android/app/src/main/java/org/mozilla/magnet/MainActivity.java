@@ -17,10 +17,13 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.facebook.react.ReactActivity;
+import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
+
+import org.mozilla.magnet.notificationlistener.NotificationListenerPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends ReactActivity {
     private final static String TAG = MainActivity.class.getName();
     private final static int PERMISSION_REQUEST_COARSE_LOCATION = 1;
+    private NotificationListenerPackage mNotificationEventsPackage;
 
     /**
      * The alarm runs every 10 minutes. We may
@@ -60,11 +64,14 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected List<ReactPackage> getPackages() {
+        mNotificationEventsPackage = new NotificationListenerPackage(this);
         return Arrays.<ReactPackage>asList(
-                new MainReactPackage(),
+            new MainReactPackage(),
+            mNotificationEventsPackage,
+            new GoogleAnalyticsBridgePackage(),
             new LinearGradientPackage(),
-                new RNDeviceInfo(),
-                new MyAppPackage()
+            new RNDeviceInfo(),
+            new MyAppPackage()
         );
     }
 
@@ -84,6 +91,12 @@ public class MainActivity extends ReactActivity {
         Log.d(TAG, "on resume");
         clearNotifications();
         setActive(true);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        mNotificationEventsPackage.onNewIntent(intent);
     }
 
     /**
@@ -114,7 +127,7 @@ public class MainActivity extends ReactActivity {
     }
 
     /**
-     * Schedule a repeating alarm used to activate `AlarmReceiver`
+     * Schedule a repeating alarm used to activate `ReceiverAlarm`
      * which in-turn triggers`NotificationService` to perform a
      * short background scan and dispatch system notifications.
      *
@@ -122,7 +135,7 @@ public class MainActivity extends ReactActivity {
      */
     public static void setAlarm(Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, AlarmReceiver.class);
+        Intent intent = new Intent(context, ReceiverAlarm.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         boolean enabled = context.getResources().getBoolean(R.bool.notifications_enabled);
 

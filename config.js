@@ -35,11 +35,16 @@ module.exports = {
     }
   ],
 
-  theme: {
-    colorBackground: '#f2f2f2',
-    colorPrimary: '#00A2D4',
-    fontLightItalic: 'FiraSans-LightItalic',
-    fontBook: 'FiraSans-Book'
+  "theme": {
+    "colorBackground": '#f2f2f2',
+    "colorPrimary": '#00A2D4',
+    "fontLightItalic": 'FiraSans-LightItalic',
+    "fontBook": 'FiraSans-Book'
+  },
+
+  "analyticsTrackerId": {
+    "development": "UA-81867483-3",
+    "production": "UA-81867483-4"
   },
 
   "testUrls": [

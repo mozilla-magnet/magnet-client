@@ -148,24 +148,37 @@ public class NotificationService extends Service implements ScannerService.Scann
             return;
         }
 
-        // get intent to launch the app when the notification is tapped
-        Intent launchIntent = new Intent(this, MainActivity.class);
-        launchIntent.setAction(Intent.ACTION_MAIN);
-        launchIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                this,
-                (int) System.currentTimeMillis(),
-                launchIntent, 0);
-
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_stat_notify)
                 .setContentTitle("Content found nearby")
                 .setContentText("Tap to explore")
+                .setPriority(NotificationCompat.PRIORITY_MIN)
                 .setAutoCancel(true)
                 .setShowWhen(false)
-                .setContentIntent(pendingIntent);
+                .setDeleteIntent(createDeleteIntent())
+                .setContentIntent(createLaunchIntent());
 
         notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+    }
+
+    private PendingIntent createLaunchIntent() {
+        Intent launchIntent = new Intent(this, MainActivity.class);
+        int uniqueRequestCode = (int) System.currentTimeMillis();
+
+        launchIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        launchIntent.putExtra("source", "notification");
+
+        return PendingIntent.getActivity(
+                this,
+                uniqueRequestCode,
+                launchIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private PendingIntent createDeleteIntent() {
+        Intent intent = new Intent(this, ReceiverNotificationDelete.class);
+        intent.setAction("notification_delete");
+        return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
     }
 
     @Override
