@@ -485,7 +485,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 43AQ936H96;
+						DevelopmentTeam = 4MGJ5F755P;
 					};
 				};
 			};
@@ -824,7 +824,7 @@
 					"-lc++",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Magnet;
+				PRODUCT_BUNDLE_IDENTIFIER = org.project.magnet.ios.Magnet;
 				PRODUCT_NAME = Magnet;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Magnet-Bridging-Header.h";
@@ -856,7 +856,7 @@
 					"-lc++",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Magnet;
+				PRODUCT_BUNDLE_IDENTIFIER = org.project.magnet.ios.Magnet;
 				PRODUCT_NAME = Magnet;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Magnet-Bridging-Header.h";
