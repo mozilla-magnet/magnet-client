@@ -10,6 +10,8 @@ android:
         - appcompat-v7
         - extra-android-support
         - extra-android-m2repository
+        - extra-google-m2repository
+        - extra-google-google_play_services
 before_cache:
       - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 cache:
