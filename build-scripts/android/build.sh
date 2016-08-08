@@ -7,6 +7,6 @@ cd android
 if [[ $BUILD_RELEASE == 1 ]]; then
     ./gradlew assembleRelease --info --console plain | tee
 else
-    ./gradlew build --info --console plain | tee
+    ./gradlew build -x lint --info --console plain | tee
 fi
 cd -
