@@ -19,7 +19,6 @@ import android.util.Log;
 import com.facebook.react.ReactActivity;
 import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 
@@ -70,7 +69,6 @@ public class MainActivity extends ReactActivity {
             mNotificationEventsPackage,
             new GoogleAnalyticsBridgePackage(),
             new LinearGradientPackage(),
-            new RNDeviceInfo(),
             new MyAppPackage()
         );
     }
