@@ -40,12 +40,18 @@
         </service>
 
         <receiver
-            android:name=".AlarmReceiver"
+            android:name=".ReceiverAlarm"
             android:enabled="true"
             android:exported="true">
         </receiver>
 
-        <receiver android:name=".BootCompletedReceiver">
+        <receiver android:name=".ReceiverNotificationDelete">
+            <intent-filter>
+                <action android:name="notification_delete"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".ReceiverBootCompleted">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />

@@ -11,8 +11,8 @@ import android.util.Log;
 
 import org.mozilla.magnet.net.scanner.MagnetScannerItem;
 
-public class AlarmReceiver extends BroadcastReceiver {
-    String TAG = "AlarmReceiver";
+public class ReceiverAlarm extends BroadcastReceiver {
+    String TAG = "ReceiverAlarm";
 
     @Override
     public void onReceive(Context context, Intent intent) {
