@@ -16,25 +16,6 @@ module.exports = {
 
   "metadataServiceUrl": "https://tengam.org/api/v1/metadata",
 
-  "adaptors": [
-    {
-      "pattern": "^https?\:\/\/?(?:www\.)?facebook\.com\/.+$",
-      "url": "http://box.wilsonpage.me/magnet-facebook-adaptor"
-    },
-    {
-      "pattern": "^https?\:\/\/?(?:www\.)?twitter\.com\/.+$",
-      "url": "http://box.wilsonpage.me/magnet-twitter-adaptor"
-    },
-    {
-      "pattern": "^https?:\/\/play\.google\.com\/store\/apps\/details",
-      "url": "http://box.wilsonpage.me/magnet-playstore-adaptor"
-    },
-    {
-      "pattern": "^https?:\/\/(?:[^\.]+)\.sched\.org\/venue\/",
-      "url": "https://tengam.org/adaptors/sched/"
-    }
-  ],
-
   "theme": {
     "colorBackground": '#f2f2f2',
     "colorPrimary": '#00A2D4',
@@ -57,6 +38,7 @@ module.exports = {
     "https://www.youtube.com/watch?v=ojcNcvb1olg",
     "https://github.com/wilsonpage",
     "https://www.amazon.co.uk/gp/product/B00IE3UR08/",
+    "https://viewsourceconf.org/berlin-2016/speakers/jen-simmons/"
     // "https://tengam.org/oembed/?url=https%3A%2F%2Fmozilla-magnet.github.io%2Ftwitter-search-embed%2F%3Fhashtag%3Dmozlondon%26widget-id%3D738359369146961920&width=600&height=600",
     // "https://codepen.io/mnmxmx/pen/XdwooQ",
     // "https://play.google.com/store/apps/details?id=org.mozilla.firefox",
