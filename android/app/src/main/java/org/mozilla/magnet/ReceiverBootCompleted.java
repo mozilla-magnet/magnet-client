@@ -14,8 +14,8 @@ import android.util.Log;
  * If we didn't do this the background Service would not start
  * running until the app was launched (when the alarm is also set).
  */
-public class BootCompletedReceiver extends BroadcastReceiver {
-    private final String TAG = BootCompletedReceiver.class.getName();
+public class ReceiverBootCompleted extends BroadcastReceiver {
+    private final String TAG = ReceiverBootCompleted.class.getName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
