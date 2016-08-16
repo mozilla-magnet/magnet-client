@@ -22,12 +22,13 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		550CECBF1D3536F80076D807 /* NotificationsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550CECBE1D3536F80076D807 /* NotificationsHelper.swift */; };
-		555800A31CBE683D00A21868 /* ScannerBle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555800A21CBE683D00A21868 /* ScannerBle.swift */; };
 		5583EF0E1D3D55AD00852649 /* HistoryRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF0D1D3D55AD00852649 /* HistoryRecord.swift */; };
 		5583EF101D3D565200852649 /* HistorySQLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF0F1D3D565200852649 /* HistorySQLite.swift */; };
 		5583EF121D3E36C300852649 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF111D3E36C300852649 /* History.swift */; };
 		5583EF161D3E4A8400852649 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5583EF151D3E4A8400852649 /* SQLite.framework */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		85767A351D6339BD009F400A /* MagnetScannerIOS.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		85DF9A341D633665004DF3F1 /* MagnetScannerIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */; };
 		8D32005E1D4B65CE00C334F1 /* FiraSans-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8D32005C1D4B65CE00C334F1 /* FiraSans-Book.otf */; };
 		8D32005F1D4B65CE00C334F1 /* FiraSans-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8D32005D1D4B65CE00C334F1 /* FiraSans-LightItalic.otf */; };
 		8D5722491CDCB16400480505 /* RNMagnetWebViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5722461CDCB16400480505 /* RNMagnetWebViewManager.swift */; };
@@ -35,9 +36,7 @@
 		8D57224B1CDCB16400480505 /* RNMagnetWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5722481CDCB16400480505 /* RNMagnetWebView.swift */; };
 		8D7567201D2BF30400315AEE /* MagnetScannerReactExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D75671F1D2BF30400315AEE /* MagnetScannerReactExport.m */; };
 		8D75672D1D2BF33500315AEE /* MagnetScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D75672C1D2BF33500315AEE /* MagnetScanner.swift */; };
-		8D75672F1D2BF6A500315AEE /* Scanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D75672E1D2BF6A500315AEE /* Scanner.swift */; };
 		8D7567311D2BF7F300315AEE /* MagnetScannerReact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D7567301D2BF7F300315AEE /* MagnetScannerReact.swift */; };
-		8DA0E3571CE33A5300CE54D9 /* ScannerNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0E3561CE33A5300CE54D9 /* ScannerNetwork.swift */; };
 		8DF821771D5387E20081F56E /* libRCTGoogleAnalyticsBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF8216D1D53879A0081F56E /* libRCTGoogleAnalyticsBridge.a */; };
 		8DF821791D5387F20081F56E /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF821781D5387F20081F56E /* CoreData.framework */; };
 		8DF8217B1D5387FC0081F56E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF8217A1D5387FC0081F56E /* SystemConfiguration.framework */; };
@@ -142,6 +141,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		85DF9A271D632FED004DF3F1 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				85767A351D6339BD009F400A /* MagnetScannerIOS.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		0097C20A4D7D4123BF8820C5 /* libBVLinearGradient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBVLinearGradient.a; sourceTree = "<group>"; };
@@ -165,13 +177,13 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		550CECBE1D3536F80076D807 /* NotificationsHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHelper.swift; sourceTree = "<group>"; };
 		555800951CBE5F7800A21868 /* Magnet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Magnet-Bridging-Header.h"; sourceTree = "<group>"; };
-		555800A21CBE683D00A21868 /* ScannerBle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannerBle.swift; sourceTree = "<group>"; };
 		5583EF0D1D3D55AD00852649 /* HistoryRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryRecord.swift; sourceTree = "<group>"; };
 		5583EF0F1D3D565200852649 /* HistorySQLite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistorySQLite.swift; sourceTree = "<group>"; };
 		5583EF111D3E36C300852649 /* History.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		5583EF151D3E4A8400852649 /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = Carthage/Build/iOS/SQLite.framework; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MagnetScannerIOS.framework; path = Carthage/Build/iOS/MagnetScannerIOS.framework; sourceTree = "<group>"; };
 		8D32005C1D4B65CE00C334F1 /* FiraSans-Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FiraSans-Book.otf"; sourceTree = "<group>"; };
 		8D32005D1D4B65CE00C334F1 /* FiraSans-LightItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FiraSans-LightItalic.otf"; sourceTree = "<group>"; };
 		8D5722461CDCB16400480505 /* RNMagnetWebViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNMagnetWebViewManager.swift; sourceTree = "<group>"; };
@@ -179,9 +191,7 @@
 		8D5722481CDCB16400480505 /* RNMagnetWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNMagnetWebView.swift; sourceTree = "<group>"; };
 		8D75671F1D2BF30400315AEE /* MagnetScannerReactExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MagnetScannerReactExport.m; sourceTree = "<group>"; };
 		8D75672C1D2BF33500315AEE /* MagnetScanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagnetScanner.swift; sourceTree = "<group>"; };
-		8D75672E1D2BF6A500315AEE /* Scanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scanner.swift; sourceTree = "<group>"; };
 		8D7567301D2BF7F300315AEE /* MagnetScannerReact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagnetScannerReact.swift; sourceTree = "<group>"; };
-		8DA0E3561CE33A5300CE54D9 /* ScannerNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannerNetwork.swift; sourceTree = "<group>"; };
 		8DF6981FBE0A4B8D8545B9A5 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		8DF821651D53879A0081F56E /* RCTGoogleAnalyticsBridge.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTGoogleAnalyticsBridge.xcodeproj; path = "../node_modules/react-native-google-analytics-bridge/ios/RCTGoogleAnalyticsBridge/RCTGoogleAnalyticsBridge.xcodeproj"; sourceTree = "<group>"; };
 		8DF821781D5387F20081F56E /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -205,6 +215,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DF821841D53B3830081F56E /* AdSupport.framework in Frameworks */,
+				85DF9A341D633665004DF3F1 /* MagnetScannerIOS.framework in Frameworks */,
 				8DF8217F1D5388190081F56E /* libsqlite3.0.tbd in Frameworks */,
 				8DF8217D1D5388090081F56E /* libz.tbd in Frameworks */,
 				8DF8217B1D5387FC0081F56E /* SystemConfiguration.framework in Frameworks */,
@@ -376,6 +387,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */,
 				8DF821831D53B3830081F56E /* AdSupport.framework */,
 				8DF8217E1D5388190081F56E /* libsqlite3.0.tbd */,
 				8DF8217C1D5388090081F56E /* libz.tbd */,
@@ -422,12 +434,9 @@
 		8D5722441CDCAF6B00480505 /* Scanner */ = {
 			isa = PBXGroup;
 			children = (
-				555800A21CBE683D00A21868 /* ScannerBle.swift */,
-				8DA0E3561CE33A5300CE54D9 /* ScannerNetwork.swift */,
 				8D75671F1D2BF30400315AEE /* MagnetScannerReactExport.m */,
 				8D7567301D2BF7F300315AEE /* MagnetScannerReact.swift */,
 				8D75672C1D2BF33500315AEE /* MagnetScanner.swift */,
-				8D75672E1D2BF6A500315AEE /* Scanner.swift */,
 			);
 			name = Scanner;
 			sourceTree = "<group>";
@@ -480,6 +489,7 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				5583EF141D3E46FC00852649 /* ShellScript */,
+				85DF9A271D632FED004DF3F1 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -509,7 +519,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "magnet" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Magnet" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -732,13 +742,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				5583EF101D3D565200852649 /* HistorySQLite.swift in Sources */,
-				555800A31CBE683D00A21868 /* ScannerBle.swift in Sources */,
 				8D57224A1CDCB16400480505 /* RNMagnetWebViewManagerExport.m in Sources */,
 				5583EF0E1D3D55AD00852649 /* HistoryRecord.swift in Sources */,
 				550CECBF1D3536F80076D807 /* NotificationsHelper.swift in Sources */,
 				8D75672D1D2BF33500315AEE /* MagnetScanner.swift in Sources */,
-				8DA0E3571CE33A5300CE54D9 /* ScannerNetwork.swift in Sources */,
-				8D75672F1D2BF6A500315AEE /* Scanner.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				5583EF121D3E36C300852649 /* History.swift in Sources */,
 				8D7567201D2BF30400315AEE /* MagnetScannerReactExport.m in Sources */,
@@ -994,7 +1001,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "magnet" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Magnet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
