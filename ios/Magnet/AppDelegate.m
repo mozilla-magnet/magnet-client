@@ -11,6 +11,8 @@
 
 #import "RCTRootView.h"
 
+#import "RCTBridge.h"
+
 // Include the project headers for swift code. (<project-name>-Swift.h)
 #import "magnet-Swift.h"
 
@@ -57,6 +59,9 @@
   self.window.rootViewController = rootViewController;
   [NotificationsHelper register];
   [self.window makeKeyAndVisible];
+  self.bridge = [[RCTBridge alloc] initWithBundleURL:jsCodeLocation
+                                            moduleProvider: nil
+                                            launchOptions:launchOptions];
   return YES;
 }
 
@@ -68,6 +73,13 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
   [NotificationsHelper clearNotifications];
   [NotificationsHelper enable];
+}
+
+-(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+  if (application.applicationState == UIApplicationStateInactive ||
+      application.applicationState == UIApplicationStateBackground) {
+    [self.bridge.eventDispatcher sendDeviceEventWithName:@"notification:applaunch" body:nil];
+  }
 }
 
 @end
