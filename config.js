@@ -2,7 +2,24 @@ module.exports = {
   "flags": {
     "injectTestUrls": false,
     "itemsExpandable": false,
-    "itemsSwipable": false
+    "itemsSwipable": false,
+  },
+
+  "userFlags": {
+    "sortByDistance": {
+      value: false, // default
+      title: 'Sort by distance',
+    },
+
+    "showDistance": {
+      value: false, // default
+      title: 'Show distance',
+    },
+
+    "removeOldItems": {
+      value: false, // default
+      title: 'Remove old items',
+    },
   },
 
   "settings": {
@@ -12,6 +29,9 @@ module.exports = {
       "feedback": "https://trymagnet.org/#contact"
     }
   },
+
+  "itemExpires": 60000, // 1 min
+  "itemExpiring": 10000, // 10 secs
 
   "metadataServiceUrl": "https://tengam.org/api/v1/metadata",
 

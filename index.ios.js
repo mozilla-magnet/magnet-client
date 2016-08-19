@@ -4,8 +4,8 @@
  */
 
 var ReactNative = require('react-native');
+var Provider = require('./lib/provider');
 var theme = require('./config').theme;
-var App = require('./lib/app');
 var React = require('react');
 
 var {
@@ -21,7 +21,7 @@ class IOSApp extends React.Component {
         paddingTop: 20,
         flex: 1
         }}>
-        <App/>
+        <Provider/>
       </View>
     );
   }

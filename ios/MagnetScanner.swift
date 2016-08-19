@@ -1,19 +1,20 @@
 import Foundation
+import MagnetScannerIOS
 
 class MagnetScanner: NSObject {
-  var scanners = [String: Scanner]()
+  var scanner: MagnetScannerIOS.MagnetScanner!;
   var callback: ((Dictionary<String, AnyObject>) -> Void)!
   
   init(callback: (Dictionary<String, AnyObject>) -> Void) {
-    scanners["ble"] = BeaconScanner(callback: callback);
-    scanners["network"] = ScannerNetwork(callback: callback);
+    super.init();
+    scanner = MagnetScannerIOS.MagnetScanner(callback: callback);
   }
   
   func start() {
-    for (_, scanner) in scanners { scanner.start() }
+    scanner.start();
   }
   
   func stop() {
-    for (_, scanner) in scanners { scanner.stop() }
+    scanner.stop();
   }
 }

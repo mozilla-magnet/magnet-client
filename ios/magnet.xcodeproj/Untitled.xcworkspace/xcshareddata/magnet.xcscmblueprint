@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "7A210B757D0B3D8E6F464095CA9075E5D218465C",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "7A210B757D0B3D8E6F464095CA9075E5D218465C" : 0,
+    "D9A943C92E4C4B59DC4BAD45F652C9C58591DA2C" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "7F107B40-BEC7-4DBD-B7EC-1DD731500618",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "7A210B757D0B3D8E6F464095CA9075E5D218465C" : "magnet-client\/",
+    "D9A943C92E4C4B59DC4BAD45F652C9C58591DA2C" : "magnet-client\/node_modules\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "magnet",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ios\/magnet.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:mozilla-magnet\/magnet-client.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "7A210B757D0B3D8E6F464095CA9075E5D218465C"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:mozilla-magnet\/magnet-scanner-android.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "D9A943C92E4C4B59DC4BAD45F652C9C58591DA2C"
+    }
+  ]
+}

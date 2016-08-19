@@ -43,5 +43,4 @@ android/keystores/debug.keystore
 *.iml
 
 # Carthage
-ios/Cartfile.resolved
 ios/Carthage/
