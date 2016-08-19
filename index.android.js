@@ -4,7 +4,7 @@
  */
 
 const ReactNative = require('react-native');
-const App = require('./lib/app');
+const Provider = require('./lib/provider');
 const React = require('react');
 
 const {
@@ -14,7 +14,7 @@ const {
 
 class AndroidApp extends React.Component {
   render() {
-    return <App/>;
+    return <Provider/>;
   }
 }
 

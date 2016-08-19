@@ -3,7 +3,7 @@
  * Dependencies
  */
 
-const metadata = require('../../../lib/scanner/metadata');
+const metadata = require('../../../../lib/scanner/metadata');
 const assert = require('assert');
 const sinon = require('sinon');
 
