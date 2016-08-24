@@ -28,7 +28,13 @@
 		5583EF161D3E4A8400852649 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5583EF151D3E4A8400852649 /* SQLite.framework */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		85767A351D6339BD009F400A /* MagnetScannerIOS.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		85DC92CA1D6DF44400CC0BCB /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85DC92C91D6DF44400CC0BCB /* NotificationCenter.framework */; };
+		85DC92D01D6DF44400CC0BCB /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85DC92CE1D6DF44400CC0BCB /* MainInterface.storyboard */; };
+		85DC92D41D6DF44400CC0BCB /* MagnetWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 85DC92C71D6DF44400CC0BCB /* MagnetWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		85DC92E71D6DF52100CC0BCB /* MagnetWidgetTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DC92E61D6DF52100CC0BCB /* MagnetWidgetTableViewController.swift */; };
+		85DC92E91D6DF5B400CC0BCB /* MagnetScannerIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85DC92E81D6DF5B400CC0BCB /* MagnetScannerIOS.framework */; };
 		85DF9A341D633665004DF3F1 /* MagnetScannerIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */; };
+		85E11C5B1D6E402E00AC602F /* MagnetScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E11C5A1D6E402E00AC602F /* MagnetScanner.swift */; };
 		8D5722491CDCB16400480505 /* RNMagnetWebViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5722461CDCB16400480505 /* RNMagnetWebViewManager.swift */; };
 		8D57224A1CDCB16400480505 /* RNMagnetWebViewManagerExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5722471CDCB16400480505 /* RNMagnetWebViewManagerExport.m */; };
 		8D57224B1CDCB16400480505 /* RNMagnetWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5722481CDCB16400480505 /* RNMagnetWebView.swift */; };
@@ -125,6 +131,13 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
+		85DC92D21D6DF44400CC0BCB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 85DC92C61D6DF44400CC0BCB;
+			remoteInfo = MagnetWidget;
+		};
 		8D2FD78B1D42607500D8FCE8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8DF6981FBE0A4B8D8545B9A5 /* BVLinearGradient.xcodeproj */;
@@ -142,6 +155,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		85DC92E41D6DF44400CC0BCB /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				85DC92D41D6DF44400CC0BCB /* MagnetWidget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		85DF9A271D632FED004DF3F1 /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -184,7 +208,15 @@
 		5583EF151D3E4A8400852649 /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = Carthage/Build/iOS/SQLite.framework; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		85DC92C71D6DF44400CC0BCB /* MagnetWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MagnetWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		85DC92C91D6DF44400CC0BCB /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		85DC92CF1D6DF44400CC0BCB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		85DC92D11D6DF44400CC0BCB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		85DC92E51D6DF52000CC0BCB /* MagnetWidget-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MagnetWidget-Bridging-Header.h"; sourceTree = "<group>"; };
+		85DC92E61D6DF52100CC0BCB /* MagnetWidgetTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagnetWidgetTableViewController.swift; sourceTree = "<group>"; };
+		85DC92E81D6DF5B400CC0BCB /* MagnetScannerIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MagnetScannerIOS.framework; sourceTree = "<group>"; };
 		85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MagnetScannerIOS.framework; path = Carthage/Build/iOS/MagnetScannerIOS.framework; sourceTree = "<group>"; };
+		85E11C5A1D6E402E00AC602F /* MagnetScanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagnetScanner.swift; sourceTree = "<group>"; };
 		8D5722461CDCB16400480505 /* RNMagnetWebViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNMagnetWebViewManager.swift; sourceTree = "<group>"; };
 		8D5722471CDCB16400480505 /* RNMagnetWebViewManagerExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNMagnetWebViewManagerExport.m; sourceTree = "<group>"; };
 		8D5722481CDCB16400480505 /* RNMagnetWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNMagnetWebView.swift; sourceTree = "<group>"; };
@@ -234,6 +266,15 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				8DF821771D5387E20081F56E /* libRCTGoogleAnalyticsBridge.a in Frameworks */,
 				AA85BDA14B4C4D9A8524DCAD /* libBVLinearGradient.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		85DC92C41D6DF44400CC0BCB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85DC92CA1D6DF44400CC0BCB /* NotificationCenter.framework in Frameworks */,
+				85DC92E91D6DF5B400CC0BCB /* MagnetScannerIOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,6 +440,8 @@
 				13B07FAE1A68108700A75B9A /* Magnet */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* MagnetTests */,
+				85DC92CB1D6DF44400CC0BCB /* MagnetWidget */,
+				85DC92C81D6DF44400CC0BCB /* Frameworks */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 			);
 			indentWidth = 2;
@@ -410,8 +453,30 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* Magnet.app */,
 				00E356EE1AD99517003FC87E /* MagnetTests.xctest */,
+				85DC92C71D6DF44400CC0BCB /* MagnetWidget.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		85DC92C81D6DF44400CC0BCB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				85DC92C91D6DF44400CC0BCB /* NotificationCenter.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		85DC92CB1D6DF44400CC0BCB /* MagnetWidget */ = {
+			isa = PBXGroup;
+			children = (
+				85E11C5A1D6E402E00AC602F /* MagnetScanner.swift */,
+				85DC92E81D6DF5B400CC0BCB /* MagnetScannerIOS.framework */,
+				85DC92CE1D6DF44400CC0BCB /* MainInterface.storyboard */,
+				85DC92D11D6DF44400CC0BCB /* Info.plist */,
+				85DC92E61D6DF52100CC0BCB /* MagnetWidgetTableViewController.swift */,
+				85DC92E51D6DF52000CC0BCB /* MagnetWidget-Bridging-Header.h */,
+			);
+			path = MagnetWidget;
 			sourceTree = "<group>";
 		};
 		8D2FD7881D42607500D8FCE8 /* Products */ = {
@@ -492,15 +557,34 @@
 				5583EF141D3E46FC00852649 /* ShellScript */,
 				85DF9A271D632FED004DF3F1 /* Copy Files */,
 				55AE10ED1D67664900CAD0E0 /* ShellScript */,
+				85DC92E41D6DF44400CC0BCB /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				85DC92D31D6DF44400CC0BCB /* PBXTargetDependency */,
 			);
 			name = Magnet;
 			productName = "Hello World";
 			productReference = 13B07F961A680F5B00A75B9A /* Magnet.app */;
 			productType = "com.apple.product-type.application";
+		};
+		85DC92C61D6DF44400CC0BCB /* MagnetWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 85DC92E31D6DF44400CC0BCB /* Build configuration list for PBXNativeTarget "MagnetWidget" */;
+			buildPhases = (
+				85DC92C31D6DF44400CC0BCB /* Sources */,
+				85DC92C41D6DF44400CC0BCB /* Frameworks */,
+				85DC92C51D6DF44400CC0BCB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MagnetWidget;
+			productName = MagnetWidget;
+			productReference = 85DC92C71D6DF44400CC0BCB /* MagnetWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -508,7 +592,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 730;
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 730;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
@@ -517,6 +601,10 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = 43AQ936H96;
+					};
+					85DC92C61D6DF44400CC0BCB = {
+						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 43AQ936H96;
 					};
 				};
@@ -586,6 +674,7 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* Magnet */,
 				00E356ED1AD99517003FC87E /* MagnetTests */,
+				85DC92C61D6DF44400CC0BCB /* MagnetWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -697,6 +786,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		85DC92C51D6DF44400CC0BCB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85DC92D01D6DF44400CC0BCB /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -771,6 +868,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		85DC92C31D6DF44400CC0BCB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85E11C5B1D6E402E00AC602F /* MagnetScanner.swift in Sources */,
+				85DC92E71D6DF52100CC0BCB /* MagnetWidgetTableViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -778,6 +884,11 @@
 			isa = PBXTargetDependency;
 			target = 13B07F861A680F5B00A75B9A /* Magnet */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
+		};
+		85DC92D31D6DF44400CC0BCB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 85DC92C61D6DF44400CC0BCB /* MagnetWidget */;
+			targetProxy = 85DC92D21D6DF44400CC0BCB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -789,6 +900,14 @@
 			);
 			name = LaunchScreen.xib;
 			path = Magnet;
+			sourceTree = "<group>";
+		};
+		85DC92CE1D6DF44400CC0BCB /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				85DC92CF1D6DF44400CC0BCB /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -850,6 +969,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -883,6 +1003,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -997,6 +1118,54 @@
 			};
 			name = Release;
 		};
+		85DC92D51D6DF44400CC0BCB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/MagnetWidget",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = MagnetWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Magnet.MagnetWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "MagnetWidget/MagnetWidget-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		85DC92D61D6DF44400CC0BCB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/MagnetWidget",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = MagnetWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Magnet.MagnetWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "MagnetWidget/MagnetWidget-Bridging-Header.h";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1023,6 +1192,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		85DC92E31D6DF44400CC0BCB /* Build configuration list for PBXNativeTarget "MagnetWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				85DC92D51D6DF44400CC0BCB /* Debug */,
+				85DC92D61D6DF44400CC0BCB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
