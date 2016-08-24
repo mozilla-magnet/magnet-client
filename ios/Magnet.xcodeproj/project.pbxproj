@@ -27,7 +27,7 @@
 		5583EF121D3E36C300852649 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF111D3E36C300852649 /* History.swift */; };
 		5583EF161D3E4A8400852649 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5583EF151D3E4A8400852649 /* SQLite.framework */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		85767A351D6339BD009F400A /* MagnetScannerIOS.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		85767A351D6339BD009F400A /* MagnetScannerIOS.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		85DF9A341D633665004DF3F1 /* MagnetScannerIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */; };
 		8D5722491CDCB16400480505 /* RNMagnetWebViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5722461CDCB16400480505 /* RNMagnetWebViewManager.swift */; };
 		8D57224A1CDCB16400480505 /* RNMagnetWebViewManagerExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5722471CDCB16400480505 /* RNMagnetWebViewManagerExport.m */; };
@@ -142,14 +142,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		85DF9A271D632FED004DF3F1 /* CopyFiles */ = {
+		85DF9A271D632FED004DF3F1 /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				85767A351D6339BD009F400A /* MagnetScannerIOS.framework in CopyFiles */,
+				85767A351D6339BD009F400A /* MagnetScannerIOS.framework in Copy Files */,
 			);
+			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -489,7 +490,7 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				5583EF141D3E46FC00852649 /* ShellScript */,
-				85DF9A271D632FED004DF3F1 /* CopyFiles */,
+				85DF9A271D632FED004DF3F1 /* Copy Files */,
 				55AE10ED1D67664900CAD0E0 /* ShellScript */,
 			);
 			buildRules = (
@@ -520,7 +521,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "magnet" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Magnet" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1017,7 +1018,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "magnet" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Magnet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
