@@ -20,6 +20,12 @@ module.exports = {
       value: false, // default
       title: 'Remove old items',
     },
+
+    "enableTelemetry": {
+      value: true, // default
+      title: 'Telemetry',
+      msg: 'Share performance and usage data with Mozilla to help us to improve Project Magnet'
+    },
   },
 
   "settings": {
