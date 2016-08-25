@@ -89,6 +89,11 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
     return cell;
   }
 
+  override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    let url:NSURL = NSURL(string:toDisplay[indexPath.row])!;
+    extensionContext?.openURL(url, completionHandler: nil);
+  }
+
   override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
     cell.layer.backgroundColor = UIColor.clearColor().CGColor;
   }
