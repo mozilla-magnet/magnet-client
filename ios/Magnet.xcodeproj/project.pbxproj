@@ -35,6 +35,7 @@
 		85DC92E91D6DF5B400CC0BCB /* MagnetScannerIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85DC92E81D6DF5B400CC0BCB /* MagnetScannerIOS.framework */; };
 		85DF9A341D633665004DF3F1 /* MagnetScannerIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */; };
 		85E11C5B1D6E402E00AC602F /* MagnetScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E11C5A1D6E402E00AC602F /* MagnetScanner.swift */; };
+		85E2D74A1D70296300AA5A80 /* Gloss.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85E2D7491D70296300AA5A80 /* Gloss.framework */; };
 		8D5722491CDCB16400480505 /* RNMagnetWebViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5722461CDCB16400480505 /* RNMagnetWebViewManager.swift */; };
 		8D57224A1CDCB16400480505 /* RNMagnetWebViewManagerExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5722471CDCB16400480505 /* RNMagnetWebViewManagerExport.m */; };
 		8D57224B1CDCB16400480505 /* RNMagnetWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5722481CDCB16400480505 /* RNMagnetWebView.swift */; };
@@ -217,6 +218,7 @@
 		85DC92E81D6DF5B400CC0BCB /* MagnetScannerIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MagnetScannerIOS.framework; sourceTree = "<group>"; };
 		85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MagnetScannerIOS.framework; path = Carthage/Build/iOS/MagnetScannerIOS.framework; sourceTree = "<group>"; };
 		85E11C5A1D6E402E00AC602F /* MagnetScanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagnetScanner.swift; sourceTree = "<group>"; };
+		85E2D7491D70296300AA5A80 /* Gloss.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Gloss.framework; path = Carthage/Build/iOS/Gloss.framework; sourceTree = "<group>"; };
 		8D5722461CDCB16400480505 /* RNMagnetWebViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNMagnetWebViewManager.swift; sourceTree = "<group>"; };
 		8D5722471CDCB16400480505 /* RNMagnetWebViewManagerExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNMagnetWebViewManagerExport.m; sourceTree = "<group>"; };
 		8D5722481CDCB16400480505 /* RNMagnetWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNMagnetWebView.swift; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85DC92CA1D6DF44400CC0BCB /* NotificationCenter.framework in Frameworks */,
+				85E2D74A1D70296300AA5A80 /* Gloss.framework in Frameworks */,
 				85DC92E91D6DF5B400CC0BCB /* MagnetScannerIOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -461,6 +464,7 @@
 		85DC92C81D6DF44400CC0BCB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				85E2D7491D70296300AA5A80 /* Gloss.framework */,
 				85DC92C91D6DF44400CC0BCB /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
@@ -1129,6 +1133,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MagnetWidget",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = MagnetWidget/Info.plist;
@@ -1154,6 +1159,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MagnetWidget",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = MagnetWidget/Info.plist;

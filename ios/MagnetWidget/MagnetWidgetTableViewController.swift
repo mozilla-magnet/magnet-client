@@ -1,5 +1,36 @@
 import UIKit
 import NotificationCenter
+import Gloss
+
+struct MagnetObject: Decodable {
+  let url: NSURL;
+
+  init?(json:JSON) {
+    self.url = ("url" <~~ json)!;
+  }
+
+  // MARK: - Serialization
+  func toJSON() -> JSON? {
+    return jsonify([
+      "url" ~~> self.url
+    ]);
+  }
+}
+
+struct MagnetMetadataRequestBody: Decodable {
+  let objects: [MagnetObject];
+
+  init?(json:JSON) {
+    self.objects = ("objects" <~~ json)!
+  }
+
+  // MARK: - Serialization
+  func toJSON() -> JSON? {
+    return jsonify([
+      "objects" ~~> self.objects
+    ]);
+  }
+}
 
 class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding {
   var scanner: MagnetScanner!;
@@ -16,7 +47,7 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
     super.viewDidLoad();
 
     // Today widgets should have transparent background.
-    self.table.backgroundColor = UIColor.clearColor();
+    table.backgroundColor = UIColor.clearColor();
 
     scanner = MagnetScanner(callback: onItemFound);
     toDisplay = [];
@@ -28,7 +59,7 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
     debugPrint("viewWillAppear");
     super.viewWillAppear(animated);
     scanner.start();
-    self.table.reloadData();
+    table.reloadData();
     updateSize();
   }
 
@@ -43,7 +74,7 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
     debugPrint("updateSize")
     var preferredSize = self.preferredContentSize;
     preferredSize.height = self.rowHeight * CGFloat(self.toDisplay.count);
-    self.preferredContentSize = preferredSize;
+    preferredContentSize = preferredSize;
   }
 
   func onItemFound(item: Dictionary<String, AnyObject>) {
@@ -54,7 +85,54 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
 
     toDisplay.append(url);
 
-    self.table.reloadData();
+    // Get url metadata.
+    let metadataServer: String = "https://tengam.org/api/v1/metadata";
+    guard let metadataServerUrl = NSURL(string: metadataServer) else {
+      print("Error: wrong metadata server URL");
+      return;
+    }
+    let request = NSMutableURLRequest(URL: metadataServerUrl);
+    request.HTTPMethod = "POST";
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type");
+    let bodyJSON = [
+      "objects": [
+        "url": item["url"] as! String
+      ]
+    ];
+    guard let body = MagnetMetadataRequestBody(json: bodyJSON) else {
+      print("Error: wrong metadata server URL");
+      return;
+    }
+
+    debugPrint("body", body);
+    debugPrint("json", body.toJSON());
+
+    let config = NSURLSessionConfiguration.defaultSessionConfiguration();
+    let session = NSURLSession(configuration: config);
+    let task = session.dataTaskWithRequest(request, completionHandler: {
+      (data, response, error) in
+      guard error == nil else {
+        print("Error: metadata server error", error);
+        return;
+      }
+      guard let responseData = data else {
+        print("Error: did not receive data from metadata server");
+        return;
+      }
+      debugPrint("data", response, responseData);
+      do {
+        guard let metadata = try NSJSONSerialization.JSONObjectWithData(responseData, options: []) as? [String: AnyObject] else {
+          print("Error: JSON parse error");
+          return;
+        }
+        debugPrint("metadata", metadata);
+      } catch {
+        print("Error: JSON parse error");
+      }
+    });
+    task.resume();
+
+    table.reloadData();
     updateSize();
   }
 
@@ -63,7 +141,7 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
   func widgetPerformUpdateWithCompletionHandler(completionHandler: (NCUpdateResult) -> Void) {
     debugPrint("widgetPerformUpdateWithCompletionHandler");
     // It tells the widget to update itself.
-    self.table.reloadData();
+    table.reloadData();
     completionHandler(NCUpdateResult.NewData);
   }
 
@@ -75,7 +153,7 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
 
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     debugPrint("Number of rows", self.toDisplay.count);
-    return self.toDisplay.count;
+    return toDisplay.count;
   }
 
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
