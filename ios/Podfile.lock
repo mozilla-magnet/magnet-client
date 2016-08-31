@@ -1,0 +1,12 @@
+PODS:
+  - SwiftSerializer (0.6)
+
+DEPENDENCIES:
+  - SwiftSerializer (~> 0.6)
+
+SPEC CHECKSUMS:
+  SwiftSerializer: d8376bfa5ab0eaf0f16b7fc19e684116617f43da
+
+PODFILE CHECKSUM: fac37a61d39c034137e2aa17ea6b920ac196a018
+
+COCOAPODS: 1.1.0.beta.1
