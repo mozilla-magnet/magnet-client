@@ -5,6 +5,7 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
   var scanner: MagnetScanner!;
   var metadataClient: MagnetMetadataClient?;
   var nearbyUrls: [String]!;
+  var metadata: NSMutableDictionary!;
 
   @IBOutlet var table: UITableView!;
 
@@ -21,6 +22,7 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
 
     scanner = MagnetScanner(callback: onItemFound);
     nearbyUrls = [];
+    metadata = NSMutableDictionary();
 
     updateSize();
   }
@@ -28,6 +30,12 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
   override func viewWillAppear(animated: Bool) {
     debugPrint("viewWillAppear");
     super.viewWillAppear(animated);
+    // Make the widget full width.
+    if let superview = view.superview {
+      var frame = superview.frame
+      frame = CGRectMake(0, CGRectGetMinY(frame), CGRectGetWidth(frame) + CGRectGetMinX(frame), CGRectGetHeight(frame))
+      superview.frame = frame
+    }
     scanner.start();
     table.reloadData();
     updateSize();
@@ -38,6 +46,7 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
     super.viewWillDisappear(animated);
     scanner.stop();
     nearbyUrls = [];
+    metadata.removeAllObjects();
   }
 
   func updateSize() {
@@ -64,6 +73,8 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
 
   func onMetadata(metadata: [String:AnyObject]) {
     debugPrint("OnMetadata", metadata);
+
+    self.metadata.setValue(metadata, forKey: metadata["originalUrl"] as! String);
 
     table.reloadData();
     updateSize();
@@ -96,9 +107,19 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
     cell.titleLabel!.textColor = UIColor.whiteColor();
     cell.urlLabel!.textColor = UIColor.grayColor();
 
+    let url = nearbyUrls[indexPath.row];
+    guard let metadata = self.metadata[url] else {
+      return cell;
+    }
+
     // Add Magnet URL to the table view.
-    cell.titleLabel!.text = nearbyUrls[indexPath.row];
-    cell.urlLabel!.text = "http://something.com";
+    if let title = metadata["title"] as? String {
+      cell.titleLabel!.text = title;
+    }
+
+    if let displayUrl = metadata["displayUrl"] as? String {
+      cell.urlLabel!.text = displayUrl;
+    }
 
     return cell;
   }

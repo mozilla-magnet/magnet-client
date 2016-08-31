@@ -55,13 +55,13 @@ class MagnetMetadataClient: NSObject {
         return;
       }
       do {
-        guard let metadata = try NSJSONSerialization.JSONObjectWithData(responseData, options: .AllowFragments) as? [[String:AnyObject]] else {
+        guard let metadata =
+          try NSJSONSerialization.JSONObjectWithData(responseData, options: .AllowFragments)
+            as? [[String:AnyObject]] else {
           print("Error: JSON parse error. Crap");
           return;
         }
         self.onMetadata(metadata[0]);
-        debugPrint("metadata ============== ", metadata[0]["title"] as! String);
-        debugPrint("metadata ============== ", metadata[0]["description"] as! String);
 
       } catch {
         print("Error: JSON parse error");
