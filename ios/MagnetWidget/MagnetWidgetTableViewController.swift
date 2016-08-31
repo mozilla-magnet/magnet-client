@@ -1,5 +1,22 @@
 import UIKit
 import NotificationCenter
+import SwiftSerializer
+
+class MagnetObject: Serializable {
+  var url: String;
+
+  init(url: String) {
+    self.url = url;
+  }
+}
+
+class MagnetRequest: Serializable {
+  var objects: Array<MagnetObject>;
+
+  init(objects: Array<MagnetObject>) {
+    self.objects = objects;
+  }
+}
 
 class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding {
   var scanner: MagnetScanner!;
@@ -63,6 +80,18 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
     let request = NSMutableURLRequest(URL: metadataServerUrl);
     request.HTTPMethod = "POST";
     request.setValue("application/json", forHTTPHeaderField: "Content-Type");
+
+    // Serialize request body.
+    let magnetUrl = MagnetObject(url: url);
+    var magnetObjects = [MagnetObject]();
+    magnetObjects.append(magnetUrl);
+    debugPrint("url", magnetUrl.toJsonString()!);
+
+    let body = MagnetRequest(objects: magnetObjects);
+    debugPrint("request", body.toJsonString()!);
+
+    request.HTTPBody = body.toJson();
+
     let config = NSURLSessionConfiguration.defaultSessionConfiguration();
     let session = NSURLSession(configuration: config);
     let task = session.dataTaskWithRequest(request, completionHandler: {
@@ -75,13 +104,14 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
         print("Error: did not receive data from metadata server");
         return;
       }
-      debugPrint("data", response, responseData);
       do {
-        guard let metadata = try NSJSONSerialization.JSONObjectWithData(responseData, options: []) as? [String: AnyObject] else {
-          print("Error: JSON parse error");
+        guard let metadata = try NSJSONSerialization.JSONObjectWithData(responseData, options: .AllowFragments) as? [[String:AnyObject]] else {
+          print("Error: JSON parse error. Crap");
           return;
         }
-        debugPrint("metadata", metadata);
+        debugPrint("metadata ============== ", metadata[0]["title"] as! String);
+        debugPrint("metadata ============== ", metadata[0]["description"] as! String);
+
       } catch {
         print("Error: JSON parse error");
       }
