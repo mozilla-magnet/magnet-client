@@ -1,36 +1,5 @@
 import UIKit
 import NotificationCenter
-import Gloss
-
-struct MagnetObject: Decodable {
-  let url: NSURL;
-
-  init?(json:JSON) {
-    self.url = ("url" <~~ json)!;
-  }
-
-  // MARK: - Serialization
-  func toJSON() -> JSON? {
-    return jsonify([
-      "url" ~~> self.url
-    ]);
-  }
-}
-
-struct MagnetMetadataRequestBody: Decodable {
-  let objects: [MagnetObject];
-
-  init?(json:JSON) {
-    self.objects = ("objects" <~~ json)!
-  }
-
-  // MARK: - Serialization
-  func toJSON() -> JSON? {
-    return jsonify([
-      "objects" ~~> self.objects
-    ]);
-  }
-}
 
 class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding {
   var scanner: MagnetScanner!;
@@ -94,19 +63,6 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
     let request = NSMutableURLRequest(URL: metadataServerUrl);
     request.HTTPMethod = "POST";
     request.setValue("application/json", forHTTPHeaderField: "Content-Type");
-    let bodyJSON = [
-      "objects": [
-        "url": item["url"] as! String
-      ]
-    ];
-    guard let body = MagnetMetadataRequestBody(json: bodyJSON) else {
-      print("Error: wrong metadata server URL");
-      return;
-    }
-
-    debugPrint("body", body);
-    debugPrint("json", body.toJSON());
-
     let config = NSURLSessionConfiguration.defaultSessionConfiguration();
     let session = NSURLSession(configuration: config);
     let task = session.dataTaskWithRequest(request, completionHandler: {
