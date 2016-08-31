@@ -1,26 +1,10 @@
 import UIKit
 import NotificationCenter
-import SwiftSerializer
-
-class MagnetObject: Serializable {
-  var url: String;
-
-  init(url: String) {
-    self.url = url;
-  }
-}
-
-class MagnetRequest: Serializable {
-  var objects: Array<MagnetObject>;
-
-  init(objects: Array<MagnetObject>) {
-    self.objects = objects;
-  }
-}
 
 class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding {
   var scanner: MagnetScanner!;
-  var toDisplay: [String]!;
+  var metadataClient: MagnetMetadataClient?;
+  var nearbyUrls: [String]!;
 
   @IBOutlet var table: UITableView!;
 
@@ -36,7 +20,7 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
     table.backgroundColor = UIColor.clearColor();
 
     scanner = MagnetScanner(callback: onItemFound);
-    toDisplay = [];
+    nearbyUrls = [];
 
     updateSize();
   }
@@ -53,13 +37,13 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
     debugPrint("viewWillDisappear");
     super.viewWillDisappear(animated);
     scanner.stop();
-    toDisplay = [];
+    nearbyUrls = [];
   }
 
   func updateSize() {
     debugPrint("updateSize")
     var preferredSize = self.preferredContentSize;
-    preferredSize.height = self.rowHeight * CGFloat(self.toDisplay.count);
+    preferredSize.height = self.rowHeight * CGFloat(self.nearbyUrls.count);
     preferredContentSize = preferredSize;
   }
 
@@ -67,56 +51,19 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
     debugPrint("MagnetWidget - item found", item);
 
     let url = item["url"] as! String;
-    guard toDisplay.contains(url) == false else { return }
+    guard nearbyUrls.contains(url) == false else { return }
 
-    toDisplay.append(url);
+    nearbyUrls.append(url);
 
-    // Get url metadata.
-    let metadataServer: String = "https://tengam.org/api/v1/metadata";
-    guard let metadataServerUrl = NSURL(string: metadataServer) else {
-      print("Error: wrong metadata server URL");
-      return;
+    if (metadataClient == nil) {
+      metadataClient = MagnetMetadataClient(onMetadata: onMetadata);
     }
-    let request = NSMutableURLRequest(URL: metadataServerUrl);
-    request.HTTPMethod = "POST";
-    request.setValue("application/json", forHTTPHeaderField: "Content-Type");
 
-    // Serialize request body.
-    let magnetUrl = MagnetObject(url: url);
-    var magnetObjects = [MagnetObject]();
-    magnetObjects.append(magnetUrl);
-    debugPrint("url", magnetUrl.toJsonString()!);
+    metadataClient!.requestMetadata(url);
+  }
 
-    let body = MagnetRequest(objects: magnetObjects);
-    debugPrint("request", body.toJsonString()!);
-
-    request.HTTPBody = body.toJson();
-
-    let config = NSURLSessionConfiguration.defaultSessionConfiguration();
-    let session = NSURLSession(configuration: config);
-    let task = session.dataTaskWithRequest(request, completionHandler: {
-      (data, response, error) in
-      guard error == nil else {
-        print("Error: metadata server error", error);
-        return;
-      }
-      guard let responseData = data else {
-        print("Error: did not receive data from metadata server");
-        return;
-      }
-      do {
-        guard let metadata = try NSJSONSerialization.JSONObjectWithData(responseData, options: .AllowFragments) as? [[String:AnyObject]] else {
-          print("Error: JSON parse error. Crap");
-          return;
-        }
-        debugPrint("metadata ============== ", metadata[0]["title"] as! String);
-        debugPrint("metadata ============== ", metadata[0]["description"] as! String);
-
-      } catch {
-        print("Error: JSON parse error");
-      }
-    });
-    task.resume();
+  func onMetadata(metadata: [String:AnyObject]) {
+    debugPrint("OnMetadata", metadata);
 
     table.reloadData();
     updateSize();
@@ -138,8 +85,8 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
   }
 
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    debugPrint("Number of rows", self.toDisplay.count);
-    return toDisplay.count;
+    debugPrint("Number of rows", self.nearbyUrls.count);
+    return nearbyUrls.count;
   }
 
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -148,13 +95,13 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
     cell.textLabel!.textColor = UIColor.whiteColor();
 
     // Add Magnet URL to the table view.
-    cell.textLabel!.text = toDisplay[indexPath.row];
+    cell.textLabel!.text = nearbyUrls[indexPath.row];
 
     return cell;
   }
 
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    let url:NSURL = NSURL(string:toDisplay[indexPath.row])!;
+    let url:NSURL = NSURL(string:nearbyUrls[indexPath.row])!;
     extensionContext?.openURL(url, completionHandler: nil);
   }
 

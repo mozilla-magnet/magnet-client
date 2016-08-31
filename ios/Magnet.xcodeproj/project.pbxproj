@@ -30,6 +30,7 @@
 		5583EF161D3E4A8400852649 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5583EF151D3E4A8400852649 /* SQLite.framework */; };
 		6E52C4C22B62B7FAB1534E72 /* Pods_MagnetTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98029367574C49A98A910AA0 /* Pods_MagnetTests.framework */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		856CA2AD1D76F611002A9CA3 /* MagnetMetadataClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856CA2AC1D76F611002A9CA3 /* MagnetMetadataClient.swift */; };
 		85767A351D6339BD009F400A /* MagnetScannerIOS.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		85DC92CA1D6DF44400CC0BCB /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85DC92C91D6DF44400CC0BCB /* NotificationCenter.framework */; };
 		85DC92D01D6DF44400CC0BCB /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85DC92CE1D6DF44400CC0BCB /* MainInterface.storyboard */; };
@@ -215,6 +216,7 @@
 		5583EF151D3E4A8400852649 /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = Carthage/Build/iOS/SQLite.framework; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		856CA2AC1D76F611002A9CA3 /* MagnetMetadataClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagnetMetadataClient.swift; sourceTree = "<group>"; };
 		85DC92C71D6DF44400CC0BCB /* MagnetWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MagnetWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		85DC92C91D6DF44400CC0BCB /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		85DC92CF1D6DF44400CC0BCB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
@@ -507,6 +509,7 @@
 				85DC92D11D6DF44400CC0BCB /* Info.plist */,
 				85DC92E61D6DF52100CC0BCB /* MagnetWidgetTableViewController.swift */,
 				85DC92E51D6DF52000CC0BCB /* MagnetWidget-Bridging-Header.h */,
+				856CA2AC1D76F611002A9CA3 /* MagnetMetadataClient.swift */,
 			);
 			path = MagnetWidget;
 			sourceTree = "<group>";
@@ -1034,6 +1037,7 @@
 			files = (
 				85E11C5B1D6E402E00AC602F /* MagnetScanner.swift in Sources */,
 				85DC92E71D6DF52100CC0BCB /* MagnetWidgetTableViewController.swift in Sources */,
+				856CA2AD1D76F611002A9CA3 /* MagnetMetadataClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
