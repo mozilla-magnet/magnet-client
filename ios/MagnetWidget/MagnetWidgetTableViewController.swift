@@ -91,11 +91,14 @@ class MagnetWidgetTableViewController: UITableViewController, NCWidgetProviding 
 
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     debugPrint("Displaying cell");
-    let cell = tableView.dequeueReusableCellWithIdentifier("MagnetCell", forIndexPath: indexPath);
-    cell.textLabel!.textColor = UIColor.whiteColor();
+    let cell = tableView.dequeueReusableCellWithIdentifier(
+      "MagnetCell", forIndexPath: indexPath) as! MagnetWidgetTableViewCell;
+    cell.titleLabel!.textColor = UIColor.whiteColor();
+    cell.urlLabel!.textColor = UIColor.grayColor();
 
     // Add Magnet URL to the table view.
-    cell.textLabel!.text = nearbyUrls[indexPath.row];
+    cell.titleLabel!.text = nearbyUrls[indexPath.row];
+    cell.urlLabel!.text = "http://something.com";
 
     return cell;
   }
