@@ -42,9 +42,7 @@ public class PromptBluetoothReact extends ReactContextBaseJavaModule implements 
             return;
         }
 
-        WritableMap map = Arguments.createMap();
-        map.putBoolean("enabled", true);
-        promise.resolve(map);
+        promise.resolve(true);
     }
 
     /**
@@ -68,13 +66,11 @@ public class PromptBluetoothReact extends ReactContextBaseJavaModule implements 
         switch(aRequestCode) {
             case REQUEST_ENABLE_BT:
                 if (aResultCode != Activity.RESULT_OK) {
-                    mPromise.reject("denied", "denied");
+                    mPromise.resolve(false);
                     return;
                 }
 
-                WritableMap map = Arguments.createMap();
-                map.putBoolean("enabled", true);
-                mPromise.resolve(map);
+                mPromise.resolve(true);
                 break;
         }
     }

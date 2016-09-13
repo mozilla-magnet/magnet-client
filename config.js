@@ -24,7 +24,7 @@ module.exports = {
     "enableTelemetry": {
       value: true, // default
       title: 'Telemetry',
-      msg: 'Share performance and usage data with Mozilla to help us to improve Project Magnet'
+      description: 'Share performance and usage data with Mozilla to help us to improve Project Magnet'
     },
   },
 
