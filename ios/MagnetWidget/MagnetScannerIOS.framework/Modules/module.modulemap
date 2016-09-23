@@ -1,0 +1,10 @@
+framework module MagnetScannerIOS {
+  umbrella header "MagnetScannerIOS.h"
+
+  export *
+  module * { export * }
+}
+
+module MagnetScannerIOS.Swift {
+    header "MagnetScannerIOS-Swift.h"
+}

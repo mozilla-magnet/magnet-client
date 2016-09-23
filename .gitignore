@@ -44,3 +44,6 @@ android/keystores/debug.keystore
 
 # Carthage
 ios/Carthage/
+
+#Cocoapods
+ios/Pods/
