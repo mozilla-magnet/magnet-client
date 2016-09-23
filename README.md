@@ -7,7 +7,7 @@
 
 0. Make sure that you have node >= v5.11.0 and npm >= 3.8.6
 1. Install react-native on your machine: `npm install react-native react-native-cli -g`
-2. Clone this project: `git clone git@github.com:mozilla-magnet/magnet.git && cd magnet`
+2. Clone this project: `git clone git@github.com:mozilla-magnet/magnet-client.git && cd magnet-client`
 3. Install dependencies: `npm install`
 4. Start the development server: `npm start`
 
