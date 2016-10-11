@@ -1,8 +1,8 @@
 module.exports = {
   "flags": {
     "injectTestUrls": false,
-    "itemsExpandable": true,
-    "itemsSwipable": true,
+    "itemsExpandable": false,
+    "itemsSwipable": false,
   },
 
   "userFlags": {
