@@ -74,4 +74,9 @@ public class PromptBluetoothReact extends ReactContextBaseJavaModule implements 
                 break;
         }
     }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        // Ignored, required to implement ActivityEventListener
+    }
 }

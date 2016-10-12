@@ -57,22 +57,6 @@ public class MainActivity extends ReactActivity {
         return BuildConfig.DEBUG;
     }
 
-    /**
-     * A list of packages used by the app. If the app uses additional views
-     * or modules besides the default ones, add more packages here.
-     */
-    @Override
-    protected List<ReactPackage> getPackages() {
-        mNotificationEventsPackage = new NotificationListenerPackage(this);
-        return Arrays.<ReactPackage>asList(
-            new MainReactPackage(),
-            mNotificationEventsPackage,
-            new GoogleAnalyticsBridgePackage(),
-            new LinearGradientPackage(),
-            new MyAppPackage()
-        );
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,12 +73,6 @@ public class MainActivity extends ReactActivity {
         Log.d(TAG, "on resume");
         clearNotifications();
         setActive(true);
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        mNotificationEventsPackage.onNewIntent(intent);
     }
 
     /**

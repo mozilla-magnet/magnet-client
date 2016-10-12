@@ -137,4 +137,9 @@ public class MagnetWebChromeClient extends WebChromeClient implements ActivityEv
         mFilePathCallback.onReceiveValue(results);
         mFilePathCallback = null;
     }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        // Ignored, required to implement ActivityEventListener
+    }
 }
