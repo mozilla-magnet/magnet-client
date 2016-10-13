@@ -54,10 +54,7 @@
 }
 
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
-  if (application.applicationState == UIApplicationStateInactive ||
-      application.applicationState == UIApplicationStateBackground) {
-    [self.bridge.eventDispatcher sendDeviceEventWithName:@"notification:applaunch" body:nil];
-  }
+  [self.bridge.eventDispatcher sendDeviceEventWithName:@"notification:applaunch" body:nil];
 }
 
 @end
