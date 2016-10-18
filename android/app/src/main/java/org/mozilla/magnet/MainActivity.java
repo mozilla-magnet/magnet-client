@@ -30,8 +30,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends ReactActivity {
     private final static String TAG = MainActivity.class.getName();
-    private final static int PERMISSION_REQUEST_COARSE_LOCATION = 1;
-    private NotificationListenerPackage mNotificationEventsPackage;
+    private final static int PERMISSION_REQUEST_LOCATION = 1;
 
     /**
      * The alarm runs every 10 minutes. We may
@@ -141,7 +140,7 @@ public class MainActivity extends ReactActivity {
      * service.
      */
     private void checkPermissions() {
-        if (hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) { return; }
+        if (hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)) { return; }
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("This app needs location access");
@@ -152,8 +151,8 @@ public class MainActivity extends ReactActivity {
              public void onDismiss(DialogInterface dialog) {
                  ActivityCompat.requestPermissions(
                          MainActivity.this,
-                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                         PERMISSION_REQUEST_COARSE_LOCATION);
+                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                         PERMISSION_REQUEST_LOCATION);
              }
         });
 
@@ -172,7 +171,7 @@ public class MainActivity extends ReactActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case PERMISSION_REQUEST_COARSE_LOCATION: {
+            case PERMISSION_REQUEST_LOCATION: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.d(TAG, "coarse location permission granted");
                     return;
@@ -184,8 +183,7 @@ public class MainActivity extends ReactActivity {
                 builder.setPositiveButton(android.R.string.ok, null);
                 builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
-                    public void onDismiss(DialogInterface dialog) {
-                    }
+                    public void onDismiss(DialogInterface dialog) {}
                 });
 
                 builder.show();
