@@ -9,7 +9,7 @@
         android:name="android.permission.SYSTEM_ALERT_WINDOW"
         tools:remove="${excludeSystemAlertWindowPermission}" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-sdk tools:overrideLibrary="org.mozilla.magnet.net.scanner" />
 
@@ -31,23 +31,19 @@
         </activity>
 
         <service
-            android:name=".ScannerService"
-            android:enabled="true"
-            android:exported="false"></service>
-
-        <service
             android:name=".NotificationService"
             android:enabled="true"
-            android:exported="false"></service>
-
-        <receiver
-            android:name=".ReceiverAlarm"
-            android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="false"/>
 
         <receiver android:name=".ReceiverNotificationDelete">
             <intent-filter>
                 <action android:name="notification_delete" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".ReceiverMagnetScannerItemsFound">
+            <intent-filter>
+                <action android:name="org.mozilla.magnet.scanner.ITEMS_FOUND" />
             </intent-filter>
         </receiver>
 

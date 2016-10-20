@@ -1,53 +1,34 @@
 package org.mozilla.magnet;
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
-
 import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
-import org.mozilla.magnet.net.scanner.MagnetScannerItem;
+import org.mozilla.magnet.scanner.MagnetScanner;
+import org.mozilla.magnet.scanner.MagnetScannerItem;
+import org.mozilla.magnet.scanner.MagnetScannerListener;
 
-public class MagnetScannerReact extends ReactContextBaseJavaModule implements ScannerService.ScannerServiceCallback {
+public class MagnetScannerReact extends ReactContextBaseJavaModule implements MagnetScannerListener, LifecycleEventListener {
     private final static String TAG = "MagnetScannerReact";
     private ReactApplicationContext mContext;
-    private Boolean mNeedsStarting = false;
-    private ScannerService mService;
-    private Boolean mBound = false;
-
-    private ServiceConnection mConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            mBound = true;
-            ScannerService.LocalBinder binder = (ScannerService.LocalBinder) service;
-            mService = binder.getService();
-            mService.addListener(MagnetScannerReact.this);
-            if (mNeedsStarting) {
-                start();
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mBound = false;
-        }
-    };
+    private MagnetScanner mMagnetScanner;
 
     public MagnetScannerReact(ReactApplicationContext context) {
         super(context);
         mContext = context;
-        Intent intent = new Intent(context, ScannerService.class);
-        context.bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
+        context.addLifecycleEventListener(this);
+
+        mMagnetScanner = new MagnetScanner(context)
+                .useBle()
+                .useMdns()
+                .useGeolocation();
     }
 
     @Override
@@ -60,17 +41,7 @@ public class MagnetScannerReact extends ReactContextBaseJavaModule implements Sc
      */
     @ReactMethod
     public void start() {
-
-        // if service hasn't connected yet set a
-        // flag to start the scanner once it has
-        if (!mBound) {
-            mNeedsStarting = true;
-            return;
-        }
-
-        // start scanning
-        mService.start();
-        mNeedsStarting = false;
+        mMagnetScanner.start(this);
     }
 
     /**
@@ -78,11 +49,22 @@ public class MagnetScannerReact extends ReactContextBaseJavaModule implements Sc
      */
     @ReactMethod
     public void stop() {
-        if (!mBound) {
-            return;
-        }
+        mMagnetScanner.stop();
+    }
 
-        mService.stop();
+    @Override
+    public void onHostPause() {
+        mMagnetScanner.startBackgroundScanning();
+    }
+
+    @Override
+    public void onHostResume() {
+        mMagnetScanner.stopBackgroundScanning();
+    }
+
+    @Override
+    public void onHostDestroy() {
+        // noop
     }
 
     @Override
@@ -92,6 +74,15 @@ public class MagnetScannerReact extends ReactContextBaseJavaModule implements Sc
         data.putString("url", item.getUrl());
         data.putDouble("distance", item.getDistance());
         emit("magnetscanner:itemfound", data);
+    }
+
+    @Override
+    public void onItemLost(MagnetScannerItem item) {
+        Log.d(TAG, "item found");
+        WritableMap data = Arguments.createMap();
+        data.putString("url", item.getUrl());
+        data.putDouble("distance", item.getDistance());
+        emit("magnetscanner:itemlost", data);
     }
 
     /**
