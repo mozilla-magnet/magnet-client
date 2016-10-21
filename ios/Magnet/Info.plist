@@ -35,8 +35,8 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Project Magnet needs to check your location</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>FiraSans-Book.otf</string>
