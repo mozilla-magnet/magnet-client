@@ -1,4 +1,4 @@
 github "stephencelis/SQLite.swift" "swift-2.3"
-github "arcturus/magnet-scanner-ios" "geo-scanner"
+github "mozilla-magnet/magnet-scanner-ios" ~> 0.3.0
 github "Alamofire/Alamofire" ~> 3.5.0
 github "SwiftyJSON/SwiftyJSON" "swift2"
