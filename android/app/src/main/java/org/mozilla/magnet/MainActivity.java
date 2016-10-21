@@ -1,42 +1,21 @@
 package org.mozilla.magnet;
 
 import android.Manifest;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.facebook.react.ReactActivity;
-import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
-import com.BV.LinearGradient.LinearGradientPackage;
-import com.facebook.react.ReactPackage;
-import com.facebook.react.shell.MainReactPackage;
-
-import org.mozilla.magnet.notificationlistener.NotificationListenerPackage;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends ReactActivity {
     private final static String TAG = MainActivity.class.getName();
     private final static int PERMISSION_REQUEST_LOCATION = 1;
-
-    /**
-     * The alarm runs every 10 minutes. We may
-     * decide to tweak this as we evolve the UX.
-     */
-    private static final long ALARM_INTERVAL_MS = TimeUnit.MINUTES.toMillis(10);
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -50,7 +29,6 @@ public class MainActivity extends ReactActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivity.setAlarm(getApplicationContext());
         checkPermissions();
     }
 
@@ -90,37 +68,6 @@ public class MainActivity extends ReactActivity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("active", active);
         editor.commit();
-    }
-
-    /**
-     * Schedule a repeating alarm used to activate `ReceiverAlarm`
-     * which in-turn triggers`NotificationService` to perform a
-     * short background scan and dispatch system notifications.
-     *
-     * Notifications can be enabled/disabled via `res/values/flags.xml`.
-     */
-    public static void setAlarm(Context context) {
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, ReceiverAlarm.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-        boolean enabled = context.getResources().getBoolean(R.bool.notifications_enabled);
-
-        // cancel any previously set alarms
-        // if notifications are disabled
-        if (!enabled) {
-            Log.d(TAG, "alarm canceled");
-            alarmManager.cancel(pendingIntent);
-            return;
-        }
-
-        // set the alarm
-        alarmManager.setInexactRepeating(
-                AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + ALARM_INTERVAL_MS,
-                ALARM_INTERVAL_MS,
-                pendingIntent);
-
-        Log.d(TAG, "alarm set");
     }
 
     /**
