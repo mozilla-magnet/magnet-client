@@ -3289,9 +3289,9 @@ lru-cache@2:
     url "^0.11.0"
     xml2js "^0.4.16"
 
-"magnet-scanner-android@github:mozilla-magnet/magnet-scanner-android#v3.0.3":
-  version "3.0.3"
-  resolved "https://codeload.github.com/mozilla-magnet/magnet-scanner-android/tar.gz/397d3fd1e65fbb2db3e20fd96036002db9f81321"
+"magnet-scanner-android@github:mozilla-magnet/magnet-scanner-android#v3.0.4":
+  version "3.0.4"
+  resolved "https://codeload.github.com/mozilla-magnet/magnet-scanner-android/tar.gz/5cbbbb76b12d874631fd1266923931aaada56456"
 
 makeerror@1.0.x:
   version "1.0.11"
