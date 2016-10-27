@@ -22,6 +22,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		550CECBF1D3536F80076D807 /* NotificationsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550CECBE1D3536F80076D807 /* NotificationsHelper.swift */; };
+		553647D81DBE206000ADFBB3 /* LocationChangeReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553647D71DBE206000ADFBB3 /* LocationChangeReceiver.swift */; };
 		5583EF0E1D3D55AD00852649 /* HistoryRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF0D1D3D55AD00852649 /* HistoryRecord.swift */; };
 		5583EF101D3D565200852649 /* HistorySQLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF0F1D3D565200852649 /* HistorySQLite.swift */; };
 		5583EF121D3E36C300852649 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF111D3E36C300852649 /* History.swift */; };
@@ -183,6 +184,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Magnet/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		550CECBE1D3536F80076D807 /* NotificationsHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHelper.swift; sourceTree = "<group>"; };
+		553647D71DBE206000ADFBB3 /* LocationChangeReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationChangeReceiver.swift; sourceTree = "<group>"; };
 		555800951CBE5F7800A21868 /* Magnet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Magnet-Bridging-Header.h"; sourceTree = "<group>"; };
 		5583EF0D1D3D55AD00852649 /* HistoryRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryRecord.swift; sourceTree = "<group>"; };
 		5583EF0F1D3D565200852649 /* HistorySQLite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistorySQLite.swift; sourceTree = "<group>"; };
@@ -338,6 +340,7 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				555800951CBE5F7800A21868 /* Magnet-Bridging-Header.h */,
 				550CECBE1D3536F80076D807 /* NotificationsHelper.swift */,
+				553647D71DBE206000ADFBB3 /* LocationChangeReceiver.swift */,
 			);
 			name = Magnet;
 			sourceTree = "<group>";
@@ -786,6 +789,7 @@
 				8D57224B1CDCB16400480505 /* RNMagnetWebView.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				8D7567311D2BF7F300315AEE /* MagnetScannerReact.swift in Sources */,
+				553647D81DBE206000ADFBB3 /* LocationChangeReceiver.swift in Sources */,
 				8D5722491CDCB16400480505 /* RNMagnetWebViewManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

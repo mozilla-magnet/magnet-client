@@ -37,6 +37,8 @@
 	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Project Magnet needs to check your location</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Project Magnet needs to check your location</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>FiraSans-Book.otf</string>
@@ -52,6 +54,7 @@
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
+		<string>location-services</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
