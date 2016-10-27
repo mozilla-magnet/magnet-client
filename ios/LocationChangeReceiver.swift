@@ -14,11 +14,11 @@ import CoreLocation
   
   @objc override init() {
     super.init()
-    scanner = MagnetScanner(callback: self.onMagnetScanner)
+    scanner = MagnetScanner(callback: self.onItemFound)
   }
   
-  private func onMagnetScanner(result: Dictionary<String, AnyObject>) {
-    let url = result["url"] as! String
+  private func onItemFound(item: Dictionary<String, AnyObject>) {
+    let url = item["url"] as! String
     // Uncomment following line for debug
     //NotificationsHelper.showNotification("Url we should notify \(url)")
     NotificationsHelper.notifyUser(url)
