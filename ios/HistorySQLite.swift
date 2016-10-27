@@ -74,5 +74,4 @@ class HistorySQLite {
   func clear() {
     try! db.run(history.delete())
   }
-  
 }
