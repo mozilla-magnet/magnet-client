@@ -40,17 +40,25 @@
   self.bridge = [[RCTBridge alloc] initWithBundleURL:jsCodeLocation
                                             moduleProvider: nil
                                             launchOptions:launchOptions];
+  
+  // Listen to location changes, will be stopped when we go to foreground and reactivated
+  // when we go to background
+  self.locationReceiver = [[LocationChangeReceiver alloc] init];
+  [self.locationReceiver startSignificantLocationChanges];
+  
   return YES;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
   [NotificationsHelper clearNotifications];
   [NotificationsHelper disable];
+  [self.locationReceiver stopSignificantLocationChanges];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
   [NotificationsHelper clearNotifications];
   [NotificationsHelper enable];
+  [self.locationReceiver startSignificantLocationChanges];
 }
 
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {

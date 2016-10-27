@@ -1,2 +1,2 @@
 github "stephencelis/SQLite.swift" "swift-2.3"
-github "mozilla-magnet/magnet-scanner-ios" ~> 0.3.0
+github "mozilla-magnet/magnet-scanner-ios" ~> 0.3.2

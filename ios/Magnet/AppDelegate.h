@@ -10,10 +10,12 @@
 #import <UIKit/UIKit.h>
 
 #import "RCTBridge.h"
+#import "magnet-Swift.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong) RCTBridge *bridge;
+@property (nonatomic, strong) LocationChangeReceiver *locationReceiver;
 
 @end
