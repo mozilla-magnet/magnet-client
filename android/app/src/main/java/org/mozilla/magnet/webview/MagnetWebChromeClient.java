@@ -110,7 +110,7 @@ public class MagnetWebChromeClient extends WebChromeClient implements ActivityEv
     }
 
     @Override
-    public void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
+    public void onActivityResult(Activity activity, final int requestCode, final int resultCode, final Intent intent) {
         Log.d(TAG, "on activity result");
 
         if (requestCode != INPUT_FILE_REQUEST_CODE || mFilePathCallback == null) {
@@ -136,5 +136,10 @@ public class MagnetWebChromeClient extends WebChromeClient implements ActivityEv
 
         mFilePathCallback.onReceiveValue(results);
         mFilePathCallback = null;
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        // Ignored, required to implement ActivityEventListener
     }
 }

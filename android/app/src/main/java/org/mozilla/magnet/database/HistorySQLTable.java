@@ -13,7 +13,7 @@ import java.util.Date;
  * Interface for the 'history' table
  */
 public class HistorySQLTable implements HistoryStore, DatabaseSQL.Table {
-    private final String TAG = History.class.getName();
+    private final String TAG = "HistorySQLTable";
     private DatabaseSQL mDB;
 
     /**
@@ -150,7 +150,7 @@ public class HistorySQLTable implements HistoryStore, DatabaseSQL.Table {
     private static abstract class Schema implements BaseColumns {
         public static final String TABLE_NAME = "history";
         public static final String COLUMN_NAME_URL = "url";
-        public static final String COLUMN_NAME_TIME_FIRST_SEEN = "timefirstseen";
-        public static final String COLUMN_NAME_TIME_LAST_SEEN = "timelastseen";
+        public static final String COLUMN_NAME_TIME_FIRST_SEEN = "time_first_seen";
+        public static final String COLUMN_NAME_TIME_LAST_SEEN = "time_last_seen";
     }
 }

@@ -5,6 +5,8 @@ import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
+
+import org.mozilla.magnet.database.SubscriptionsReact;
 import org.mozilla.magnet.webview.MagnetWebViewManager;
 
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ public class MyAppPackage implements ReactPackage {
         List<NativeModule> modules = new ArrayList<>();
         modules.add(new MagnetScannerReact(reactContext));
         modules.add(new PromptBluetoothReact(reactContext));
+        modules.add(new SubscriptionsReact(reactContext));
         return modules;
     }
 

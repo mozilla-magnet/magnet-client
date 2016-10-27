@@ -1,23 +1,26 @@
 package org.mozilla.magnet;
 
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
+import android.os.Bundle;
 import android.util.Log;
 
-import org.mozilla.magnet.net.scanner.MagnetScannerItem;
+/**
+ * Created by wilsonpage on 17/10/2016.
+ */
 
-public class ReceiverAlarm extends BroadcastReceiver {
-    String TAG = "ReceiverAlarm";
+public class ReceiverMagnetScannerItemsFound extends BroadcastReceiver {
+    private final String TAG = "ReceiverMagnetScanner";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "on receive");
+
+        Bundle bundle = intent.getExtras();
         Intent serviceIntent = new Intent(context, NotificationService.class);
+        serviceIntent.putExtras(bundle);
+
         context.startService(serviceIntent);
     }
 }

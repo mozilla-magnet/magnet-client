@@ -22,10 +22,15 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		550CECBF1D3536F80076D807 /* NotificationsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550CECBE1D3536F80076D807 /* NotificationsHelper.swift */; };
+		553647D81DBE206000ADFBB3 /* LocationChangeReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553647D71DBE206000ADFBB3 /* LocationChangeReceiver.swift */; };
 		5583EF0E1D3D55AD00852649 /* HistoryRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF0D1D3D55AD00852649 /* HistoryRecord.swift */; };
 		5583EF101D3D565200852649 /* HistorySQLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF0F1D3D565200852649 /* HistorySQLite.swift */; };
 		5583EF121D3E36C300852649 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF111D3E36C300852649 /* History.swift */; };
 		5583EF161D3E4A8400852649 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5583EF151D3E4A8400852649 /* SQLite.framework */; };
+		559608C81DB918B100816CF1 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559608C61DB918B100816CF1 /* Alamofire.framework */; };
+		559608C91DB918B100816CF1 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559608C71DB918B100816CF1 /* SwiftyJSON.framework */; };
+		559608CA1DB918CC00816CF1 /* Alamofire.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 559608C61DB918B100816CF1 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		559608CB1DB918CC00816CF1 /* SwiftyJSON.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 559608C71DB918B100816CF1 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		85767A351D6339BD009F400A /* MagnetScannerIOS.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		85DF9A341D633665004DF3F1 /* MagnetScannerIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */; };
@@ -148,6 +153,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				559608CA1DB918CC00816CF1 /* Alamofire.framework in Copy Files */,
+				559608CB1DB918CC00816CF1 /* SwiftyJSON.framework in Copy Files */,
 				85767A351D6339BD009F400A /* MagnetScannerIOS.framework in Copy Files */,
 			);
 			name = "Copy Files";
@@ -177,11 +184,14 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Magnet/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		550CECBE1D3536F80076D807 /* NotificationsHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHelper.swift; sourceTree = "<group>"; };
+		553647D71DBE206000ADFBB3 /* LocationChangeReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationChangeReceiver.swift; sourceTree = "<group>"; };
 		555800951CBE5F7800A21868 /* Magnet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Magnet-Bridging-Header.h"; sourceTree = "<group>"; };
 		5583EF0D1D3D55AD00852649 /* HistoryRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryRecord.swift; sourceTree = "<group>"; };
 		5583EF0F1D3D565200852649 /* HistorySQLite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistorySQLite.swift; sourceTree = "<group>"; };
 		5583EF111D3E36C300852649 /* History.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		5583EF151D3E4A8400852649 /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = Carthage/Build/iOS/SQLite.framework; sourceTree = "<group>"; };
+		559608C61DB918B100816CF1 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		559608C71DB918B100816CF1 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MagnetScannerIOS.framework; path = Carthage/Build/iOS/MagnetScannerIOS.framework; sourceTree = "<group>"; };
@@ -233,6 +243,8 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				8DF821771D5387E20081F56E /* libRCTGoogleAnalyticsBridge.a in Frameworks */,
+				559608C81DB918B100816CF1 /* Alamofire.framework in Frameworks */,
+				559608C91DB918B100816CF1 /* SwiftyJSON.framework in Frameworks */,
 				AA85BDA14B4C4D9A8524DCAD /* libBVLinearGradient.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -328,6 +340,7 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				555800951CBE5F7800A21868 /* Magnet-Bridging-Header.h */,
 				550CECBE1D3536F80076D807 /* NotificationsHelper.swift */,
+				553647D71DBE206000ADFBB3 /* LocationChangeReceiver.swift */,
 			);
 			name = Magnet;
 			sourceTree = "<group>";
@@ -348,6 +361,15 @@
 				5583EF111D3E36C300852649 /* History.swift */,
 			);
 			name = History;
+			sourceTree = "<group>";
+		};
+		559608B91DB918B100816CF1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				559608C61DB918B100816CF1 /* Alamofire.framework */,
+				559608C71DB918B100816CF1 /* SwiftyJSON.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
@@ -400,6 +422,7 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* MagnetTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
+				559608B91DB918B100816CF1 /* Frameworks */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -508,8 +531,6 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 730;
-				LastUpgradeCheck = 730;
 				ORGANIZATIONNAME = "Project Magnet";
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -767,6 +788,7 @@
 				8D57224B1CDCB16400480505 /* RNMagnetWebView.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				8D7567311D2BF7F300315AEE /* MagnetScannerReact.swift in Sources */,
+				553647D81DBE206000ADFBB3 /* LocationChangeReceiver.swift in Sources */,
 				8D5722491CDCB16400480505 /* RNMagnetWebViewManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -798,10 +820,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -809,11 +827,6 @@
 				INFOPLIST_FILE = MagnetTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Magnet.app/Magnet";
 			};
@@ -824,18 +837,9 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
 				INFOPLIST_FILE = MagnetTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Magnet.app/Magnet";
 			};
@@ -872,6 +876,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Magnet-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -904,6 +909,7 @@
 				PRODUCT_NAME = Magnet;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Magnet-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -953,6 +959,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -993,6 +1000,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 2.3;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

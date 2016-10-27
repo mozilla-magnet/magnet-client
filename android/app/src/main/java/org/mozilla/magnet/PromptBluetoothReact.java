@@ -62,7 +62,7 @@ public class PromptBluetoothReact extends ReactContextBaseJavaModule implements 
     }
 
     @Override
-    public void onActivityResult(int aRequestCode, int aResultCode, Intent aIntent) {
+    public void onActivityResult(Activity activty, int aRequestCode, int aResultCode, Intent aIntent) {
         switch(aRequestCode) {
             case REQUEST_ENABLE_BT:
                 if (aResultCode != Activity.RESULT_OK) {
@@ -73,5 +73,10 @@ public class PromptBluetoothReact extends ReactContextBaseJavaModule implements 
                 mPromise.resolve(true);
                 break;
         }
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        // Ignored, required to implement ActivityEventListener
     }
 }

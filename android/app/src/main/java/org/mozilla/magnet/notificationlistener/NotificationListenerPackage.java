@@ -16,18 +16,11 @@ import java.util.List;
 
 
 public class NotificationListenerPackage implements ReactPackage {
-    private NotificationListener mNotificationEvents;
-    private Activity mActivity;
-
-    public NotificationListenerPackage(Activity activity) {
-        mActivity = activity;
-    }
 
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        mNotificationEvents = new NotificationListener(reactContext, mActivity);
-        modules.add(mNotificationEvents);
+        modules.add(new NotificationListener(reactContext));
         return modules;
     }
 
@@ -39,9 +32,5 @@ public class NotificationListenerPackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Arrays.<ViewManager>asList();
-    }
-
-    public void onNewIntent(Intent intent) {
-        mNotificationEvents.onNewIntent(intent);
     }
 }
