@@ -27,7 +27,7 @@ import UserNotifications
     UIApplication.sharedApplication().presentLocalNotificationNow(notification)
   }
   
-  private class func clearNotifications() {
+  @objc class func clearNotifications() {
     if #available(iOS 10.0, *) {
       let center = UNUserNotificationCenter.currentNotificationCenter()
       center.removeAllDeliveredNotifications()
@@ -37,12 +37,7 @@ import UserNotifications
       UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
   }
-  
-  @objc class func clearNotifications() {
-    UIApplication.sharedApplication().cancelAllLocalNotifications()
-    self.updateNotifications()
-  }
-  
+    
   @objc class func enable() {
     enabled = true
   }
