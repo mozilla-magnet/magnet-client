@@ -36,11 +36,6 @@
 		8D5722491CDCB16400480505 /* RNMagnetWebViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5722461CDCB16400480505 /* RNMagnetWebViewManager.swift */; };
 		8D57224A1CDCB16400480505 /* RNMagnetWebViewManagerExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5722471CDCB16400480505 /* RNMagnetWebViewManagerExport.m */; };
 		8D57224B1CDCB16400480505 /* RNMagnetWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5722481CDCB16400480505 /* RNMagnetWebView.swift */; };
-		8D589BC91DC0BFDE0069BB98 /* SubscriptionsDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D589BC81DC0BFDE0069BB98 /* SubscriptionsDB.swift */; };
-		8D589BE31DC0E1700069BB98 /* SubscriptionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D589BE21DC0E1700069BB98 /* SubscriptionRecord.swift */; };
-		8D589BF11DC0E6660069BB98 /* SubscriptionsReact.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D589BF01DC0E6660069BB98 /* SubscriptionsReact.m */; };
-		8D589BF31DC0E6A80069BB98 /* Subscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D589BF21DC0E6A80069BB98 /* Subscriptions.swift */; };
-		8D589C0D1DC10E260069BB98 /* SubscriptionsReact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D589C0C1DC10E260069BB98 /* SubscriptionsReact.swift */; };
 		8D7567201D2BF30400315AEE /* MagnetScannerReactExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D75671F1D2BF30400315AEE /* MagnetScannerReactExport.m */; };
 		8D75672D1D2BF33500315AEE /* MagnetScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D75672C1D2BF33500315AEE /* MagnetScanner.swift */; };
 		8D7567311D2BF7F300315AEE /* MagnetScannerReact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D7567301D2BF7F300315AEE /* MagnetScannerReact.swift */; };
@@ -201,11 +196,6 @@
 		8D5722461CDCB16400480505 /* RNMagnetWebViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNMagnetWebViewManager.swift; sourceTree = "<group>"; };
 		8D5722471CDCB16400480505 /* RNMagnetWebViewManagerExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNMagnetWebViewManagerExport.m; sourceTree = "<group>"; };
 		8D5722481CDCB16400480505 /* RNMagnetWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNMagnetWebView.swift; sourceTree = "<group>"; };
-		8D589BC81DC0BFDE0069BB98 /* SubscriptionsDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionsDB.swift; sourceTree = "<group>"; };
-		8D589BE21DC0E1700069BB98 /* SubscriptionRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionRecord.swift; sourceTree = "<group>"; };
-		8D589BF01DC0E6660069BB98 /* SubscriptionsReact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubscriptionsReact.m; sourceTree = "<group>"; };
-		8D589BF21DC0E6A80069BB98 /* Subscriptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subscriptions.swift; sourceTree = "<group>"; };
-		8D589C0C1DC10E260069BB98 /* SubscriptionsReact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionsReact.swift; sourceTree = "<group>"; };
 		8D75671F1D2BF30400315AEE /* MagnetScannerReactExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MagnetScannerReactExport.m; sourceTree = "<group>"; };
 		8D75672C1D2BF33500315AEE /* MagnetScanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagnetScanner.swift; sourceTree = "<group>"; };
 		8D7567301D2BF7F300315AEE /* MagnetScannerReact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagnetScannerReact.swift; sourceTree = "<group>"; };
@@ -336,7 +326,6 @@
 		13B07FAE1A68108700A75B9A /* Magnet */ = {
 			isa = PBXGroup;
 			children = (
-				8D589BBB1DC0BFAE0069BB98 /* Subscriptions */,
 				5583EF0A1D3D519D00852649 /* History */,
 				8D5722441CDCAF6B00480505 /* Scanner */,
 				8D5722451CDCAFA400480505 /* MagnetWebView */,
@@ -483,18 +472,6 @@
 			name = MagnetWebView;
 			sourceTree = "<group>";
 		};
-		8D589BBB1DC0BFAE0069BB98 /* Subscriptions */ = {
-			isa = PBXGroup;
-			children = (
-				8D589BF01DC0E6660069BB98 /* SubscriptionsReact.m */,
-				8D589C0C1DC10E260069BB98 /* SubscriptionsReact.swift */,
-				8D589BF21DC0E6A80069BB98 /* Subscriptions.swift */,
-				8D589BC81DC0BFDE0069BB98 /* SubscriptionsDB.swift */,
-				8D589BE21DC0E1700069BB98 /* SubscriptionRecord.swift */,
-			);
-			name = Subscriptions;
-			sourceTree = "<group>";
-		};
 		8DF821661D53879A0081F56E /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -552,7 +529,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0610;
-				ORGANIZATIONNAME = Mozilla;
+				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -563,7 +540,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "magnet" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Magnet" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -801,14 +778,9 @@
 				5583EF101D3D565200852649 /* HistorySQLite.swift in Sources */,
 				8D57224A1CDCB16400480505 /* RNMagnetWebViewManagerExport.m in Sources */,
 				5583EF0E1D3D55AD00852649 /* HistoryRecord.swift in Sources */,
-				8D589BE31DC0E1700069BB98 /* SubscriptionRecord.swift in Sources */,
-				8D589BF11DC0E6660069BB98 /* SubscriptionsReact.m in Sources */,
 				550CECBF1D3536F80076D807 /* NotificationsHelper.swift in Sources */,
-				8D589BF31DC0E6A80069BB98 /* Subscriptions.swift in Sources */,
-				8D589C0D1DC10E260069BB98 /* SubscriptionsReact.swift in Sources */,
 				8D75672D1D2BF33500315AEE /* MagnetScanner.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				8D589BC91DC0BFDE0069BB98 /* SubscriptionsDB.swift in Sources */,
 				5583EF121D3E36C300852649 /* History.swift in Sources */,
 				8D7567201D2BF30400315AEE /* MagnetScannerReactExport.m in Sources */,
 				8D57224B1CDCB16400480505 /* RNMagnetWebView.swift in Sources */,
@@ -1051,7 +1023,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "magnet" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Magnet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
