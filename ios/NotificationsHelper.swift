@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import UserNotifications
 
 @objc(NotificationsHelper) class NotificationsHelper: NSObject {
   static var enabled: Bool = true
@@ -19,12 +20,22 @@ import UIKit
   class func updateNotifications() {
     guard enabled else { return }
     
-    UIApplication.sharedApplication().cancelAllLocalNotifications()
-    // Clean any badge
-    UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+    clearNotifications()
+    
     let notification = UILocalNotification()
     notification.alertBody = "Content found nearby"
     UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+  }
+  
+  private class func clearNotifications() {
+    if #available(iOS 10.0, *) {
+      let center = UNUserNotificationCenter.currentNotificationCenter()
+      center.removeAllDeliveredNotifications()
+    } else {
+      UIApplication.sharedApplication().cancelAllLocalNotifications()
+      // Clean any badge
+      UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+    }
   }
   
   @objc class func clearNotifications() {
