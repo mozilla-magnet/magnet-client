@@ -19,7 +19,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>7</string>
+	<string>8</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -35,12 +35,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Project Magnet needs to scan for physical web beacons</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Project Magnet needs to check your location</string>
+	<string>Project Magnet uses your location to find content nearby</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Project Magnet needs to check your location</string>
-        <key>NSBluetoothPeripheralUsageDescription</key>
-        <string>Project Magnet needs to scan for physical web beacons</string>
+	<string>Project Magnet uses your location to find content nearby</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>FiraSans-Book.otf</string>
