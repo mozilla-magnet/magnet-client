@@ -44,7 +44,7 @@ class ApiBase: Api {
       return
     }
     
-    api.get(path, callback)
+    api!.get(path, callback: callback)
   }
   
   func post(path: String, data: AnyObject, callback: ApiCallback) {
@@ -55,7 +55,7 @@ class ApiBase: Api {
       return
     }
     
-    api.post(path, callback)
+    api!.post(path, data: data, callback: callback)
   }
   
   func put(path: String, data: AnyObject, callback: ApiCallback) {
@@ -66,7 +66,7 @@ class ApiBase: Api {
       return
     }
     
-    api.put(path, callback)
+    api!.put(path, data: data, callback: callback)
   }
   
   func delete(path: String, callback: ApiCallback) {
@@ -77,6 +77,6 @@ class ApiBase: Api {
       return
     }
     
-    api.delete(path, callback)
+    api!.delete(path, callback: callback)
   }
 }

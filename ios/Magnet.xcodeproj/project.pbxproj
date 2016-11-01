@@ -34,6 +34,8 @@
 		55C013EB1DC8CC2600154F76 /* RequestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C013EA1DC8CC2600154F76 /* RequestStore.swift */; };
 		55C013EE1DC8CE9100154F76 /* RequestStoreSQLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C013ED1DC8CE9100154F76 /* RequestStoreSQLite.swift */; };
 		55C013F01DC8DA2B00154F76 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C013EF1DC8DA2B00154F76 /* Api.swift */; };
+		55C013F41DC8E99100154F76 /* ApiChannels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C013F31DC8E99100154F76 /* ApiChannels.swift */; };
+		55C013F71DC8EC6800154F76 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C013F61DC8EC6800154F76 /* System.swift */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		85767A351D6339BD009F400A /* MagnetScannerIOS.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		85DF9A341D633665004DF3F1 /* MagnetScannerIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */; };
@@ -203,6 +205,8 @@
 		55C013EA1DC8CC2600154F76 /* RequestStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestStore.swift; sourceTree = "<group>"; };
 		55C013ED1DC8CE9100154F76 /* RequestStoreSQLite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestStoreSQLite.swift; sourceTree = "<group>"; };
 		55C013EF1DC8DA2B00154F76 /* Api.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
+		55C013F31DC8E99100154F76 /* ApiChannels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiChannels.swift; sourceTree = "<group>"; };
+		55C013F61DC8EC6800154F76 /* System.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MagnetScannerIOS.framework; path = Carthage/Build/iOS/MagnetScannerIOS.framework; sourceTree = "<group>"; };
@@ -344,6 +348,7 @@
 		13B07FAE1A68108700A75B9A /* Magnet */ = {
 			isa = PBXGroup;
 			children = (
+				55C013F51DC8EC5900154F76 /* Utils */,
 				55C013DD1DC8CBEE00154F76 /* Api */,
 				8D589BBB1DC0BFAE0069BB98 /* Subscriptions */,
 				5583EF0A1D3D519D00852649 /* History */,
@@ -395,6 +400,7 @@
 			children = (
 				55C013EC1DC8CC8200154F76 /* RequestStore */,
 				55C013EF1DC8DA2B00154F76 /* Api.swift */,
+				55C013F31DC8E99100154F76 /* ApiChannels.swift */,
 			);
 			name = Api;
 			sourceTree = "<group>";
@@ -406,6 +412,14 @@
 				55C013ED1DC8CE9100154F76 /* RequestStoreSQLite.swift */,
 			);
 			name = RequestStore;
+			sourceTree = "<group>";
+		};
+		55C013F51DC8EC5900154F76 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				55C013F61DC8EC6800154F76 /* System.swift */,
+			);
+			name = Utils;
 			sourceTree = "<group>";
 		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
@@ -844,8 +858,10 @@
 				8D7567201D2BF30400315AEE /* MagnetScannerReactExport.m in Sources */,
 				8D57224B1CDCB16400480505 /* RNMagnetWebView.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				55C013F71DC8EC6800154F76 /* System.swift in Sources */,
 				8D7567311D2BF7F300315AEE /* MagnetScannerReact.swift in Sources */,
 				553647D81DBE206000ADFBB3 /* LocationChangeReceiver.swift in Sources */,
+				55C013F41DC8E99100154F76 /* ApiChannels.swift in Sources */,
 				8D5722491CDCB16400480505 /* RNMagnetWebViewManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
