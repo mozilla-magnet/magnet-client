@@ -10,6 +10,7 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.mozilla.magnet.database.HistorySQLTable;
 
 /**
  * Created by wilsonpage on 28/10/2016.
@@ -128,9 +129,27 @@ public class Store extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(Schema.COLUMN_NAME_KEY, key);
         values.put(Schema.COLUMN_NAME_VALUE, value);
-        db.insert(Schema.TABLE_NAME, null, values);
+
+        // insert or update key/value
+        if (exists(key)) db.update(Schema.TABLE_NAME, values, Schema.COLUMN_NAME_KEY + " = ?", new String[]{key});
+        else db.insert(Schema.TABLE_NAME, null, values);
+
         return true;
     }
+
+    private boolean exists(String key) {
+        String query = "SELECT * FROM " + Schema.TABLE_NAME
+                + " WHERE " + Schema.COLUMN_NAME_KEY + " = '" + key + "'"
+                + " LIMIT 1";
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        boolean result = cursor.getCount() > 0;
+        cursor.close();
+
+        return result;
+    }
+
 
     /**
      * Table contents

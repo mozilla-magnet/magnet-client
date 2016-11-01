@@ -64,11 +64,11 @@ public abstract class Api {
         return Store.get(mContext);
     }
 
-//    public void post(String path) {
-//        Api match = find(path);
-//        if (match != null) match.get(path);
-//    }
-//
+    public void post(String path, HashMap<String,Object> data, Callback callback) {
+        Api match = find(path);
+        if (match != null) match.post(path, data, callback);
+    }
+
 //    public void put(String path) {
 //        Api match = find(path);
 //        if (match != null) match.get(path);

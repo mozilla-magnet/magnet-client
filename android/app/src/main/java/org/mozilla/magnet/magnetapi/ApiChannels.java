@@ -36,6 +36,11 @@ public class ApiChannels extends Api {
                 new Callback() {
                     @Override
                     public void callback(String error, Object result) {
+                        if (error != null) {
+                            callback.callback(null, getCache().getJsonArray("channels"));
+                            return;
+                        }
+
                         getCache().set("channels", (JSONArray) result);
                         callback.callback(null, result);
                     }
