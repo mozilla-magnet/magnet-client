@@ -7,6 +7,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 
 import org.mozilla.magnet.database.SubscriptionsReact;
+import org.mozilla.magnet.magnetapi.ApiMagnetReact;
 import org.mozilla.magnet.webview.MagnetWebViewManager;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class MyAppPackage implements ReactPackage {
         modules.add(new MagnetScannerReact(reactContext));
         modules.add(new PromptBluetoothReact(reactContext));
         modules.add(new SubscriptionsReact(reactContext));
+        modules.add(new ApiMagnetReact(reactContext));
         return modules;
     }
 
