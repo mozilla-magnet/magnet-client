@@ -42,10 +42,11 @@ module.exports = {
   "metadataServiceUrl": "https://tengam.org/api/v1/metadata",
 
   "theme": {
-    "colorBackground": '#f2f2f2',
-    "colorPrimary": '#00A2D4',
-    "fontLightItalic": 'FiraSans-LightItalic',
-    "fontBook": 'FiraSans-Book'
+    "colorBackground": "#f2f2f2",
+    "colorPrimary": "#00A2D4",
+    "borderColor": "#ddd",
+    "fontLightItalic": "FiraSans-LightItalic",
+    "fontBook": "FiraSans-Book"
   },
 
   "analyticsTrackerId": {
