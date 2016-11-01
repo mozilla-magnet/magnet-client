@@ -46,4 +46,24 @@ public class ApiSubscriptions extends Api {
 
         callback.callback(null, item);
     }
+
+    @Override
+    public void delete(String path, HashMap data, Callback callback) {
+        JSONObject json = getCache().getJsonObject("subscriptions");
+        String channelId = (String) data.get("channel_id");
+
+        if (channelId == null) {
+            callback.callback("`channel_id` required", null);
+            return;
+        }
+
+        if (json == null) {
+            json = new JSONObject();
+        }
+
+        json.remove(channelId);
+        getCache().set("subscriptions", json);
+
+        callback.callback(null, true);
+    }
 }

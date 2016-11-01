@@ -48,9 +48,27 @@ public class ApiMagnetReact extends ReactContextBaseJavaModule {
     @ReactMethod
     public void post(String path, ReadableMap data, final Promise promise) {
         Log.d(TAG, "post");
-        HashMap map = ((ReadableNativeMap) data).toHashMap();
+        HashMap<String,Object> map = ((ReadableNativeMap) data).toHashMap();
 
         mApiMagnet.post(path, map, new Api.Callback() {
+            @Override
+            public void callback(String error, Object result) {
+                if (error != null) {
+                    promise.reject(error, error);
+                    return;
+                }
+
+                promise.resolve(toReactArgument(result));
+            }
+        });
+    }
+
+    @ReactMethod
+    public void delete(String path, ReadableMap data, final Promise promise) {
+        Log.d(TAG, "delete: " + path);
+        HashMap<String,Object> map = ((ReadableNativeMap) data).toHashMap();
+
+        mApiMagnet.delete(path, map, new Api.Callback() {
             @Override
             public void callback(String error, Object result) {
                 if (error != null) {

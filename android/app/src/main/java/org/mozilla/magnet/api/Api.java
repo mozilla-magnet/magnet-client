@@ -73,11 +73,11 @@ public abstract class Api {
 //        Api match = find(path);
 //        if (match != null) match.get(path);
 //    }
-//
-//    public void delete(String path) {
-//        Api match = find(path);
-//        if (match != null) match.get(path);
-//    }
+
+    public void delete(String path, HashMap<String,Object> data, Callback callback) {
+        Api match = find(path);
+        if (match != null) match.delete(path, data, callback);
+    }
 
     private RequestQueue getQueue() {
         if (mQueue != null) return mQueue;
