@@ -13,6 +13,7 @@ protocol Api {
   func post(path: String, data: AnyObject, callback: ApiCallback)
   func put(path: String, data: AnyObject, callback: ApiCallback)
   func delete(path: String, callback: ApiCallback)
+  func mount(path: String, api: Api)
 }
 
 class ApiCallback {
