@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.Request;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.mozilla.magnet.api.Api;
@@ -13,8 +12,8 @@ import org.mozilla.magnet.api.Api;
  * Created by wilsonpage on 28/10/2016.
  */
 
-public class ApiChannels extends Api {
-    private final String TAG = "ApiChannels";
+class ApiChannels extends Api {
+    private static final String TAG = "ApiChannels";
 
     ApiChannels(Context context) {
         super(context);
