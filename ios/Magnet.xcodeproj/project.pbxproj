@@ -33,6 +33,7 @@
 		559608CB1DB918CC00816CF1 /* SwiftyJSON.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 559608C71DB918B100816CF1 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		55C013EB1DC8CC2600154F76 /* RequestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C013EA1DC8CC2600154F76 /* RequestStore.swift */; };
 		55C013EE1DC8CE9100154F76 /* RequestStoreSQLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C013ED1DC8CE9100154F76 /* RequestStoreSQLite.swift */; };
+		55C013F01DC8DA2B00154F76 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C013EF1DC8DA2B00154F76 /* Api.swift */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		85767A351D6339BD009F400A /* MagnetScannerIOS.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		85DF9A341D633665004DF3F1 /* MagnetScannerIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */; };
@@ -201,6 +202,7 @@
 		559608C71DB918B100816CF1 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		55C013EA1DC8CC2600154F76 /* RequestStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestStore.swift; sourceTree = "<group>"; };
 		55C013ED1DC8CE9100154F76 /* RequestStoreSQLite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestStoreSQLite.swift; sourceTree = "<group>"; };
+		55C013EF1DC8DA2B00154F76 /* Api.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MagnetScannerIOS.framework; path = Carthage/Build/iOS/MagnetScannerIOS.framework; sourceTree = "<group>"; };
@@ -392,6 +394,7 @@
 			isa = PBXGroup;
 			children = (
 				55C013EC1DC8CC8200154F76 /* RequestStore */,
+				55C013EF1DC8DA2B00154F76 /* Api.swift */,
 			);
 			name = Api;
 			sourceTree = "<group>";
@@ -835,6 +838,7 @@
 				8D589C0D1DC10E260069BB98 /* SubscriptionsReact.swift in Sources */,
 				8D75672D1D2BF33500315AEE /* MagnetScanner.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				55C013F01DC8DA2B00154F76 /* Api.swift in Sources */,
 				8D589BC91DC0BFDE0069BB98 /* SubscriptionsDB.swift in Sources */,
 				5583EF121D3E36C300852649 /* History.swift in Sources */,
 				8D7567201D2BF30400315AEE /* MagnetScannerReactExport.m in Sources */,
