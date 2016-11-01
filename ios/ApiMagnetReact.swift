@@ -12,8 +12,8 @@ import Foundation
   private let api: ApiMagnet = ApiMagnet()
   
   @objc func get(path: String,
-                 resolver resolve: RCTPromiseResolveBlock,
-                 rejecter reject: RCTPromiseRejectBlock) {
+                 resolve: RCTPromiseResolveBlock,
+                 reject: RCTPromiseRejectBlock) {
     
     api.get(path, callback: ApiCallback(success: { (result) in
         resolve(result)
@@ -25,8 +25,8 @@ import Foundation
   
   @objc func post(path: String,
                   data: AnyObject,
-                  resolver resolve: RCTPromiseResolveBlock,
-                  rejecter reject: RCTPromiseRejectBlock) {
+                  resolve: RCTPromiseResolveBlock,
+                  reject: RCTPromiseRejectBlock) {
     
     api.post(path, data: data, callback: ApiCallback(success: { (result) in
       resolve(result)
@@ -38,8 +38,8 @@ import Foundation
   
   @objc func put(path: String,
                  data: AnyObject,
-                 resolver resolve: RCTPromiseResolveBlock,
-                 rejecter reject: RCTPromiseRejectBlock) {
+                 resolve: RCTPromiseResolveBlock,
+                 reject: RCTPromiseRejectBlock) {
     
     api.put(path, data: data, callback: ApiCallback(success: { (result) in
       resolve(result)
@@ -50,8 +50,8 @@ import Foundation
   }
   
   @objc func delete(path: String,
-                    resolver resolve: RCTPromiseResolveBlock,
-                    rejecter reject: RCTPromiseRejectBlock) {
+                    resolve: RCTPromiseResolveBlock,
+                    reject: RCTPromiseRejectBlock) {
     
     api.delete(path, callback: ApiCallback(success: { (result) in
       resolve(result)
