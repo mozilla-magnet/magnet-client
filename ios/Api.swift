@@ -16,7 +16,7 @@ protocol Api {
   func mount(path: String, api: Api)
 }
 
-class ApiCallback {
+@objc class ApiCallback: NSObject {
   var onSuccess: ((AnyObject) -> Void)
   var onError: ((AnyObject) -> Void)
   
