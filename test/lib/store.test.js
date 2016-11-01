@@ -3,7 +3,7 @@
  * Dependencies
  */
 
-const actionCreators = require('../../lib/store/action-creators');
+const actions = require('../../lib/store/actions').actions;
 const { createStore, bindActionCreators } = require('redux');
 const reducer = require('../../lib/store/reducer');
 const assert = require('assert');
@@ -11,7 +11,7 @@ const assert = require('assert');
 describe('store', function() {
   beforeEach(function() {
     this.store = createStore(reducer);
-    this.actions = bindActionCreators(actionCreators, this.store.dispatch);
+    this.actions = bindActionCreators(actions, this.store.dispatch);
   });
 
   describe('distance', function() {
