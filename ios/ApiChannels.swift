@@ -29,6 +29,7 @@ class ApiChannels: ApiBase {
         callback.onError("Error performing request \(ApiChannels.URL_STRING)")
         return
       }
+      
       let json = JSON(response.result.value!)
       
       RequestStore.getInstance().setJSON(ApiChannels.URL_STRING, value: json)

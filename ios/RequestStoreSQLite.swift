@@ -63,7 +63,6 @@ class RequestStoreSQLite {
   
   func get(_url: String) -> JSON? {
     let query = requestStore.filter(url == _url).limit(1)
-    
     let result = Array(try! db.prepare(query));
     
     guard result.count >= 1 else {

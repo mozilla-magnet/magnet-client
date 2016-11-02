@@ -12,7 +12,7 @@ import Foundation
 import SystemConfiguration
 
 class System {
-  class func connectedToNetwork() -> Bool {
+  static func connectedToNetwork() -> Bool {
     
     var zeroAddress = sockaddr_in()
     zeroAddress.sin_len = UInt8(sizeofValue(zeroAddress))
