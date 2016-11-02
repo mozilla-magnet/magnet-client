@@ -16,7 +16,7 @@ import Foundation
                  reject: RCTPromiseRejectBlock) {
     
     api.get(path, callback: ApiCallback(success: { (result) in
-        resolve(result)
+        resolve(result.rawValue)
       }, error: { (error) in
         let err = NSError(coder: NSCoder())
         reject("get_error", "Error resolving \(path)", err)
@@ -29,7 +29,7 @@ import Foundation
                   reject: RCTPromiseRejectBlock) {
     
     api.post(path, data: data, callback: ApiCallback(success: { (result) in
-      resolve(result)
+      resolve(result.rawValue)
       }, error: { (error) in
         let err = NSError(coder: NSCoder())
         reject("get_error", "Error resolving \(path) with \(data)", err)
@@ -42,7 +42,7 @@ import Foundation
                  reject: RCTPromiseRejectBlock) {
     
     api.put(path, data: data, callback: ApiCallback(success: { (result) in
-      resolve(result)
+      resolve(result.rawValue)
       }, error: { (error) in
         let err = NSError(coder: NSCoder())
         reject("get_error", "Error resolving \(path) with \(data)", err)
@@ -54,7 +54,7 @@ import Foundation
                     reject: RCTPromiseRejectBlock) {
     
     api.delete(path, callback: ApiCallback(success: { (result) in
-      resolve(result)
+      resolve(result.rawValue)
       }, error: { (error) in
         let err = NSError(coder: NSCoder())
         reject("get_error", "Error resolving \(path)", err)

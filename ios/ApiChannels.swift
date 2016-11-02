@@ -16,7 +16,7 @@ class ApiChannels: ApiBase {
     
     guard System.connectedToNetwork() else {
       let store = RequestStore.getInstance()
-      callback.onSuccess(store.getJSON(ApiChannels.URL_STRING) as! AnyObject)
+      callback.onSuccess(store.getJSON(ApiChannels.URL_STRING)!)
       return
     }
     
@@ -24,19 +24,15 @@ class ApiChannels: ApiBase {
     
     let request = NSURLRequest(URL: url!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 30)
     
-    Alamofire.request(request).responseJSON { response in
-      print(response.request)  // original URL request
-      print(response.response) // HTTP URL response
-      print(response.data)     // server data
-      print(response.result)   // result of response serialization
-      
+    Alamofire.request(request).responseJSON { response in      
       guard (response.result.value != nil) else {
         callback.onError(response as! AnyObject)
         return
       }
       let json = JSON(response.result.value!)
       
-      callback.onSuccess(json as! AnyObject)
+      RequestStore.getInstance().setJSON(ApiChannels.URL_STRING, value: json)
+      callback.onSuccess(json)
       
     }
   }

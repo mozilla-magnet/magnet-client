@@ -10,22 +10,22 @@ import Foundation
 import SwiftyJSON
 
 class RequestStore {
-  private static var sharedInstance: RequestStore?
+  private static var sharedInstance: RequestStore!
   private static let lockQueue = dispatch_queue_create("com.mozilla.magnet.requeststore", nil)
-  private let db = RequestStoreSQLite()
+  private let db: RequestStoreSQLite
   
   private init() {
-    
+    db = RequestStoreSQLite()
   }
   
   class func getInstance() -> RequestStore {
-    dispatch_async(lockQueue) { 
+    dispatch_sync(lockQueue) { 
       if (sharedInstance == nil) {
         sharedInstance = RequestStore()
       }
     }
     
-    return sharedInstance!
+    return sharedInstance
   }
   
   func getJSON(url: String) -> JSON? {

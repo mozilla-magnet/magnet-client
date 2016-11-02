@@ -66,8 +66,8 @@ class RequestStoreSQLite {
     
     let result = Array(try! db.prepare(query));
     
-    guard result.count == 1 else {
-      return nil
+    guard result.count >= 1 else {
+      return JSON("{}")
     }
     
     return JSON(result[0][value])

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 protocol Api {
   func get(path: String, callback: ApiCallback)
@@ -17,10 +18,10 @@ protocol Api {
 }
 
 @objc class ApiCallback: NSObject {
-  var onSuccess: ((AnyObject) -> Void)
+  var onSuccess: ((JSON) -> Void)
   var onError: ((AnyObject) -> Void)
   
-  init(success: ((AnyObject) -> Void), error: ((AnyObject) -> Void)) {
+  init(success: ((JSON) -> Void), error: ((AnyObject) -> Void)) {
     onSuccess = success
     onError = error
   }
