@@ -34,13 +34,13 @@ public class ApiMagnetReact extends ReactContextBaseJavaModule {
     public void get(String path, final Promise promise) {
         mApiMagnet.get(path, new Api.Callback() {
             @Override
-            public void callback(String error, Object result) {
-                if (error != null) {
-                    promise.reject(error, error);
-                    return;
-                }
-
+            public void resolve(Object result) {
                 promise.resolve(toReactArgument(result));
+            }
+
+            @Override
+            public void reject(String error) {
+                promise.reject(error, error);
             }
         });
     }
@@ -52,13 +52,13 @@ public class ApiMagnetReact extends ReactContextBaseJavaModule {
 
         mApiMagnet.post(path, map, new Api.Callback() {
             @Override
-            public void callback(String error, Object result) {
-                if (error != null) {
-                    promise.reject(error, error);
-                    return;
-                }
-
+            public void resolve(Object result) {
                 promise.resolve(toReactArgument(result));
+            }
+
+            @Override
+            public void reject(String error) {
+                promise.reject(error, error);
             }
         });
     }
@@ -70,13 +70,13 @@ public class ApiMagnetReact extends ReactContextBaseJavaModule {
 
         mApiMagnet.delete(path, map, new Api.Callback() {
             @Override
-            public void callback(String error, Object result) {
-                if (error != null) {
-                    promise.reject(error, error);
-                    return;
-                }
-
+            public void resolve(Object result) {
                 promise.resolve(toReactArgument(result));
+            }
+
+            @Override
+            public void reject(String error) {
+                promise.reject(error, error);
             }
         });
     }

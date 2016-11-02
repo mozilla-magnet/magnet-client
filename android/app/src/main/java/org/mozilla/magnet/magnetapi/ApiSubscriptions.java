@@ -12,15 +12,25 @@ import java.util.HashMap;
  * Created by wilsonpage on 01/11/2016.
  */
 
-public class ApiSubscriptions extends Api {
+class ApiSubscriptions extends Api {
 
     ApiSubscriptions(Context context) {
         super(context);
     }
 
+    /**
+     * Get user's subscriptions.
+     *
+     * Right now these are only store locally, one
+     * day they should be persisted to the magnet-service,
+     * but this will require some form of user login.
+     *
+     * @param path
+     * @param callback
+     */
     @Override
     public void get(String path, Callback callback) {
-        callback.callback(null, getCache().getJsonObject("subscriptions"));
+        callback.resolve(getCache().getJsonObject("subscriptions"));
     }
 
     @Override
@@ -36,15 +46,15 @@ public class ApiSubscriptions extends Api {
 
         try {
             item.put("channel_id", channelId);
-            item.put("notifications_enabled", (Boolean) data.get("notifications_enabled"));
+            item.put("notifications_enabled", (boolean) data.get("notifications_enabled"));
             json.put(channelId, item);
             getCache().set("subscriptions", json);
         } catch (JSONException err) {
-            callback.callback(err.getMessage(), null);
+            callback.reject(err.getMessage());
             return;
         }
 
-        callback.callback(null, item);
+        callback.resolve(item);
     }
 
     @Override
@@ -53,7 +63,7 @@ public class ApiSubscriptions extends Api {
         String channelId = (String) data.get("channel_id");
 
         if (channelId == null) {
-            callback.callback("`channel_id` required", null);
+            callback.reject("`channel_id` required");
             return;
         }
 
@@ -63,7 +73,6 @@ public class ApiSubscriptions extends Api {
 
         json.remove(channelId);
         getCache().set("subscriptions", json);
-
-        callback.callback(null, true);
+        callback.resolve(true);
     }
 }

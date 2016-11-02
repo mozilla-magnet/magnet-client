@@ -10,9 +10,7 @@ import java.util.HashMap;
  * Created by wilsonpage on 28/10/2016.
  */
 
-public class ApiMagnet extends Api {
-    private HashMap<String,Api> routes = new HashMap<>();
-
+class ApiMagnet extends Api {
     ApiMagnet(Context context) {
         super(context);
         mount("channels", new ApiChannels(context));

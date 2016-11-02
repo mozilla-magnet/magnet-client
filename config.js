@@ -43,7 +43,7 @@ module.exports = {
 
   "theme": {
     "colorBackground": "#f2f2f2",
-    "colorPrimary": "#FF9292",
+    "colorPrimary": "#00A2D4",
     "borderColor": "#ddd",
     "fontLightItalic": "FiraSans-LightItalic",
     "fontBook": "FiraSans-Book"

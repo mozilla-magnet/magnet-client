@@ -26,23 +26,21 @@ class ApiChannels extends Api {
         // when not connected fetch from cache
         if (!hasConnectivity()) {
             Log.d(TAG, "no connectivity, using cache");
-            callback.callback(null, getCache().getJsonArray("channels"));
+            callback.resolve(getCache().getJsonArray("channels"));
             return;
         }
 
-        requestJsonArray(
-                "https://tengam.org/content/v1/channel",
-                new Callback() {
-                    @Override
-                    public void callback(String error, Object result) {
-                        if (error != null) {
-                            callback.callback(null, getCache().getJsonArray("channels"));
-                            return;
-                        }
+        requestJsonArray("https://tengam.org/content/v1/channel", new Callback() {
+            @Override
+            public void resolve(Object result) {
+                getCache().set("channels", (JSONArray) result);
+                callback.resolve(result);
+            }
 
-                        getCache().set("channels", (JSONArray) result);
-                        callback.callback(null, result);
-                    }
-                });
+            @Override
+            public void reject(String error) {
+                callback.reject(error);
+            }
+        });
     }
 }

@@ -3,7 +3,6 @@ package org.mozilla.magnet.api;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.telecom.Call;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -17,13 +16,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by wilsonpage on 28/10/2016.
  */
 
-public abstract class Api {
+public class Api {
     private HashMap<String,Api> routes = new HashMap<>();
     private RequestQueue mQueue;
     private Context mContext;
@@ -36,44 +34,65 @@ public abstract class Api {
         routes.put(namespace, api);
     }
 
+    /**
+     * Right now this simply returns a key match,
+     * but this should be advanced to match a defined
+     * regex/string pattern (expressjs like).
+     *
+     * @param path
+     * @return
+     */
     private Api find(String path) {
-        for (Map.Entry<String, Api> entry : routes.entrySet()) {
-            String namespace = entry.getKey();
-            Api api = entry.getValue();
-            if (path.startsWith(namespace)) return api;
-        }
-
-        return null;
+        return routes.get(path);
     }
 
+    /**
+     * Perform a GET-like request on a mounted route.
+     *
+     * @param path
+     * @param callback
+     */
     public void get(String path, Callback callback) {
         Api match = find(path);
 
         if (match == null) {
-            callback.callback("no matching route", null);
+            callback.reject("no matching route");
             return;
         }
 
         match.get(path, callback);
     }
 
-    protected Store getCache() {
-        return Store.get(mContext);
-    }
-
+    /**
+     * Perform a POST-like request on a mounted route.
+     *
+     * @param path
+     * @param callback
+     */
     public void post(String path, HashMap<String,Object> data, Callback callback) {
         Api match = find(path);
-        if (match != null) match.post(path, data, callback);
+
+        if (match == null) {
+            callback.reject("no matching route");
+        }
+
+        match.post(path, data, callback);
     }
 
-//    public void put(String path) {
-//        Api match = find(path);
-//        if (match != null) match.get(path);
-//    }
-
+    /**
+     * Perform a DELETE-like request on a mounted route.
+     *
+     * @param path
+     * @param callback
+     */
     public void delete(String path, HashMap<String,Object> data, Callback callback) {
         Api match = find(path);
-        if (match != null) match.delete(path, data, callback);
+
+        if (match == null) {
+            callback.reject("no matching route");
+        }
+
+        match.delete(path, data, callback);
     }
 
     private RequestQueue getQueue() {
@@ -82,60 +101,90 @@ public abstract class Api {
         return mQueue;
     }
 
+    /**
+     * Request a particular URL and parse the result as `JSONArray`.
+     *
+     * @param url
+     * @param callback
+     */
     protected void requestJsonArray(String url, final Callback callback) {
-        request(Request.Method.GET, url, null, new Callback() {
+        request(Request.Method.GET, url, new Callback() {
             @Override
-            public void callback(String error, Object result) {
-                if (error != null) {
-                    callback.callback(error, null);
-                    return;
-                }
-
+            public void resolve(Object result) {
                 try {
-                    callback.callback(null, new JSONArray((String) result));
+                    callback.resolve(new JSONArray((String) result));
                 } catch (JSONException err) {
-                    callback.callback(err.getMessage(), null);
+                    callback.reject(err.getMessage());
                 }
+            }
 
+            @Override
+            public void reject(String error) {
+                callback.reject(error);
             }
         });
     }
 
+    /**
+     * Request a particular URL and parse the result as `JSONObject`.
+     *
+     * @param url
+     * @param callback
+     */
     protected void requestJsonObject(String url, final Callback callback) {
-        request(Request.Method.GET, url, null, new Callback() {
+        request(Request.Method.GET, url, new Callback() {
             @Override
-            public void callback(String error, Object result) {
-                if (error != null) {
-                    callback.callback(error, null);
-                    return;
-                }
-
+            public void resolve(Object result) {
                 try {
-                    callback.callback(null, new JSONObject((String) result));
+                    callback.resolve(new JSONObject((String) result));
                 } catch (JSONException err) {
-                    callback.callback(err.getMessage(), null);
+                    callback.reject(err.getMessage());
                 }
+            }
 
+            @Override
+            public void reject(String error) {
+                callback.reject(error);
             }
         });
     }
 
-    private void request(int method, String url, HashMap data, final Callback callback) {
+    /**
+     * Perform an HTTP request.
+     *
+     * @param url
+     * @param callback
+     */
+    private void request(int method, String url, final Callback callback) {
         StringRequest request = new StringRequest(method, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                callback.callback(null, response);
+                callback.resolve(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                callback.callback(error.getMessage(), null);
+                callback.reject(error.getMessage());
             }
         });
 
         getQueue().add(request);
     }
 
+    /**
+     * Get a reference to the generic key/value cache store.
+     *
+     * @return
+     */
+    protected Store getCache() {
+        return Store.get(mContext);
+    }
+
+    /**
+     * Check if the device has an internet connection.
+     * @return
+     *
+     */
     protected boolean hasConnectivity() {
         ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -143,6 +192,7 @@ public abstract class Api {
     }
 
     public interface Callback {
-        void callback(String error, Object result);
+        void resolve(Object result);
+        void reject(String error);
     }
 }
