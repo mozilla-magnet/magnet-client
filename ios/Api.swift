@@ -11,17 +11,17 @@ import SwiftyJSON
 
 protocol Api {
   func get(path: String, callback: ApiCallback)
-  func post(path: String, data: AnyObject, callback: ApiCallback)
-  func put(path: String, data: AnyObject, callback: ApiCallback)
-  func delete(path: String, callback: ApiCallback)
+  func post(path: String, data: NSDictionary, callback: ApiCallback)
+  func put(path: String, data: NSDictionary, callback: ApiCallback)
+  func delete(path: String, data: NSDictionary, callback: ApiCallback)
   func mount(path: String, api: Api)
 }
 
 @objc class ApiCallback: NSObject {
   var onSuccess: ((JSON) -> Void)
-  var onError: ((AnyObject) -> Void)
+  var onError: ((String) -> Void)
   
-  init(success: ((JSON) -> Void), error: ((AnyObject) -> Void)) {
+  init(success: ((JSON) -> Void), error: ((String) -> Void)) {
     onSuccess = success
     onError = error
   }
@@ -49,7 +49,7 @@ class ApiBase: Api {
     api!.get(path, callback: callback)
   }
   
-  func post(path: String, data: AnyObject, callback: ApiCallback) {
+  func post(path: String, data: NSDictionary, callback: ApiCallback) {
     let api = find(path)
     
     guard api != nil else {
@@ -60,7 +60,7 @@ class ApiBase: Api {
     api!.post(path, data: data, callback: callback)
   }
   
-  func put(path: String, data: AnyObject, callback: ApiCallback) {
+  func put(path: String, data: NSDictionary, callback: ApiCallback) {
     let api = find(path)
     
     guard api != nil else {
@@ -71,7 +71,7 @@ class ApiBase: Api {
     api!.put(path, data: data, callback: callback)
   }
   
-  func delete(path: String, callback: ApiCallback) {
+  func delete(path: String, data: NSDictionary, callback: ApiCallback) {
     let api = find(path)
     
     guard api != nil else {
@@ -79,6 +79,6 @@ class ApiBase: Api {
       return
     }
     
-    api!.delete(path, callback: callback)
+    api!.delete(path, data: data, callback: callback)
   }
 }

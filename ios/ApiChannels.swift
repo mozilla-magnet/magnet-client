@@ -24,9 +24,9 @@ class ApiChannels: ApiBase {
     
     let request = NSURLRequest(URL: url!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 30)
     
-    Alamofire.request(request).responseJSON { response in      
+    Alamofire.request(request).responseJSON { response in
       guard (response.result.value != nil) else {
-        callback.onError(response as! AnyObject)
+        callback.onError("Error performing request \(ApiChannels.URL_STRING)")
         return
       }
       let json = JSON(response.result.value!)

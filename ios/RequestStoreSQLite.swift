@@ -67,10 +67,11 @@ class RequestStoreSQLite {
     let result = Array(try! db.prepare(query));
     
     guard result.count >= 1 else {
-      return JSON("{}")
+      return JSON([:])
     }
     
-    return JSON(result[0][value])
+    let jsonString: String = result[0][value]
+    return JSON(data: jsonString.dataUsingEncoding(NSUTF8StringEncoding)!)
   }
 
 }

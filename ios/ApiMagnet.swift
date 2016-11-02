@@ -13,5 +13,6 @@ class ApiMagnet: ApiBase {
   override init() {
     super.init()
     mount("channels", api: ApiChannels())
+    mount("subscriptions", api: ApiSubscriptions())
   }
 }
