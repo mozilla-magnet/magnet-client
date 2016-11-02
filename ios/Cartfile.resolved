@@ -1,4 +1,4 @@
 github "Alamofire/Alamofire" "3.5.1"
 github "stephencelis/SQLite.swift" "8b95a0c4a884f35e5102cd306f634680255473bb"
 github "SwiftyJSON/SwiftyJSON" "54017d514a87b2b855b407131292c510cdeb65f8"
-github "mozilla-magnet/magnet-scanner-ios" "0.3.2"
+github "mozilla-magnet/magnet-scanner-ios" "0.3.3"
