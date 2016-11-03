@@ -39,7 +39,6 @@ public class MainActivity extends ReactActivity {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "on resume");
-        clearNotifications();
         setActive(true);
     }
 
@@ -68,14 +67,6 @@ public class MainActivity extends ReactActivity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("active", active);
         editor.commit();
-    }
-
-    /**
-     * Clear the Magnet notification.
-     */
-    private void clearNotifications() {
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.cancel(NotificationService.NOTIFICATION_ID);
     }
 
     /**

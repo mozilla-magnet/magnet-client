@@ -1,19 +1,13 @@
 package org.mozilla.magnet;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.facebook.react.ReactApplication;
-import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
-
-import org.mozilla.magnet.BuildConfig;
-import org.mozilla.magnet.MyAppPackage;
-import org.mozilla.magnet.notificationlistener.NotificationListenerPackage;
 
 import java.util.Arrays;
 import java.util.List;
