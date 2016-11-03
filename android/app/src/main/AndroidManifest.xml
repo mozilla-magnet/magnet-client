@@ -30,7 +30,7 @@
         </activity>
 
         <service
-            android:name=".NotificationService"
+            android:name=".notifications.NotificationService"
             android:enabled="true"
             android:exported="false"/>
 

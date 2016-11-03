@@ -13,6 +13,8 @@ import android.util.Log;
 
 import com.facebook.react.ReactActivity;
 
+import org.mozilla.magnet.notifications.NotificationService;
+
 public class MainActivity extends ReactActivity {
     private final static String TAG = MainActivity.class.getName();
     private final static int PERMISSION_REQUEST_LOCATION = 1;

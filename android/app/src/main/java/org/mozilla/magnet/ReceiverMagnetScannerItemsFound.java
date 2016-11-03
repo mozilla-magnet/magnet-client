@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import org.mozilla.magnet.notifications.NotificationService;
+
 /**
  * Created by wilsonpage on 17/10/2016.
  */
