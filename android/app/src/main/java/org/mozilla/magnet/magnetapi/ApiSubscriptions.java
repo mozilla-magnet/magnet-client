@@ -34,19 +34,20 @@ class ApiSubscriptions extends Api {
     }
 
     @Override
-    public void post(String path, HashMap data, Callback callback) {
+    public void post(String path, Object data, Callback callback) {
         JSONObject json = getCache().getJsonObject("subscriptions");
 
         if (json == null) {
             json = new JSONObject();
         }
 
-        String channelId = (String) data.get("channel_id");
+        HashMap hash = (HashMap) data;
+        String channelId = (String) hash.get("channel_id");
         JSONObject item = new JSONObject();
 
         try {
             item.put("channel_id", channelId);
-            item.put("notifications_enabled", (boolean) data.get("notifications_enabled"));
+            item.put("notifications_enabled", (boolean) hash.get("notifications_enabled"));
             json.put(channelId, item);
             getCache().set("subscriptions", json);
         } catch (JSONException err) {
