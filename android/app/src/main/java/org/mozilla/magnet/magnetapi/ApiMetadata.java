@@ -10,12 +10,13 @@ import org.mozilla.magnet.api.Api;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by wilsonpage on 02/11/2016.
  */
 
-public class ApiMetadata extends Api {
+class ApiMetadata extends Api {
     private static final String TAG = "ApiMetadata";
     private static final String SERVICE_URL = "https://tengam.org/api/v1/metadata";
 
@@ -26,12 +27,12 @@ public class ApiMetadata extends Api {
     @Override
     public void post(String path, Object data, final Api.Callback callback) {
         Log.d(TAG, "get metadata");
-        ArrayList<String> urls = (ArrayList) data;
+        List<String> urls = (List) data;
         JSONObject body = toJson(urls);
         requestJsonArray(SERVICE_URL, body.toString(), callback);
     }
 
-    private JSONObject toJson(ArrayList<String> urls) {
+    private JSONObject toJson(List<String> urls) {
         JSONObject result = new JSONObject();
         JSONArray objects = new JSONArray();
 

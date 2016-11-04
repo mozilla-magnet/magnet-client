@@ -16,11 +16,9 @@ public class ReceiverNotificationDelete extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "on receive");
         String action = intent.getAction();
-//        if (!action.equals("notification-dismiss")) { return; }
-
+        if (!action.startsWith("notification-dismiss")) { return; }
         int id = (int) intent.getExtras().get("id");
         clearNotification(context, id);
-
         sendBroadcast(context);
     }
 

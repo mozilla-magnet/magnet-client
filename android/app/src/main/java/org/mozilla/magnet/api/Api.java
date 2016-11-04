@@ -122,7 +122,7 @@ public class Api {
      * @param url
      * @param callback
      */
-    protected void requestJsonArray(int method, String url, String body, final Callback callback) {
+    private void requestJsonArray(int method, String url, String body, final Callback callback) {
         request(method, url, body, new Callback() {
             @Override
             public void resolve(Object result) {
@@ -150,7 +150,7 @@ public class Api {
         requestJsonObject(Request.Method.GET, url, null, callback);
     }
 
-    protected void requestJsonObject(int method, String url, String body, final Callback callback) {
+    private void requestJsonObject(int method, String url, String body, final Callback callback) {
         request(method, url, body, new Callback() {
             @Override
             public void resolve(Object result) {
