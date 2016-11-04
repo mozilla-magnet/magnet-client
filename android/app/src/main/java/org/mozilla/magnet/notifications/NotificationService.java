@@ -90,6 +90,11 @@ public class NotificationService extends Service {
     }
 
     private void process(final List<MagnetScannerItem> items) {
+        if (items.isEmpty()) {
+            stopSelf();
+            return;
+        }
+
         getSubscriptions(new Api.Callback() {
             @Override
             public void resolve(Object result) {
@@ -104,12 +109,21 @@ public class NotificationService extends Service {
     }
 
     private void onGotSubscriptions(JSONObject subscriptions, List<MagnetScannerItem> items) {
-        Log.d(TAG, "got subscriptions: " + subscriptions);
+        Log.i(TAG, "got subscriptions: " + subscriptions);
+
+        // abort if the user doesn't have any subscriptions
+        if (subscriptions == null) {
+            Log.d(TAG, "no subscriptions");
+            stopSelf();
+            return;
+        }
+
         final List<MagnetScannerItem> subscribedItems = filterSubscribed(items, subscriptions);
 
         // abort if no subscribed items found
         if (subscribedItems.isEmpty()) {
-            Log.d(TAG, "no subscribed items");
+            Log.i(TAG, "no subscribed items");
+            stopSelf();
             return;
         }
 
@@ -127,7 +141,7 @@ public class NotificationService extends Service {
     }
 
     private void onGotMetadata(JSONArray metadataItems, List<MagnetScannerItem> subscribedItems) {
-        Log.d(TAG, "got metadata: " + metadataItems);
+        Log.i(TAG, "got metadata: " + metadataItems);
 
         try {
             for (int i=0; i < metadataItems.length(); i++){
@@ -180,29 +194,9 @@ public class NotificationService extends Service {
      */
     private void updateNotification(List<MagnetScannerItem> items) {
         for (MagnetScannerItem item : items) {
-            Log.d(TAG, "hash-code:" + item.getUrl().hashCode());
+            Log.i(TAG, "hash-code:" + item.getUrl().hashCode());
             ImageNotification.create(this, item, item.getUrl().hashCode());
         }
-    }
-
-    private PendingIntent createLaunchIntent() {
-        Intent launchIntent = new Intent(this, MainActivity.class);
-        int uniqueRequestCode = (int) System.currentTimeMillis();
-
-        launchIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        launchIntent.putExtra("source", "notification");
-
-        return PendingIntent.getActivity(
-                this,
-                uniqueRequestCode,
-                launchIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    private PendingIntent createDeleteIntent() {
-        Intent intent = new Intent(this, ReceiverNotificationDelete.class);
-        intent.setAction("notification_delete");
-        return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
     }
 
     @Override

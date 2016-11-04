@@ -32,7 +32,7 @@ import java.util.Map;
  * Created by wilsonpage on 02/11/2016.
  */
 
-class MagnetNotification extends AsyncTask<Void, Void, Map<String,Bitmap>> {
+abstract class MagnetNotification extends AsyncTask<Void, Void, Map<String,Bitmap>> {
     private Context mContext;
     private MagnetScannerItem mItem;
     private int mId;
@@ -40,19 +40,6 @@ class MagnetNotification extends AsyncTask<Void, Void, Map<String,Bitmap>> {
     MagnetNotification(Context context, int id) {
         mContext = context;
         mId = id;
-    }
-
-    @Override
-    protected Map<String,Bitmap> doInBackground(Void... voids) {
-        Map<String,Bitmap> result = new HashMap<>();
-        result.put("image", getBitmap(mItem.getImage()));
-        result.put("icon", getBitmap(mItem.getIcon()));
-        return result;
-    }
-
-    @Override
-    protected void onPostExecute(Map<String,Bitmap> bitmaps) {
-        super.onPostExecute(bitmaps);
     }
 
     Bitmap getBitmap(String uri) {
