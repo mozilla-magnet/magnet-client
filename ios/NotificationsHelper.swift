@@ -14,6 +14,8 @@ import UserNotifications
   static var notifyTimer: NSTimer!
   static var toNotify: Dictionary<String, String> = [:]
   static let subscriptions: Subscriptions = Subscriptions()
+  @available(iOS 10.0, *)
+  static let ios10Helper: NotificationsHelperIOS10 = NotificationsHelperIOS10()
   
   @objc class func register() {
     let notificationsSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge], categories: nil)
@@ -22,6 +24,13 @@ import UserNotifications
   
   class func updateNotifications() {
     guard enabled else { return }
+    
+    if #available(iOS 10, *) {
+      ios10Helper.processNotifications(toNotify)
+      return;
+    }
+    
+    // Normal ios9 notifications
     
     clearNotifications()
     
