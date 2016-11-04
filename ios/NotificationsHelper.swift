@@ -12,7 +12,8 @@ import UserNotifications
 @objc(NotificationsHelper) class NotificationsHelper: NSObject {
   static var enabled: Bool = true
   static var notifyTimer: NSTimer!
-  static var toNotify: [String] = []
+  static var toNotify: Dictionary<String, String> = [:]
+  static let subscriptions: Subscriptions = Subscriptions()
   
   @objc class func register() {
     let notificationsSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge], categories: nil)
@@ -51,11 +52,15 @@ import UserNotifications
   
   // Throttles the notification process, waiting for 10 seconds until
   // setting up the badge with the number of elements nearby.
-  class func notifyUser(url: String) {
+  class func notifyUser(url: String, channel: String?) {
     guard History.getInstance().getRecent(url) == nil else { return }
-    guard toNotify.contains(url) == false else { return }
+    guard toNotify[url] == nil else { return }
     
-    toNotify.append(url)
+    if channel != nil && !subscriptions.exists(channel!) {
+      return
+    }
+    
+    toNotify[url] = channel
     if (notifyTimer != nil) {
       notifyTimer.invalidate();
     }
@@ -81,7 +86,7 @@ import UserNotifications
   
   @objc private class func doNotifyUser() {
     NotificationsHelper.updateNotifications();
-    toNotify = [];
+    toNotify = [:];
   }
   
   @objc class func enable() {

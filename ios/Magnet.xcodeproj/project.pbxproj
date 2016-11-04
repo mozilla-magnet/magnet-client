@@ -358,6 +358,7 @@
 		13B07FAE1A68108700A75B9A /* Magnet */ = {
 			isa = PBXGroup;
 			children = (
+				55055CB51DCC9F3E00EC736F /* Notifications */,
 				55C013F51DC8EC5900154F76 /* Utils */,
 				55C013DD1DC8CBEE00154F76 /* Api */,
 				8D589BBB1DC0BFAE0069BB98 /* Subscriptions */,
@@ -372,7 +373,6 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				555800951CBE5F7800A21868 /* Magnet-Bridging-Header.h */,
-				550CECBE1D3536F80076D807 /* NotificationsHelper.swift */,
 				553647D71DBE206000ADFBB3 /* LocationChangeReceiver.swift */,
 			);
 			name = Magnet;
@@ -384,6 +384,14 @@
 				146834041AC3E56700842450 /* libReact.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		55055CB51DCC9F3E00EC736F /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				550CECBE1D3536F80076D807 /* NotificationsHelper.swift */,
+			);
+			name = Notifications;
 			sourceTree = "<group>";
 		};
 		5583EF0A1D3D519D00852649 /* History */ = {
