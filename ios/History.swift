@@ -39,7 +39,7 @@ class History {
   
   func getRecent(url: String) -> HistoryRecord! {
     let earlyDate = NSCalendar.currentCalendar().dateByAddingUnit(
-      .Hour,
+      .Day,
       value: -1,
       toDate: NSDate(),
       options: [])
