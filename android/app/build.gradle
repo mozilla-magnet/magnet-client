@@ -93,7 +93,7 @@ android {
     defaultConfig {
         applicationId "org.mozilla.magnet"
         minSdkVersion 18
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 8
         versionName "1.2.2"
         ndk {

@@ -30,15 +30,11 @@
         </activity>
 
         <service
-            android:name=".NotificationService"
+            android:name=".notifications.NotificationService"
             android:enabled="true"
             android:exported="false"/>
 
-        <receiver android:name=".ReceiverNotificationDelete">
-            <intent-filter>
-                <action android:name="notification_delete" />
-            </intent-filter>
-        </receiver>
+        <receiver android:name=".notifications.ReceiverNotificationDelete"/>
 
         <receiver android:name=".ReceiverMagnetScannerItemsFound">
             <intent-filter>

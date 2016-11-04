@@ -1,16 +1,14 @@
-package org.mozilla.magnet.notificationlistener;
+package org.mozilla.magnet.notifications;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.facebook.react.bridge.ActivityEventListener;
-import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -19,14 +17,11 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class NotificationListener extends ReactContextBaseJavaModule implements LifecycleEventListener, ActivityEventListener {
-    private final static String TAG = "NotificationListener";
+public class NotificationListenerReact extends ReactContextBaseJavaModule implements LifecycleEventListener, ActivityEventListener {
+    private final static String TAG = "NotificationListenerReact";
     private ReactApplicationContext mReactContext;
 
-    public NotificationListener(ReactApplicationContext reactContext) {
+    public NotificationListenerReact(ReactApplicationContext reactContext) {
         super(reactContext);
         mReactContext = reactContext;
 

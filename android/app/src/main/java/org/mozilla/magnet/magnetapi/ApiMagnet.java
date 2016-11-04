@@ -10,10 +10,11 @@ import java.util.HashMap;
  * Created by wilsonpage on 28/10/2016.
  */
 
-class ApiMagnet extends Api {
-    ApiMagnet(Context context) {
+public class ApiMagnet extends Api {
+    public ApiMagnet(Context context) {
         super(context);
         mount("channels", new ApiChannels(context));
         mount("subscriptions", new ApiSubscriptions(context));
+        mount("metadata", new ApiMetadata(context));
     }
 }

@@ -13,7 +13,7 @@
     "buffer": "^4.5.1",
     "events": "^1.1.0",
     "magnet-html-parser": "github:mozilla-magnet/magnet-html-parser#v3.1.2",
-    "magnet-scanner-android": "github:mozilla-magnet/magnet-scanner-android#v3.0.5",
+    "magnet-scanner-android": "mozilla-magnet/magnet-scanner-android#v4.0.0",
     "react": "^15.3.1",
     "react-dom": "^15.2.1",
     "react-native": "^0.35.0",

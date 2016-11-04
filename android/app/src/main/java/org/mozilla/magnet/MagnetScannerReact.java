@@ -14,12 +14,12 @@ import org.mozilla.magnet.scanner.MagnetScanner;
 import org.mozilla.magnet.scanner.MagnetScannerItem;
 import org.mozilla.magnet.scanner.MagnetScannerListener;
 
-public class MagnetScannerReact extends ReactContextBaseJavaModule implements MagnetScannerListener, LifecycleEventListener {
+class MagnetScannerReact extends ReactContextBaseJavaModule implements MagnetScannerListener, LifecycleEventListener {
     private final static String TAG = "MagnetScannerReact";
     private ReactApplicationContext mContext;
     private MagnetScanner mMagnetScanner;
 
-    public MagnetScannerReact(ReactApplicationContext context) {
+    MagnetScannerReact(ReactApplicationContext context) {
         super(context);
         mContext = context;
 
