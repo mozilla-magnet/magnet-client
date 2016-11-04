@@ -10,7 +10,7 @@ var React = require('react');
 
 var {
   AppRegistry,
-  View
+  View,
 } = ReactNative;
 
 class IOSApp extends React.Component {
@@ -19,7 +19,7 @@ class IOSApp extends React.Component {
       <View style={{
         backgroundColor: theme.colorBackground,
         paddingTop: 20,
-        flex: 1
+        flex: 1,
         }}>
         <Provider/>
       </View>

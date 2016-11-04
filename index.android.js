@@ -9,7 +9,7 @@ const React = require('react');
 
 const {
   UIManager,
-  AppRegistry
+  AppRegistry,
 } = ReactNative;
 
 class AndroidApp extends React.Component {
