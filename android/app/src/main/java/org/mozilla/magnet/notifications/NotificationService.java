@@ -156,6 +156,7 @@ public class NotificationService extends Service {
         }
 
         updateNotification(subscribedItems);
+        stopSelf();
     }
 
 
