@@ -20,8 +20,8 @@ import CoreLocation
   private func onItemFound(item: Dictionary<String, AnyObject>) {
     let url = item["url"] as! String
     var channel: String? = nil
-    if item["channel"] != nil {
-      channel = item["channel"] as! String
+    if item["channel_id"] != nil {
+      channel = item["channel_id"] as! String
     }
     NotificationsHelper.notifyUser(url, channel: channel)
   }
