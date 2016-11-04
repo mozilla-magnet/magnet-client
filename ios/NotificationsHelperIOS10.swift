@@ -24,7 +24,11 @@ class NotificationsHelperIOS10: NSObject {
   
   private func processNotification(url: String, channel: String) {
     fetchData(url, callback: { (json) in
-      self.showRichNotification(json[0]["title"].string!, subtitle: "by \(channel)", body: json[0]["description"].string!, url: url)
+      do {
+        try self.showRichNotification(json[0]["title"].string!, subtitle: "by \(channel)", body: json[0]["description"].string!, url: url)
+      } catch {
+        debugPrint("Could not launh notification for \(url) : \(channel)")
+      }
     })
   }
   
