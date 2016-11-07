@@ -55,13 +55,10 @@ class ApiPreferences extends Api {
         }
 
         String prefKey = (String) data.get(PREFERENCES_KEY);
-        String value = (String) data.get("value");
-        JSONObject item = new JSONObject();
+        Object value = data.get("value");
 
         try {
-          item.put(PREFERENCES_KEY, value);
-          json.put(prefKey, item);
-
+          json.put(prefKey, value);
           getCache().set(PREFERENCES_STORE_KEY, json);
         } catch (JSONException err) {
           aCallback.reject(err.getMessage());
