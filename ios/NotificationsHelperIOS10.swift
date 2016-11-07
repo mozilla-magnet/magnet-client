@@ -12,8 +12,13 @@ import UserNotificationsUI
 import SwiftyJSON
 
 @available(iOS 10.0, *)
-class NotificationsHelperIOS10: NSObject {
+class NotificationsHelperIOS10: NSObject, UNUserNotificationCenterDelegate {
   private static let CATEGORY = "magnet.notifications.category"
+  
+  override init() {
+    super.init()
+    UNUserNotificationCenter.currentNotificationCenter().delegate = self
+  }
   
   func processNotifications(toNotify: Dictionary<String, String>) {
     toNotify.keys.forEach { (url) in
@@ -25,7 +30,14 @@ class NotificationsHelperIOS10: NSObject {
   private func processNotification(url: String, channel: String) {
     fetchData(url, callback: { (json) in
       do {
-        try self.showRichNotification(json[0]["title"].string!, subtitle: "by \(channel)", body: json[0]["description"].string!, url: url)
+        guard json[0] != nil && json[0]["description"] != nil && json[0]["title"] != nil else {
+          return
+        }
+        
+        try self.showRichNotification(json[0]["title"].string!,
+              subtitle: "by \(channel)",
+              body: json[0]["description"].string!,
+              url: url)
       } catch {
         debugPrint("Could not launh notification for \(url) : \(channel)")
       }
@@ -39,7 +51,7 @@ class NotificationsHelperIOS10: NSObject {
     let objects: Dictionary<String, NSArray> = ["objects": [item]]
     
     api.post("metadata", data: objects, callback: ApiCallback(success: { json in
-      callback(json)
+        callback(json)
       }, error: { (err) in
         debugPrint("Could not get metadata for \(url): \(err)")
     }))
@@ -52,14 +64,20 @@ class NotificationsHelperIOS10: NSObject {
     content.body = body
     content.categoryIdentifier = NotificationsHelperIOS10.CATEGORY
     
-    
-    let action1 = UNNotificationAction(identifier: "visit", title: "Visit", options: UNNotificationActionOptions.Foreground)
-    let action2 = UNNotificationAction(identifier: "dismiss", title: "Dismiss", options:[])
-    let category = UNNotificationCategory(identifier: NotificationsHelperIOS10.CATEGORY, actions: [action1, action2], intentIdentifiers: [], options: [])
+    let action = UNNotificationAction(identifier: "visit", title: "Visit", options: UNNotificationActionOptions.Foreground)
+    let category = UNNotificationCategory(identifier: NotificationsHelperIOS10.CATEGORY, actions: [action], intentIdentifiers: [], options: [])
     UNUserNotificationCenter.currentNotificationCenter().setNotificationCategories([category])
     
     let request = UNNotificationRequest(identifier: url, content: content, trigger: nil)
     UNUserNotificationCenter.currentNotificationCenter().addNotificationRequest(request, withCompletionHandler: nil)
+  }
+  
+  func userNotificationCenter(center: UNUserNotificationCenter, didReceiveNotificationResponse response: UNNotificationResponse, withCompletionHandler completionHandler: () -> Void) {
+    if (response.actionIdentifier == "visit") {
+      debugPrint("Launching web page \(response.notification.request.identifier)")
+      let url = NSURL(string: response.notification.request.identifier)
+      UIApplication.sharedApplication().openURL(url!, options: [:], completionHandler: nil)
+    }
   }
   
 }
