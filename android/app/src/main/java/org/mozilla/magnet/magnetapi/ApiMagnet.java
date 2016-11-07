@@ -16,5 +16,6 @@ public class ApiMagnet extends Api {
         mount("channels", new ApiChannels(context));
         mount("subscriptions", new ApiSubscriptions(context));
         mount("metadata", new ApiMetadata(context));
+        mount("preferences", new ApiPreferences(context));
     }
 }
