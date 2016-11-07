@@ -19,7 +19,11 @@ import CoreLocation
   
   private func onItemFound(item: Dictionary<String, AnyObject>) {
     let url = item["url"] as! String
-    NotificationsHelper.notifyUser(url)
+    var channel: String? = nil
+    if item["channel_id"] != nil {
+      channel = item["channel_id"] as! String
+    }
+    NotificationsHelper.notifyUser(url, channel: channel)
   }
   
   @objc func startSignificantLocationChanges() {

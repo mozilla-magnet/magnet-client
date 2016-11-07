@@ -14,5 +14,6 @@ class ApiMagnet: ApiBase {
     super.init()
     mount("channels", api: ApiChannels())
     mount("subscriptions", api: ApiSubscriptions())
+    mount("metadata", api: ApiMetadata())
   }
 }

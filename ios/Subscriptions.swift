@@ -30,4 +30,8 @@ class Subscriptions: NSObject {
   func get() -> [SubscriptionRecord] {
     return db.get();
   }
+  
+  func exists(channelName: String) -> Bool {
+    return db.exists(channelName)
+  }
 }

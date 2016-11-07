@@ -21,6 +21,8 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		55055CA81DCBA5A300EC736F /* ApiMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55055CA71DCBA5A300EC736F /* ApiMetadata.swift */; };
+		55055CDD1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55055CDC1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift */; };
 		550CECBF1D3536F80076D807 /* NotificationsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550CECBE1D3536F80076D807 /* NotificationsHelper.swift */; };
 		552134411DCA30E600A562AC /* ApiSubscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552134401DCA30E600A562AC /* ApiSubscriptions.swift */; };
 		553647D81DBE206000ADFBB3 /* LocationChangeReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553647D71DBE206000ADFBB3 /* LocationChangeReceiver.swift */; };
@@ -197,6 +199,8 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Magnet/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Magnet/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		55055CA71DCBA5A300EC736F /* ApiMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiMetadata.swift; sourceTree = "<group>"; };
+		55055CDC1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHelperIOS10.swift; sourceTree = "<group>"; };
 		550CECBE1D3536F80076D807 /* NotificationsHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHelper.swift; sourceTree = "<group>"; };
 		552134401DCA30E600A562AC /* ApiSubscriptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiSubscriptions.swift; sourceTree = "<group>"; };
 		553647D71DBE206000ADFBB3 /* LocationChangeReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationChangeReceiver.swift; sourceTree = "<group>"; };
@@ -356,6 +360,7 @@
 		13B07FAE1A68108700A75B9A /* Magnet */ = {
 			isa = PBXGroup;
 			children = (
+				55055CB51DCC9F3E00EC736F /* Notifications */,
 				55C013F51DC8EC5900154F76 /* Utils */,
 				55C013DD1DC8CBEE00154F76 /* Api */,
 				8D589BBB1DC0BFAE0069BB98 /* Subscriptions */,
@@ -370,7 +375,6 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				555800951CBE5F7800A21868 /* Magnet-Bridging-Header.h */,
-				550CECBE1D3536F80076D807 /* NotificationsHelper.swift */,
 				553647D71DBE206000ADFBB3 /* LocationChangeReceiver.swift */,
 			);
 			name = Magnet;
@@ -382,6 +386,15 @@
 				146834041AC3E56700842450 /* libReact.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		55055CB51DCC9F3E00EC736F /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				550CECBE1D3536F80076D807 /* NotificationsHelper.swift */,
+				55055CDC1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift */,
+			);
+			name = Notifications;
 			sourceTree = "<group>";
 		};
 		5583EF0A1D3D519D00852649 /* History */ = {
@@ -413,6 +426,7 @@
 				55C013FC1DC8FFC600154F76 /* ApiMagnetReact.swift */,
 				55C013FE1DC9037D00154F76 /* ApiMagnetReact.m */,
 				552134401DCA30E600A562AC /* ApiSubscriptions.swift */,
+				55055CA71DCBA5A300EC736F /* ApiMetadata.swift */,
 			);
 			name = Api;
 			sourceTree = "<group>";
@@ -872,6 +886,7 @@
 				55C013FF1DC9037D00154F76 /* ApiMagnetReact.m in Sources */,
 				8D7567201D2BF30400315AEE /* MagnetScannerReactExport.m in Sources */,
 				55C013F91DC8FB7C00154F76 /* ApiMagnet.swift in Sources */,
+				55055CDD1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift in Sources */,
 				8D57224B1CDCB16400480505 /* RNMagnetWebView.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				55C013F71DC8EC6800154F76 /* System.swift in Sources */,
@@ -879,6 +894,7 @@
 				553647D81DBE206000ADFBB3 /* LocationChangeReceiver.swift in Sources */,
 				55C013F41DC8E99100154F76 /* ApiChannels.swift in Sources */,
 				8D5722491CDCB16400480505 /* RNMagnetWebViewManager.swift in Sources */,
+				55055CA81DCBA5A300EC736F /* ApiMetadata.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

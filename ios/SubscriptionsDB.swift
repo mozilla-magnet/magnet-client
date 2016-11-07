@@ -76,7 +76,7 @@ class SubscriptionsDB {
     return try! db.run(query.update(setters)) > 0
   }
   
-  private func exists(channelName: String) -> Bool {
+  func exists(channelName: String) -> Bool {
     let query = table.filter(columnChannelName == channelName)
     return try! db.pluck(query) != nil
   }
