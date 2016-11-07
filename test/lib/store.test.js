@@ -22,7 +22,7 @@ describe('store', function() {
         this.actions.updateItem(url, {
           url,
           id: url,
-          distance: 3
+          distance: 3,
         });
       });
 
@@ -50,7 +50,7 @@ describe('store', function() {
         describe('third', function() {
           beforeEach(function() {
             this.actions.updateItem(url, {
-              distance: 3
+              distance: 3,
             });
           });
 
@@ -65,7 +65,7 @@ describe('store', function() {
           describe('fourth', function() {
             beforeEach(function() {
               this.actions.updateItem(url, {
-                distance: 7
+                distance: 7,
               });
             });
 
