@@ -1,11 +1,8 @@
 {
   "extends": "../.eslintrc",
-  "globals": {
-    "expect": true,
-  },
 
   "env": {
     "node": true,
-    "mocha": true
+    "jest": true
   }
 }

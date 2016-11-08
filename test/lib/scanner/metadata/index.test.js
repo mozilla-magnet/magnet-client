@@ -5,22 +5,20 @@
 
 const metadata = require('../../../../lib/scanner/metadata');
 const assert = require('assert');
-const sinon = require('sinon');
+
+jest.useFakeTimers();
 
 describe('metadata', () => {
 
   describe('serverside', function() {
     beforeEach(function() {
-      this.sinon = sinon.sandbox.create();
-      this.clock = this.sinon.useFakeTimers();
-
-      global.Request = sinon.spy((url, config) => {
+      global.Request = jest.fn((url, config) => {
         return Object.assign({}, config, { url });
       });
 
-      global.Headers = sinon.spy(config => config);
+      global.Headers = jest.fn(config => config);
 
-      global.fetch = sinon.spy(() => {
+      global.fetch = jest.fn(() => {
         this.lastFetch = new Deferred;
         return this.lastFetch.promise;
       });
@@ -34,15 +32,15 @@ describe('metadata', () => {
       beforeEach(function() {
         this.calls = [
           metadata('http://bbc.co.uk/news'),
-          metadata('http://google.com')
+          metadata('http://google.com'),
         ];
 
         // tick past batch window
-        this.clock.tick(200);
+        jest.runTimersToTime(200);
       });
 
       it('batches requests', function() {
-        var request = global.fetch.lastCall.args[0];
+        var request = global.fetch.mock.calls[0][0];
         var body = JSON.parse(request.body);
         var urls = body.objects;
 
@@ -54,15 +52,15 @@ describe('metadata', () => {
         beforeEach(function() {
           var result = Promise.resolve([
             {
-              error: 'bad thing'
+              error: 'bad thing',
             },
             {
-              title: 'Google'
-            }
+              title: 'Google',
+            },
           ]);
 
           this.lastFetch.resolve({
-            json: () => result
+            json: () => result,
           });
 
           // wait till initial call has resolved
@@ -82,7 +80,7 @@ describe('metadata', () => {
               assert.equal(err.message, 'bad thing');
             });
         });
-      })
+      });
     });
   });
 
