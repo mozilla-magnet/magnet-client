@@ -42,12 +42,13 @@ class ApiPreferences extends Api {
             return;
         }
 
+        Map data = (Map) aData;
+
         // Lock everything between getting the JSON object from the cache and
         // writing it back - a synchronize on the method isn't enough as the
         // resource is used in the delete method too.
         mWriteLock.lock();
 
-        Map data = (Map) aData;
         JSONObject json = getCache().getJsonObject(PREFERENCES_STORE_KEY);
 
         if (json == null) {
