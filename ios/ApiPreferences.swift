@@ -30,13 +30,18 @@ class ApiPreferences: ApiBase {
   override func post(path: String, data: NSDictionary, callback: ApiCallback) {
     var json = JSON("{}");
 
+    // Lock this section to prevent any non-atomic updates to the JSON in
+    // the RequestStore
     dispatch_sync(lockQueue) {
 
       if let storedJson = store.getJSON(ApiPreferences.PATH) {
         json = storedJson
       }
 
-      json[data["pref_key"] as! String] = JSON(tryAsBooleanString(data["value"]!.description))
+      // Coerce the value to a string with '.description'
+      let value: String = data["value"]!.description
+      let prefKey = data["pref_key"] as! String
+      json[prefKey] = JSON(tryAsBooleanString(value))
 
       store.setJSON(ApiPreferences.PATH, value: json)
     }
@@ -47,6 +52,8 @@ class ApiPreferences: ApiBase {
   override func delete(path: String, data: NSDictionary, callback: ApiCallback) {
     var json = JSON("{}");
 
+    // Lock this section to prevent any non-atomic updates to the JSON in
+    // the RequestStore
     dispatch_sync(lockQueue) {
 
       if var storeJson = store.getJSON(ApiPreferences.PATH) {
@@ -60,6 +67,11 @@ class ApiPreferences: ApiBase {
   }
 }
 
+// Given a string, try and alias it to 'true' or 'false' if.
+// If it cannot be aliased return the string as is.
+// We use this because the JavaScript at the moment expects only
+// booleans for preferences, but we want to support aribitrary types
+// in the future.
 func tryAsBooleanString(value: String) -> String {
   switch(value) {
   case "0": return "false"
