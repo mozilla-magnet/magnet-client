@@ -9,12 +9,14 @@ import Foundation
     scanner = MagnetScanner(callback: onItemFound)
   }
   
-  @objc func start() {
+  @objc func start(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
     scanner.start()
+    resolve(true)
   }
   
-  @objc func stop() {
+  @objc func stop(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
     scanner.stop()
+    resolve(true)
   }
   
   func onItemFound(item: Dictionary<String, AnyObject>) {

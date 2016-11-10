@@ -1,30 +1,46 @@
 package org.mozilla.magnet;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 
+import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.LifecycleEventListener;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
+import org.mozilla.magnet.permissions.PermissionChecker;
+import org.mozilla.magnet.permissions.PermissionCheckerCallback;
 import org.mozilla.magnet.scanner.MagnetScanner;
 import org.mozilla.magnet.scanner.MagnetScannerItem;
 import org.mozilla.magnet.scanner.MagnetScannerListener;
 
-class MagnetScannerReact extends ReactContextBaseJavaModule implements MagnetScannerListener, LifecycleEventListener {
+import java.util.concurrent.TimeUnit;
+
+class MagnetScannerReact extends ReactContextBaseJavaModule implements MagnetScannerListener, LifecycleEventListener, ActivityEventListener {
     private final static String TAG = "MagnetScannerReact";
     private ReactApplicationContext mContext;
     private MagnetScanner mMagnetScanner;
+    private boolean mStarted = false;
+    private boolean mStarting = false;
+    private PermissionChecker mPermissionChecker;
+    private long mLastPermissionsCheck = 0;
 
     MagnetScannerReact(ReactApplicationContext context) {
         super(context);
         mContext = context;
 
         context.addLifecycleEventListener(this);
+        context.addActivityEventListener(this);
 
+        mPermissionChecker = new PermissionChecker();
         mMagnetScanner = new MagnetScanner(context)
                 .useBle()
                 .useMdns()
@@ -40,25 +56,98 @@ class MagnetScannerReact extends ReactContextBaseJavaModule implements MagnetSca
      * Start the ScannerService scanning.
      */
     @ReactMethod
-    public void start() {
-        mMagnetScanner.start(this);
+    public void start(final Promise promise) {
+        Log.d(TAG, "start");
+
+        if (mStarted || mStarting) {
+            promise.reject("busy", "already starting");
+            return;
+        }
+
+        mStarting = true;
+        Log.d(TAG, "starting");
+
+        checkPermissions(new PermissionCheckerCallback() {
+            @Override
+            public void onPermissionChecksComplete() {
+                Log.d(TAG, "permission checks done");
+                mLastPermissionsCheck = System.currentTimeMillis();
+
+                // scanner can be stopped
+                // during permissions check
+                if (!mStarting) {
+                    promise.reject("stopped", "stopped before start finished");
+                    return;
+                }
+
+                mMagnetScanner.start(MagnetScannerReact.this);
+                mStarting = false;
+                mStarted = true;
+                promise.resolve(true);
+            }
+
+            @Override
+            public void onPermissionChecksError(Error error) {
+                Log.e(TAG, error.toString());
+                mStarting = false;
+                promise.reject("permission-error", error.getMessage());
+            }
+        });
     }
 
     /**
      * Stop the ScannerService scanning.
      */
     @ReactMethod
-    public void stop() {
+    public void stop(Promise promise) {
+        Log.d(TAG, "stop");
         mMagnetScanner.stop();
+        mStarting = false;
+        mStarted = false;
+        promise.resolve(true);
+    }
+
+    private void checkPermissions(PermissionCheckerCallback callback) {
+        if (!needsPermissionsCheck()) {
+            callback.onPermissionChecksComplete();
+            return;
+        }
+
+        Activity activity = mContext.getCurrentActivity();
+        if (activity == null) {
+            Log.e(TAG, "can't check when app in background");
+            callback.onPermissionChecksError(new Error("activity null"));
+            return;
+        }
+
+        mPermissionChecker.check(activity, callback);
+    }
+
+    private boolean needsPermissionsCheck() {
+        long MIN_TIME = TimeUnit.SECONDS.toMillis(10);
+        long timeSince = System.currentTimeMillis() - mLastPermissionsCheck;
+        return timeSince > MIN_TIME;
+    }
+
+    @Override
+    public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+        PermissionChecker.onResponse(requestCode, resultCode);
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        // noop
     }
 
     @Override
     public void onHostPause() {
+        Log.d(TAG, "on host pause");
         mMagnetScanner.startBackgroundScanning();
     }
 
     @Override
     public void onHostResume() {
+        Log.d(TAG, "on host resume");
         mMagnetScanner.stopBackgroundScanning();
     }
 
