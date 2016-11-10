@@ -20,17 +20,17 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
-  
+
   // Load from the server
   //jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
   // Load from local bundle
   jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-  
+
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                               moduleName:@"Magnet"
                                               initialProperties:nil
                                               launchOptions:launchOptions];
-  
+
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -42,12 +42,12 @@
   self.bridge = [[RCTBridge alloc] initWithBundleURL:jsCodeLocation
                                             moduleProvider: nil
                                             launchOptions:launchOptions];
-  
+
   // Listen to location changes, will be stopped when we go to foreground and reactivated
   // when we go to background
   self.locationReceiver = [[LocationChangeReceiver alloc] init];
   [self.locationReceiver startSignificantLocationChanges];
-  
+
   return YES;
 }
 
