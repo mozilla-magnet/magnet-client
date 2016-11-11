@@ -4,6 +4,7 @@ import android.content.Context;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONArray;
 import org.mozilla.magnet.api.Api;
 
 import java.util.concurrent.locks.Lock;
@@ -28,7 +29,13 @@ class ApiPreferences extends Api {
      */
     @Override
     public void get(String aPath, Callback aCallback) {
-        aCallback.resolve(getCache().getJsonObject(PREFERENCES_STORE_KEY));
+        JSONObject json = getCache().getJsonObject(PREFERENCES_STORE_KEY);
+
+        if (json == null) {
+          json = new JSONObject();
+        }
+
+        aCallback.resolve(json);
     }
 
     /**
