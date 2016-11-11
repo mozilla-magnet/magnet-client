@@ -16,7 +16,7 @@
     "magnet-scanner-android": "mozilla-magnet/magnet-scanner-android#v4.0.1",
     "react": "^15.3.1",
     "react-native": "^0.35.0",
-    "react-native-google-analytics-bridge": "^3.0.0",
+    "react-native-google-analytics-bridge": "mozilla-magnet/react-native-google-analytics-bridge#master",
     "react-native-linear-gradient": "^1.5.13",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
