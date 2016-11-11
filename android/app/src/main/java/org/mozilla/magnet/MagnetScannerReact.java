@@ -53,12 +53,29 @@ class MagnetScannerReact extends ReactContextBaseJavaModule implements MagnetSca
     }
 
     /**
-     * Start the ScannerService scanning.
+     * Start the scanner.
+     *
+     * Before the scanner runs we check and prompt the user
+     * for all the permissions required to run the scanner.
+     *
+     * We don't yet block the scanner from running if
+     * the user doesn't accept accept all the prompts,
+     * the scanner will simply degrade based on the
+     * permissions the app has been granted.
+     *
+     * The user will be prompted every time the scanner
+     * is started (onResume()), so it will be annoyingly
+     * persistent. We may choose to go the extra mile
+     * and show a banner in the UI that informs the
+     * user than the experience is degraded and why
+     * (like 'you are offline' style banners).
      */
     @ReactMethod
     public void start(final Promise promise) {
         Log.d(TAG, "start");
 
+        // it's fine for clients to hammer this
+        // method, although promises will reject.
         if (mStarted || mStarting) {
             promise.reject("busy", "already starting");
             return;

@@ -29,6 +29,12 @@ class CheckGooglePlayServices extends Check {
             return;
         }
 
+        // IMPORTANT: We can't be sure that this code is
+        // running on main-ui-thread, it depends where the
+        // method was called from. For example React Native
+        // responds to native bridge methods off main-ui-thread.
+        // If a dialog is dispatched from a non-ui-thread thread,
+        // when it is dismissed on main-ui-thread the app will crash.
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -36,19 +42,5 @@ class CheckGooglePlayServices extends Check {
                 done();
             }
         });
-    }
-
-    /**
-     * Called when the upgrade prompt flow is complete.
-     *
-     * Right now we're not acting on the response.
-     * This prompt with happen each time the app
-     * is opened. We may choose to do more in
-     * the future.
-     *
-     * @param result
-     */
-    public void onResponse(int result) {
-        done();
     }
 }

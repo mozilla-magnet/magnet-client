@@ -20,8 +20,11 @@ abstract class Check {
     }
 
     abstract int getId();
-    abstract void onResponse(int response);
     abstract void check();
+
+    public void onResponse(int result) {
+        // noop
+    }
 
     protected void done() {
         mListener.onCheckDone(this);
@@ -37,19 +40,5 @@ abstract class Check {
 
     boolean hasPermission(String permission) {
         return ContextCompat.checkSelfPermission(mActivity, permission) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    public void showDialog(final String title, final String description, final DialogInterface.OnDismissListener dismissListener) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(title);
-                builder.setMessage(description);
-                builder.setPositiveButton(android.R.string.ok, null);
-                builder.setOnDismissListener(dismissListener);
-                builder.show();
-            }
-        });
     }
 }
