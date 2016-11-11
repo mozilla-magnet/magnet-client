@@ -12,12 +12,16 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.facebook.react.ReactActivity;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import org.mozilla.magnet.notifications.NotificationService;
 
 public class MainActivity extends ReactActivity {
     private final static String TAG = MainActivity.class.getName();
     private final static int PERMISSION_REQUEST_LOCATION = 1;
+    private final static int REQUEST_PLAY_SERVICES_UPGRADE = 2;
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -31,6 +35,7 @@ public class MainActivity extends ReactActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        checkGooglePlayServices();
         checkPermissions();
     }
 
@@ -69,6 +74,13 @@ public class MainActivity extends ReactActivity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("active", active);
         editor.commit();
+    }
+
+    private void checkGooglePlayServices() {
+        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+        int result = googleApiAvailability.isGooglePlayServicesAvailable(this);
+        if (result == ConnectionResult.SUCCESS) return;
+        googleApiAvailability.showErrorDialogFragment(this, result, REQUEST_PLAY_SERVICES_UPGRADE);
     }
 
     /**
