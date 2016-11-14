@@ -6,3 +6,4 @@
 #import "RCTBridgeModule.h"
 #import "RCTEventDispatcher.h"
 #import "RCTViewManager.h"
+#import <BugfenderSDK/BugfenderSDK.h>

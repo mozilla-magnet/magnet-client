@@ -27,6 +27,8 @@
 		550CECBF1D3536F80076D807 /* NotificationsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550CECBE1D3536F80076D807 /* NotificationsHelper.swift */; };
 		552134411DCA30E600A562AC /* ApiSubscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552134401DCA30E600A562AC /* ApiSubscriptions.swift */; };
 		553647D81DBE206000ADFBB3 /* LocationChangeReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553647D71DBE206000ADFBB3 /* LocationChangeReceiver.swift */; };
+		555A52AB1DDA3295005D4B98 /* BugfenderSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 555A52AA1DDA3295005D4B98 /* BugfenderSDK.framework */; };
+		555A52B91DDA32C5005D4B98 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555A52B81DDA32C5005D4B98 /* Log.swift */; };
 		5583EF0E1D3D55AD00852649 /* HistoryRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF0D1D3D55AD00852649 /* HistoryRecord.swift */; };
 		5583EF101D3D565200852649 /* HistorySQLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF0F1D3D565200852649 /* HistorySQLite.swift */; };
 		5583EF121D3E36C300852649 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF111D3E36C300852649 /* History.swift */; };
@@ -207,6 +209,8 @@
 		552134401DCA30E600A562AC /* ApiSubscriptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiSubscriptions.swift; sourceTree = "<group>"; };
 		553647D71DBE206000ADFBB3 /* LocationChangeReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationChangeReceiver.swift; sourceTree = "<group>"; };
 		555800951CBE5F7800A21868 /* Magnet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Magnet-Bridging-Header.h"; sourceTree = "<group>"; };
+		555A52AA1DDA3295005D4B98 /* BugfenderSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BugfenderSDK.framework; path = "3rdparty/BugfenderSDK-iOS/BugfenderSDK.framework"; sourceTree = "<group>"; };
+		555A52B81DDA32C5005D4B98 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		5583EF0D1D3D55AD00852649 /* HistoryRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryRecord.swift; sourceTree = "<group>"; };
 		5583EF0F1D3D565200852649 /* HistorySQLite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistorySQLite.swift; sourceTree = "<group>"; };
 		5583EF111D3E36C300852649 /* History.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
@@ -279,6 +283,7 @@
 				8DF821771D5387E20081F56E /* libRCTGoogleAnalyticsBridge.a in Frameworks */,
 				559608C81DB918B100816CF1 /* Alamofire.framework in Frameworks */,
 				559608C91DB918B100816CF1 /* SwiftyJSON.framework in Frameworks */,
+				555A52AB1DDA3295005D4B98 /* BugfenderSDK.framework in Frameworks */,
 				AA85BDA14B4C4D9A8524DCAD /* libBVLinearGradient.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -412,6 +417,7 @@
 		559608B91DB918B100816CF1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				555A52AA1DDA3295005D4B98 /* BugfenderSDK.framework */,
 				559608C61DB918B100816CF1 /* Alamofire.framework */,
 				559608C71DB918B100816CF1 /* SwiftyJSON.framework */,
 			);
@@ -447,6 +453,7 @@
 			isa = PBXGroup;
 			children = (
 				55C013F61DC8EC6800154F76 /* System.swift */,
+				555A52B81DDA32C5005D4B98 /* Log.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -634,7 +641,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "magnet" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Magnet" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -896,6 +903,7 @@
 				55C013F71DC8EC6800154F76 /* System.swift in Sources */,
 				8D7567311D2BF7F300315AEE /* MagnetScannerReact.swift in Sources */,
 				553647D81DBE206000ADFBB3 /* LocationChangeReceiver.swift in Sources */,
+				555A52B91DDA32C5005D4B98 /* Log.swift in Sources */,
 				55C013F41DC8E99100154F76 /* ApiChannels.swift in Sources */,
 				8D5722491CDCB16400480505 /* RNMagnetWebViewManager.swift in Sources */,
 				55055CA81DCBA5A300EC736F /* ApiMetadata.swift in Sources */,
@@ -966,6 +974,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/3rdparty/BugfenderSDK-iOS",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -979,7 +988,10 @@
 				OTHER_LDFLAGS = (
 					"-lc++",
 					"-ObjC",
+					"$(inherited)",
 				);
+				"OTHER_LDFLAGS[arch=*]" = "$(inherited)";
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Magnet;
 				PRODUCT_NAME = Magnet;
 				PROVISIONING_PROFILE = "";
@@ -1000,6 +1012,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/3rdparty/BugfenderSDK-iOS",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1013,7 +1026,9 @@
 				OTHER_LDFLAGS = (
 					"-lc++",
 					"-ObjC",
+					"$(inherited)",
 				);
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-DRELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Magnet;
 				PRODUCT_NAME = Magnet;
 				PROVISIONING_PROFILE = "";
@@ -1135,7 +1150,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "magnet" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Magnet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
