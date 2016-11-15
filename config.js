@@ -16,11 +16,6 @@ module.exports = {
       title: 'Show distance',
     },
 
-    'removeOldItems': {
-      value: false, // default
-      title: 'Remove old items',
-    },
-
     'enableTelemetry': {
       value: true, // default
       title: 'Telemetry',
