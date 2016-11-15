@@ -12,6 +12,7 @@ import SwiftyJSON
 protocol Api {
   func get(path: String, callback: ApiCallback)
   func post(path: String, data: NSDictionary, callback: ApiCallback)
+  func post(path: String, data: NSArray, callback: ApiCallback)
   func put(path: String, data: NSDictionary, callback: ApiCallback)
   func delete(path: String, data: NSDictionary, callback: ApiCallback)
   func mount(path: String, api: Api)
@@ -50,6 +51,17 @@ class ApiBase: Api {
   }
   
   func post(path: String, data: NSDictionary, callback: ApiCallback) {
+    let api = find(path)
+    
+    guard api != nil else {
+      callback.onError("Could not find route \(path)")
+      return
+    }
+    
+    api!.post(path, data: data, callback: callback)
+  }
+  
+  func post(path: String, data: NSArray, callback: ApiCallback) {
     let api = find(path)
     
     guard api != nil else {

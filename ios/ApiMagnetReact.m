@@ -22,6 +22,12 @@ RCT_EXTERN_METHOD(
                   reject:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(
+                  postArray:(NSString *)path
+                  data:(NSArray *)data
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(
                   put:(NSString *)path
                   data:(NSDictionary *)data
                   resolve:(RCTPromiseResolveBlock)resolve

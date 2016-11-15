@@ -31,6 +31,16 @@ import Foundation
     }))
   }
   
+  @objc func postArray(path: String, data: NSArray, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+    api.post(path, data: data, callback: ApiCallback(success: { result in
+      resolve(result.rawValue)
+      },
+      error: { (error) in
+        let err = NSError(coder: NSCoder())
+        reject("get_error", "Error resolving \(path) with \(data)", err)
+    }))
+  }
+  
   @objc func put(path: String, data: NSDictionary, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
     api.put(path, data: data, callback: ApiCallback(success: { result in
         resolve(result.rawValue)

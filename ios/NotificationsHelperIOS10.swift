@@ -48,11 +48,9 @@ class NotificationsHelperIOS10: NSObject, UNUserNotificationCenterDelegate {
   
   private func fetchData(url: String, callback: ((JSON) -> Void)) {
     let api = ApiMetadata()
+    let urls: NSArray = [url]
     
-    let item: Dictionary<String, String> = ["url": url]
-    let objects: Dictionary<String, NSArray> = ["objects": [item]]
-    
-    api.post("metadata", data: objects, callback: ApiCallback(success: { json in
+    api.post("metadata", data: urls, callback: ApiCallback(success: { json in
         callback(json)
       }, error: { (err) in
         debugPrint("Could not get metadata for \(url): \(err)")
