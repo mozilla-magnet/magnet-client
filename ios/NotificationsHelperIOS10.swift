@@ -36,9 +36,9 @@ class NotificationsHelperIOS10: NSObject, UNUserNotificationCenterDelegate {
         }
         
         try self.showRichNotification(json[0]["title"].string!,
-              subtitle: "by \(channel)",
-              body: json[0]["description"].string!,
-              url: url)
+          subtitle: "by \(channel)",
+          body: json[0]["description"].string!,
+          url: url)
         Log.l("Dispatching rich notification for \(json.rawString())")
       } catch {
         Log.w("Could not launch notification for \(url) : \(channel)")
@@ -51,7 +51,7 @@ class NotificationsHelperIOS10: NSObject, UNUserNotificationCenterDelegate {
     let urls: NSArray = [url]
     
     api.post("metadata", data: urls, callback: ApiCallback(success: { json in
-        callback(json)
+      callback(json)
       }, error: { (err) in
         debugPrint("Could not get metadata for \(url): \(err)")
     }))
@@ -82,7 +82,7 @@ class NotificationsHelperIOS10: NSObject, UNUserNotificationCenterDelegate {
   
   func userNotificationCenter(center: UNUserNotificationCenter, didReceiveNotificationResponse response: UNNotificationResponse, withCompletionHandler completionHandler: () -> Void) {
     if (response.actionIdentifier == "visit") {
-      debugPrint("Launching web page \(response.notification.request.identifier)")
+      Log.d("Launching web page \(response.notification.request.identifier)")
       let url = NSURL(string: response.notification.request.identifier)
       UIApplication.sharedApplication().openURL(url!, options: [:], completionHandler: nil)
     }
