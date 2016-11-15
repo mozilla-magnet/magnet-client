@@ -69,8 +69,15 @@ class NotificationsHelperIOS10: NSObject, UNUserNotificationCenterDelegate {
     let category = UNNotificationCategory(identifier: NotificationsHelperIOS10.CATEGORY, actions: [action], intentIdentifiers: [], options: [])
     UNUserNotificationCenter.currentNotificationCenter().setNotificationCategories([category])
     
-    let request = UNNotificationRequest(identifier: url, content: content, trigger: nil)
-    UNUserNotificationCenter.currentNotificationCenter().addNotificationRequest(request, withCompletionHandler: nil)
+    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+    
+    let request = UNNotificationRequest(identifier: url, content: content, trigger: trigger)
+    UNUserNotificationCenter.currentNotificationCenter().addNotificationRequest(request, withCompletionHandler: {error in
+      guard let error = error else {
+        return
+      }
+      Log.w("Error while sending notification \(error)")
+    })
   }
   
   func userNotificationCenter(center: UNUserNotificationCenter, didReceiveNotificationResponse response: UNNotificationResponse, withCompletionHandler completionHandler: () -> Void) {
