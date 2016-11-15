@@ -11,6 +11,7 @@
 #import "RCTBundleURLProvider.h"
 #import "RCTRootView.h"
 #import "RCTBridge.h"
+#import "RCTLinkingManager.h"
 
 // Include the project headers for swift code. (<project-name>-Swift.h)
 #import "magnet-Swift.h"
@@ -69,5 +70,10 @@
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
   [self.bridge.eventDispatcher sendDeviceEventWithName:@"notification:applaunch" body:nil];
 }
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+  return [RCTLinkingManager application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
+}
+
 
 @end
