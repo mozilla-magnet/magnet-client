@@ -38,8 +38,9 @@ class NotificationsHelperIOS10: NSObject, UNUserNotificationCenterDelegate {
               subtitle: "by \(channel)",
               body: json[0]["description"].string!,
               url: url)
+        Log.l("Dispatching rich notification for \(json.rawString())")
       } catch {
-        debugPrint("Could not launh notification for \(url) : \(channel)")
+        Log.w("Could not launh notification for \(url) : \(channel)")
       }
     })
   }
