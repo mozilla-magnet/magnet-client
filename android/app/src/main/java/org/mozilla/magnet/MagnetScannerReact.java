@@ -26,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 class MagnetScannerReact extends ReactContextBaseJavaModule implements MagnetScannerListener, LifecycleEventListener, ActivityEventListener {
     private final static String TAG = "MagnetScannerReact";
+    private static final long MIN_TIME_BETWEEN_CHECKS = TimeUnit.SECONDS.toMillis(10);
     private ReactApplicationContext mContext;
     private MagnetScanner mMagnetScanner;
     private boolean mStarted = false;
@@ -59,8 +60,8 @@ class MagnetScannerReact extends ReactContextBaseJavaModule implements MagnetSca
      * for all the permissions required to run the scanner.
      *
      * We don't yet block the scanner from running if
-     * the user doesn't accept accept all the prompts,
-     * the scanner will simply degrade based on the
+     * the user doesn't accept all the prompts, the
+     * scanner will simply degrade based on the
      * permissions the app has been granted.
      *
      * The user will be prompted every time the scanner
@@ -141,9 +142,8 @@ class MagnetScannerReact extends ReactContextBaseJavaModule implements MagnetSca
     }
 
     private boolean needsPermissionsCheck() {
-        long MIN_TIME = TimeUnit.SECONDS.toMillis(10);
         long timeSince = System.currentTimeMillis() - mLastPermissionsCheck;
-        return timeSince > MIN_TIME;
+        return timeSince > MIN_TIME_BETWEEN_CHECKS;
     }
 
     @Override

@@ -2,32 +2,25 @@ package org.mozilla.magnet.permissions;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothManager;
-import android.content.Context;
 import android.content.Intent;
 
 /**
  * Created by wilsonpage on 09/11/2016.
  */
-class CheckBluetooth extends Check {
-    private static int ID = 10;
+class PermissionCheckBluetooth extends PermissionCheck {
+    private static final int ID = 10;
 
-    CheckBluetooth(PermissionChecker listener, Activity activity) {
+    PermissionCheckBluetooth(PermissionChecker listener, Activity activity) {
         super(listener, activity);
     }
 
     @Override
-    public int getId() {
+    protected int getId() {
         return ID;
     }
 
-    void check() {
-        if (!hasBluetooth()) {
-            done();
-            return;
-        }
-
-        if (bluetoothEnabled()) {
+    protected void check() {
+        if (!hasBluetooth() || bluetoothEnabled()) {
             done();
             return;
         }
@@ -43,7 +36,7 @@ class CheckBluetooth extends Check {
     }
 
     private boolean hasBluetooth() {
-        return BluetoothAdapter.getDefaultAdapter() != null;
+        return getAdapter() != null;
     }
 
     /**
@@ -52,8 +45,11 @@ class CheckBluetooth extends Check {
      * @return boolean
      */
     private boolean bluetoothEnabled() {
-        BluetoothManager bluetoothManager = (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
-        BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
+        BluetoothAdapter bluetoothAdapter = getAdapter();
         return bluetoothAdapter != null && bluetoothAdapter.isEnabled();
+    }
+
+    static BluetoothAdapter getAdapter() {
+        return BluetoothAdapter.getDefaultAdapter();
     }
 }

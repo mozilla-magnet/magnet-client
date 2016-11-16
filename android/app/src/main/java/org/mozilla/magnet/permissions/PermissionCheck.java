@@ -1,26 +1,20 @@
 package org.mozilla.magnet.permissions;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.support.v4.content.ContextCompat;
 
-/**
- * Created by wilsonpage on 09/11/2016.
- */
-abstract class Check {
+abstract class PermissionCheck {
     private Activity mActivity;
-    private PermissionChecker mListener;
+    private PermissionCheckListener mListener;
 
-    Check(PermissionChecker listener, Activity activity) {
+    PermissionCheck(PermissionCheckListener listener, Activity activity) {
         mActivity = activity;
         mListener = listener;
     }
 
-    abstract int getId();
-    abstract void check();
+    protected abstract int getId();
+    protected abstract void check();
 
     public void onResponse(int result) {
         // noop
@@ -34,7 +28,7 @@ abstract class Check {
         return mActivity;
     }
 
-    void awaitingResponse() {
+    protected void awaitingResponse() {
         mListener.onCheckAwaitingResponse(this);
     }
 

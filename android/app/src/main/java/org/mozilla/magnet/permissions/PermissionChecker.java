@@ -10,9 +10,9 @@ import java.util.Stack;
  * Created by wilsonpage on 09/11/2016.
  */
 
-public class PermissionChecker implements CheckListener {
-    private static Map<Integer,Check> checksAwaitingResponse = new HashMap<>();
-    private Stack<Check> checks = new Stack<>();
+public class PermissionChecker implements PermissionCheckListener {
+    private static Map<Integer,PermissionCheck> checksAwaitingResponse = new HashMap<>();
+    private Stack<PermissionCheck> checks = new Stack<>();
     private PermissionCheckerCallback mCallback;
     private boolean mChecking = false;
 
@@ -21,9 +21,9 @@ public class PermissionChecker implements CheckListener {
         mChecking = true;
         mCallback = callback;
 
-        checks.add(new CheckBluetooth(this, activity));
-        checks.add(new CheckGooglePlayServices(this, activity));
-        checks.add(new CheckLocationPermission(this, activity));
+        checks.add(new PermissionCheckBluetooth(this, activity));
+        checks.add(new PermissionCheckGooglePlayServices(this, activity));
+        checks.add(new PermissionCheckLocation(this, activity));
 
         checkNext();
     }
@@ -39,17 +39,17 @@ public class PermissionChecker implements CheckListener {
     }
 
     @Override
-    public void onCheckDone(Check check) {
+    public void onCheckDone(PermissionCheck check) {
         checkNext();
     }
 
     @Override
-    public void onCheckAwaitingResponse(Check check) {
+    public void onCheckAwaitingResponse(PermissionCheck check) {
         checksAwaitingResponse.put(check.getId(), check);
     }
 
     public static void onResponse(int checkId, int response) {
-        Check check = checksAwaitingResponse.get(checkId);
+        PermissionCheck check = checksAwaitingResponse.get(checkId);
         if (check == null) return;
         checksAwaitingResponse.remove(checkId);
         check.onResponse(response);

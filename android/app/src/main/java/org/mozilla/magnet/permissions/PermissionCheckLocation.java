@@ -8,15 +8,15 @@ import android.support.v4.app.ActivityCompat;
 /**
  * Created by wilsonpage on 09/11/2016.
  */
-class CheckLocationPermission extends Check {
+class PermissionCheckLocation extends PermissionCheck {
     public static int ID = 12;
 
-    CheckLocationPermission(PermissionChecker listener, Activity activity) {
+    PermissionCheckLocation(PermissionChecker listener, Activity activity) {
         super(listener, activity);
     }
 
     @Override
-    int getId() {
+    protected int getId() {
         return ID;
     }
 

@@ -8,15 +8,15 @@ import com.google.android.gms.common.GoogleApiAvailability;
 /**
  * Created by wilsonpage on 09/11/2016.
  */
-class CheckGooglePlayServices extends Check {
+class PermissionCheckGooglePlayServices extends PermissionCheck {
     public static int ID = 11;
 
-    CheckGooglePlayServices(PermissionChecker listener, Activity activity) {
+    PermissionCheckGooglePlayServices(PermissionChecker listener, Activity activity) {
         super(listener, activity);
     }
 
     @Override
-    int getId() {
+    protected int getId() {
         return ID;
     }
 
