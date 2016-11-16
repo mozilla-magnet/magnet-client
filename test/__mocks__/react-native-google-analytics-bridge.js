@@ -1,5 +1,5 @@
 
-module.exports = {
+export default {
   setTrackerId: () => {},
   trackEvent: () => {},
 };
