@@ -54,7 +54,7 @@
 		8D589BF11DC0E6660069BB98 /* SubscriptionsReact.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D589BF01DC0E6660069BB98 /* SubscriptionsReact.m */; };
 		8D589BF31DC0E6A80069BB98 /* Subscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D589BF21DC0E6A80069BB98 /* Subscriptions.swift */; };
 		8D589C0D1DC10E260069BB98 /* SubscriptionsReact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D589C0C1DC10E260069BB98 /* SubscriptionsReact.swift */; };
-		8D7567201D2BF30400315AEE /* MagnetScannerReactExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D75671F1D2BF30400315AEE /* MagnetScannerReactExport.m */; };
+		8D7567201D2BF30400315AEE /* MagnetScannerReact.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D75671F1D2BF30400315AEE /* MagnetScannerReact.m */; };
 		8D75672D1D2BF33500315AEE /* MagnetScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D75672C1D2BF33500315AEE /* MagnetScanner.swift */; };
 		8D7567311D2BF7F300315AEE /* MagnetScannerReact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D7567301D2BF7F300315AEE /* MagnetScannerReact.swift */; };
 		8DBAAAB81D67272500AC32C5 /* FiraSans-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8DBAAAB51D67272500AC32C5 /* FiraSans-Book.otf */; };
@@ -232,7 +232,7 @@
 		8D589BF01DC0E6660069BB98 /* SubscriptionsReact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubscriptionsReact.m; sourceTree = "<group>"; };
 		8D589BF21DC0E6A80069BB98 /* Subscriptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subscriptions.swift; sourceTree = "<group>"; };
 		8D589C0C1DC10E260069BB98 /* SubscriptionsReact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionsReact.swift; sourceTree = "<group>"; };
-		8D75671F1D2BF30400315AEE /* MagnetScannerReactExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MagnetScannerReactExport.m; sourceTree = "<group>"; };
+		8D75671F1D2BF30400315AEE /* MagnetScannerReact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MagnetScannerReact.m; sourceTree = "<group>"; };
 		8D75672C1D2BF33500315AEE /* MagnetScanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagnetScanner.swift; sourceTree = "<group>"; };
 		8D7567301D2BF7F300315AEE /* MagnetScannerReact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagnetScannerReact.swift; sourceTree = "<group>"; };
 		8DBAAAB51D67272500AC32C5 /* FiraSans-Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FiraSans-Book.otf"; path = "fonts/FiraSans-Book.otf"; sourceTree = "<group>"; };
@@ -537,7 +537,7 @@
 		8D5722441CDCAF6B00480505 /* Scanner */ = {
 			isa = PBXGroup;
 			children = (
-				8D75671F1D2BF30400315AEE /* MagnetScannerReactExport.m */,
+				8D75671F1D2BF30400315AEE /* MagnetScannerReact.m */,
 				8D7567301D2BF7F300315AEE /* MagnetScannerReact.swift */,
 				8D75672C1D2BF33500315AEE /* MagnetScanner.swift */,
 			);
@@ -888,7 +888,7 @@
 				8D589BC91DC0BFDE0069BB98 /* SubscriptionsDB.swift in Sources */,
 				5583EF121D3E36C300852649 /* History.swift in Sources */,
 				55C013FF1DC9037D00154F76 /* ApiMagnetReact.m in Sources */,
-				8D7567201D2BF30400315AEE /* MagnetScannerReactExport.m in Sources */,
+				8D7567201D2BF30400315AEE /* MagnetScannerReact.m in Sources */,
 				55C013F91DC8FB7C00154F76 /* ApiMagnet.swift in Sources */,
 				55055CDD1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift in Sources */,
 				8D57224B1CDCB16400480505 /* RNMagnetWebView.swift in Sources */,

@@ -21,7 +21,6 @@ public class MyAppPackage implements ReactPackage {
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
         modules.add(new MagnetScannerReact(reactContext));
-        modules.add(new PromptBluetoothReact(reactContext));
         modules.add(new ApiMagnetReact(reactContext));
         modules.add(new NotificationListenerReact(reactContext));
         return modules;
