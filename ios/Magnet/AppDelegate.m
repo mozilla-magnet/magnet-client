@@ -47,6 +47,12 @@
   // when we go to background
   self.locationReceiver = [[LocationChangeReceiver alloc] init];
   [self.locationReceiver startSignificantLocationChanges];
+  
+  // Remote logs
+  #if DEBUG
+    [Bugfender enableAllWithToken:@"<REPLACE_WITH_APP_KEY>"];
+  #endif
+  [Log log:@"Magnet Client starting"];
 
   return YES;
 }
