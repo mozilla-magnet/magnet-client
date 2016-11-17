@@ -82,7 +82,7 @@ import UserNotifications
     // this case doNotifyUser, that notifies depending on the number of web pages found
     // during the waiting period.
     notifyTimer = NSTimer.init(
-      timeInterval: 10 ,
+      timeInterval: 5 ,
       target: self,
       selector: #selector(doNotifyUser),
       userInfo: nil,

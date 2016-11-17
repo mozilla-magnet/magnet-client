@@ -36,9 +36,10 @@ class NotificationsHelperIOS10: NSObject, UNUserNotificationCenterDelegate {
         }
         
         try self.showRichNotification(json[0]["title"].string!,
-          subtitle: "by \(channel)",
-          body: json[0]["description"].string!,
-          url: url)
+              subtitle: "by \(channel)",
+              body: json[0]["description"].string!,
+              image: json[0]["image"].string,
+              url: url)
         Log.l("Dispatching rich notification for \(json.rawString())")
       } catch {
         Log.w("Could not launch notification for \(url) : \(channel)")
@@ -57,11 +58,14 @@ class NotificationsHelperIOS10: NSObject, UNUserNotificationCenterDelegate {
     }))
   }
   
-  private func showRichNotification(title: String, subtitle: String, body: String, url: String) {
+  private func showRichNotification(title: String, subtitle: String, body: String, image: String?, url: String) {
     let content = UNMutableNotificationContent()
     content.title = title
     content.subtitle = subtitle
     content.body = body
+    if let image: String = image! {
+      content.launchImageName = image
+    }
     content.categoryIdentifier = NotificationsHelperIOS10.CATEGORY
     
     let action = UNNotificationAction(identifier: "visit", title: "Visit", options: UNNotificationActionOptions.Foreground)
@@ -82,7 +86,7 @@ class NotificationsHelperIOS10: NSObject, UNUserNotificationCenterDelegate {
   
   func userNotificationCenter(center: UNUserNotificationCenter, didReceiveNotificationResponse response: UNNotificationResponse, withCompletionHandler completionHandler: () -> Void) {
     if (response.actionIdentifier == "visit") {
-      Log.d("Launching web page \(response.notification.request.identifier)")
+      Log.l("Launching web page \(response.notification.request.identifier)")
       let url = NSURL(string: response.notification.request.identifier)
       UIApplication.sharedApplication().openURL(url!, options: [:], completionHandler: nil)
     }

@@ -33,6 +33,11 @@
 		552E19871DDB400C00AA07F9 /* RegionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552E19861DDB400C00AA07F9 /* RegionManager.swift */; };
 		555A52AB1DDA3295005D4B98 /* BugfenderSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 555A52AA1DDA3295005D4B98 /* BugfenderSDK.framework */; };
 		555A52B91DDA32C5005D4B98 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555A52B81DDA32C5005D4B98 /* Log.swift */; };
+		558015611DDE43600068CB8B /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 558015601DDE43600068CB8B /* UserNotifications.framework */; };
+		558015631DDE43600068CB8B /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 558015621DDE43600068CB8B /* UserNotificationsUI.framework */; };
+		558015661DDE43600068CB8B /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558015651DDE43600068CB8B /* NotificationViewController.swift */; };
+		558015691DDE43600068CB8B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 558015671DDE43600068CB8B /* MainInterface.storyboard */; };
+		5580156D1DDE43600068CB8B /* HeroNotifications.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5580155F1DDE43600068CB8B /* HeroNotifications.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5583EF0E1D3D55AD00852649 /* HistoryRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF0D1D3D55AD00852649 /* HistoryRecord.swift */; };
 		5583EF101D3D565200852649 /* HistorySQLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF0F1D3D565200852649 /* HistorySQLite.swift */; };
 		5583EF121D3E36C300852649 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF111D3E36C300852649 /* History.swift */; };
@@ -138,6 +143,13 @@
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
 		};
+		5580156B1DDE43600068CB8B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5580155E1DDE43600068CB8B;
+			remoteInfo = HeroNotifications;
+		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -169,6 +181,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		5580157D1DDE43600068CB8B /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				5580156D1DDE43600068CB8B /* HeroNotifications.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		85DF9A271D632FED004DF3F1 /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -218,6 +241,12 @@
 		555800951CBE5F7800A21868 /* Magnet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Magnet-Bridging-Header.h"; sourceTree = "<group>"; };
 		555A52AA1DDA3295005D4B98 /* BugfenderSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BugfenderSDK.framework; path = "3rdparty/BugfenderSDK-iOS/BugfenderSDK.framework"; sourceTree = "<group>"; };
 		555A52B81DDA32C5005D4B98 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		5580155F1DDE43600068CB8B /* HeroNotifications.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HeroNotifications.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		558015601DDE43600068CB8B /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		558015621DDE43600068CB8B /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
+		558015651DDE43600068CB8B /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		558015681DDE43600068CB8B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		5580156A1DDE43600068CB8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5583EF0D1D3D55AD00852649 /* HistoryRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryRecord.swift; sourceTree = "<group>"; };
 		5583EF0F1D3D565200852649 /* HistorySQLite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistorySQLite.swift; sourceTree = "<group>"; };
 		5583EF111D3E36C300852649 /* History.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
@@ -292,6 +321,15 @@
 				559608C91DB918B100816CF1 /* SwiftyJSON.framework in Frameworks */,
 				555A52AB1DDA3295005D4B98 /* BugfenderSDK.framework in Frameworks */,
 				AA85BDA14B4C4D9A8524DCAD /* libBVLinearGradient.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5580155C1DDE43600068CB8B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				558015631DDE43600068CB8B /* UserNotificationsUI.framework in Frameworks */,
+				558015611DDE43600068CB8B /* UserNotifications.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,6 +468,16 @@
 			name = Location;
 			sourceTree = "<group>";
 		};
+		558015641DDE43600068CB8B /* HeroNotifications */ = {
+			isa = PBXGroup;
+			children = (
+				558015651DDE43600068CB8B /* NotificationViewController.swift */,
+				558015671DDE43600068CB8B /* MainInterface.storyboard */,
+				5580156A1DDE43600068CB8B /* Info.plist */,
+			);
+			path = HeroNotifications;
+			sourceTree = "<group>";
+		};
 		5583EF0A1D3D519D00852649 /* History */ = {
 			isa = PBXGroup;
 			children = (
@@ -447,6 +495,8 @@
 				555A52AA1DDA3295005D4B98 /* BugfenderSDK.framework */,
 				559608C61DB918B100816CF1 /* Alamofire.framework */,
 				559608C71DB918B100816CF1 /* SwiftyJSON.framework */,
+				558015601DDE43600068CB8B /* UserNotifications.framework */,
+				558015621DDE43600068CB8B /* UserNotificationsUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -534,6 +584,7 @@
 				13B07FAE1A68108700A75B9A /* Magnet */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* MagnetTests */,
+				558015641DDE43600068CB8B /* HeroNotifications */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				559608B91DB918B100816CF1 /* Frameworks */,
 			);
@@ -546,6 +597,7 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* Magnet.app */,
 				00E356EE1AD99517003FC87E /* MagnetTests.xctest */,
+				5580155F1DDE43600068CB8B /* HeroNotifications.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -641,15 +693,34 @@
 				5583EF141D3E46FC00852649 /* ShellScript */,
 				85DF9A271D632FED004DF3F1 /* Copy Files */,
 				55AE10ED1D67664900CAD0E0 /* ShellScript */,
+				5580157D1DDE43600068CB8B /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				5580156C1DDE43600068CB8B /* PBXTargetDependency */,
 			);
 			name = Magnet;
 			productName = "Hello World";
 			productReference = 13B07F961A680F5B00A75B9A /* Magnet.app */;
 			productType = "com.apple.product-type.application";
+		};
+		5580155E1DDE43600068CB8B /* HeroNotifications */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5580157C1DDE43600068CB8B /* Build configuration list for PBXNativeTarget "HeroNotifications" */;
+			buildPhases = (
+				5580155B1DDE43600068CB8B /* Sources */,
+				5580155C1DDE43600068CB8B /* Frameworks */,
+				5580155D1DDE43600068CB8B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HeroNotifications;
+			productName = HeroNotifications;
+			productReference = 5580155F1DDE43600068CB8B /* HeroNotifications.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -657,7 +728,8 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0810;
+				LastSwiftUpdateCheck = 0810;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = Mozilla;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -666,6 +738,11 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 43AQ936H96;
+					};
+					5580155E1DDE43600068CB8B = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = 43AQ936H96;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -734,6 +811,7 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* Magnet */,
 				00E356ED1AD99517003FC87E /* MagnetTests */,
+				5580155E1DDE43600068CB8B /* HeroNotifications */,
 			);
 		};
 /* End PBXProject section */
@@ -842,6 +920,14 @@
 				8DBAAAB81D67272500AC32C5 /* FiraSans-Book.otf in Resources */,
 				8DBAAABA1D67272500AC32C5 /* FiraSans-LightItalic.ttf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5580155D1DDE43600068CB8B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				558015691DDE43600068CB8B /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -955,6 +1041,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5580155B1DDE43600068CB8B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				558015661DDE43600068CB8B /* NotificationViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -962,6 +1056,11 @@
 			isa = PBXTargetDependency;
 			target = 13B07F861A680F5B00A75B9A /* Magnet */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
+		};
+		5580156C1DDE43600068CB8B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5580155E1DDE43600068CB8B /* HeroNotifications */;
+			targetProxy = 5580156B1DDE43600068CB8B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -973,6 +1072,14 @@
 			);
 			name = LaunchScreen.xib;
 			path = Magnet;
+			sourceTree = "<group>";
+		};
+		558015671DDE43600068CB8B /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				558015681DDE43600068CB8B /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1010,6 +1117,7 @@
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CLANG_ENABLE_MODULES = YES;
@@ -1051,6 +1159,7 @@
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CLANG_ENABLE_MODULES = YES;
@@ -1083,6 +1192,54 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Magnet-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		5580156E1DDE43600068CB8B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 43AQ936H96;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = HeroNotifications/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Magnet.HeroNotifications;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
+			};
+			name = Debug;
+		};
+		5580156F1DDE43600068CB8B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 43AQ936H96;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = HeroNotifications/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Magnet.HeroNotifications;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
@@ -1208,6 +1365,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		5580157C1DDE43600068CB8B /* Build configuration list for PBXNativeTarget "HeroNotifications" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5580156E1DDE43600068CB8B /* Debug */,
+				5580156F1DDE43600068CB8B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Magnet" */ = {
 			isa = XCConfigurationList;
