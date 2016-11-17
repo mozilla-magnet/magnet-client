@@ -28,6 +28,7 @@ class NotificationsHelperIOS10: NSObject, UNUserNotificationCenterDelegate {
   }
   
   private func processNotification(url: String, channel: String) {
+    Log.l("Processing notification for \(url)")
     fetchData(url, callback: { (json) in
       do {
         guard json[0] != nil && json[0]["description"] != nil && json[0]["title"] != nil else {
