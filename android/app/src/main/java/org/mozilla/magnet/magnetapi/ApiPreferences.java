@@ -4,7 +4,6 @@ import android.content.Context;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONArray;
 import org.mozilla.magnet.api.Api;
 
 import java.util.concurrent.locks.Lock;
