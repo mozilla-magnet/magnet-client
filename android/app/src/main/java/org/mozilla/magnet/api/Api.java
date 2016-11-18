@@ -225,4 +225,12 @@ public class Api {
         void resolve(Object result);
         void reject(String error);
     }
+
+    public final static Callback NoopCallback = new Callback() {
+        @Override
+        public void resolve(Object aResult) {}
+
+        @Override
+        public void reject(String aError) {}
+    };
 }
