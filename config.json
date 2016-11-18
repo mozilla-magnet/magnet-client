@@ -1,0 +1,64 @@
+{
+  "flags": {
+    "injectTestUrls": false,
+    "itemsExpandable": true,
+    "itemsSwipable": false
+  },
+
+  "userFlags": {
+    "sortByDistance": {
+      "value": false,
+      "title": "Sort by distance"
+    },
+
+    "showDistance": {
+      "value": false,
+      "title": "Show distance"
+    },
+
+    "enableTelemetry": {
+      "value": true,
+      "title": "Telemetry",
+      "description": "Share performance and usage data with Mozilla to help us to improve Project Magnet"
+    }
+  },
+
+  "settings": {
+    "links": {
+      "about": "https://trymagnet.org",
+      "privacy": "https://trymagnet.org/privacy/",
+      "feedback": "https://trymagnet.org/#contact"
+    }
+  },
+
+  "itemExpires": 60000,
+  "itemExpiring": 10000,
+
+  "metadataServiceUrl": "https://tengam.org/api/v1/metadata",
+
+  "theme": {
+    "colorBackground": "#f2f2f2",
+    "colorPrimary": "#00A2D4",
+    "borderColor": "#ddd",
+    "fontLightItalic": "FiraSans-LightItalic",
+    "fontBook": "FiraSans-Book"
+  },
+
+  "analyticsTrackerId": {
+    "development": "UA-81867483-3",
+    "production": "UA-81867483-4"
+  },
+
+  "testUrls": [
+    "https://facebook.com/mozilla",
+    "http://twitter.com/wilsonpage",
+    "http://twitter.com/mepartoconmigo",
+    "https://en.wikipedia.org/wiki/Ramsay_MacDonald",
+    "http://www.bbc.co.uk/news",
+    "https://www.youtube.com/watch?v=sBG8O430uOg",
+    "https://www.youtube.com/watch?v=ojcNcvb1olg",
+    "https://github.com/wilsonpage",
+    "https://www.amazon.co.uk/gp/product/B00IE3UR08/",
+    "https://viewsourceconf.org/berlin-2016/speakers/jen-simmons/"
+  ]
+}

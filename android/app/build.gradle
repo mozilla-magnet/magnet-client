@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
+import groovy.json.JsonSlurper;
 
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
@@ -121,7 +122,16 @@ android {
         }
     }
     buildTypes {
+        def inputFile = file(new File("../../config.json"));
+        def json = new JsonSlurper().parseText(inputFile.text)
+
+        debug {
+            buildConfigField "String", "GA_TRACKER_ID", "\"" + json.analyticsTrackerId.development + "\""
+        }
+
         release {
+            buildConfigField "String", "GA_TRACKER_ID", "\"" + json.analyticsTrackerId.production + "\""
+
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
 
