@@ -17,8 +17,8 @@ public class TrackTiming implements CallableTracker {
     @Override
     public void call(String aTrackerId, GA aGa) {
         aGa.trackTiming(
-                aTrackerId, mCategory, mValue,
-                Optional.emptyString(), Optional.emptyString());
+            aTrackerId, mCategory, mValue,
+            Optional.emptyString(), Optional.emptyString());
     }
 
     public static TrackTiming fromMap(Map<String, Object> aMap) {
