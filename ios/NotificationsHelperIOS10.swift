@@ -28,6 +28,7 @@ class NotificationsHelperIOS10: NSObject, UNUserNotificationCenterDelegate {
   }
   
   private func processNotification(url: String, channel: String) {
+    Log.l("Processing notification for \(url)")
     fetchData(url, callback: { (json) in
       do {
         guard json[0] != nil && json[0]["description"] != nil && json[0]["title"] != nil else {
@@ -38,8 +39,9 @@ class NotificationsHelperIOS10: NSObject, UNUserNotificationCenterDelegate {
               subtitle: "by \(channel)",
               body: json[0]["description"].string!,
               url: url)
+        Log.l("Dispatching rich notification for \(json.rawString())")
       } catch {
-        debugPrint("Could not launh notification for \(url) : \(channel)")
+        Log.w("Could not launch notification for \(url) : \(channel)")
       }
     })
   }
@@ -68,8 +70,16 @@ class NotificationsHelperIOS10: NSObject, UNUserNotificationCenterDelegate {
     let category = UNNotificationCategory(identifier: NotificationsHelperIOS10.CATEGORY, actions: [action], intentIdentifiers: [], options: [])
     UNUserNotificationCenter.currentNotificationCenter().setNotificationCategories([category])
     
-    let request = UNNotificationRequest(identifier: url, content: content, trigger: nil)
-    UNUserNotificationCenter.currentNotificationCenter().addNotificationRequest(request, withCompletionHandler: nil)
+    // Trigger this notification in 1 second from now.
+    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+    
+    let request = UNNotificationRequest(identifier: url, content: content, trigger: trigger)
+    UNUserNotificationCenter.currentNotificationCenter().addNotificationRequest(request, withCompletionHandler: {error in
+      guard let error = error else {
+        return
+      }
+      Log.w("Error while sending notification \(error)")
+    })
   }
   
   func userNotificationCenter(center: UNUserNotificationCenter, didReceiveNotificationResponse response: UNNotificationResponse, withCompletionHandler completionHandler: () -> Void) {

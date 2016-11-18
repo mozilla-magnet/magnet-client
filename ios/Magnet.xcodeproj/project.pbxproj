@@ -26,7 +26,7 @@
 		55055CDD1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55055CDC1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift */; };
 		550CECBF1D3536F80076D807 /* NotificationsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550CECBE1D3536F80076D807 /* NotificationsHelper.swift */; };
 		552134411DCA30E600A562AC /* ApiSubscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552134401DCA30E600A562AC /* ApiSubscriptions.swift */; };
-		553647D81DBE206000ADFBB3 /* LocationChangeReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553647D71DBE206000ADFBB3 /* LocationChangeReceiver.swift */; };
+		552E19871DDB400C00AA07F9 /* RegionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552E19861DDB400C00AA07F9 /* RegionManager.swift */; };
 		555A52AB1DDA3295005D4B98 /* BugfenderSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 555A52AA1DDA3295005D4B98 /* BugfenderSDK.framework */; };
 		555A52B91DDA32C5005D4B98 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555A52B81DDA32C5005D4B98 /* Log.swift */; };
 		5583EF0E1D3D55AD00852649 /* HistoryRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF0D1D3D55AD00852649 /* HistoryRecord.swift */; };
@@ -207,7 +207,7 @@
 		55055CDC1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHelperIOS10.swift; sourceTree = "<group>"; };
 		550CECBE1D3536F80076D807 /* NotificationsHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHelper.swift; sourceTree = "<group>"; };
 		552134401DCA30E600A562AC /* ApiSubscriptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiSubscriptions.swift; sourceTree = "<group>"; };
-		553647D71DBE206000ADFBB3 /* LocationChangeReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationChangeReceiver.swift; sourceTree = "<group>"; };
+		552E19861DDB400C00AA07F9 /* RegionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionManager.swift; sourceTree = "<group>"; };
 		555800951CBE5F7800A21868 /* Magnet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Magnet-Bridging-Header.h"; sourceTree = "<group>"; };
 		555A52AA1DDA3295005D4B98 /* BugfenderSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BugfenderSDK.framework; path = "3rdparty/BugfenderSDK-iOS/BugfenderSDK.framework"; sourceTree = "<group>"; };
 		555A52B81DDA32C5005D4B98 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
@@ -367,6 +367,7 @@
 		13B07FAE1A68108700A75B9A /* Magnet */ = {
 			isa = PBXGroup;
 			children = (
+				552E19851DDB3FFA00AA07F9 /* Location */,
 				55055CB51DCC9F3E00EC736F /* Notifications */,
 				55C013F51DC8EC5900154F76 /* Utils */,
 				55C013DD1DC8CBEE00154F76 /* Api */,
@@ -382,7 +383,6 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				555800951CBE5F7800A21868 /* Magnet-Bridging-Header.h */,
-				553647D71DBE206000ADFBB3 /* LocationChangeReceiver.swift */,
 			);
 			name = Magnet;
 			sourceTree = "<group>";
@@ -402,6 +402,14 @@
 				55055CDC1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift */,
 			);
 			name = Notifications;
+			sourceTree = "<group>";
+		};
+		552E19851DDB3FFA00AA07F9 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				552E19861DDB400C00AA07F9 /* RegionManager.swift */,
+			);
+			name = Location;
 			sourceTree = "<group>";
 		};
 		5583EF0A1D3D519D00852649 /* History */ = {
@@ -880,6 +888,7 @@
 				552134411DCA30E600A562AC /* ApiSubscriptions.swift in Sources */,
 				55C013FD1DC8FFC600154F76 /* ApiMagnetReact.swift in Sources */,
 				8D57224A1CDCB16400480505 /* RNMagnetWebViewManagerExport.m in Sources */,
+				552E19871DDB400C00AA07F9 /* RegionManager.swift in Sources */,
 				55C013EB1DC8CC2600154F76 /* RequestStore.swift in Sources */,
 				55C013EE1DC8CE9100154F76 /* RequestStoreSQLite.swift in Sources */,
 				5583EF0E1D3D55AD00852649 /* HistoryRecord.swift in Sources */,
@@ -902,7 +911,6 @@
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				55C013F71DC8EC6800154F76 /* System.swift in Sources */,
 				8D7567311D2BF7F300315AEE /* MagnetScannerReact.swift in Sources */,
-				553647D81DBE206000ADFBB3 /* LocationChangeReceiver.swift in Sources */,
 				555A52B91DDA32C5005D4B98 /* Log.swift in Sources */,
 				55C013F41DC8E99100154F76 /* ApiChannels.swift in Sources */,
 				8D5722491CDCB16400480505 /* RNMagnetWebViewManager.swift in Sources */,

@@ -62,10 +62,13 @@ import UserNotifications
   // Throttles the notification process, waiting for 10 seconds until
   // setting up the badge with the number of elements nearby.
   class func notifyUser(url: String, channel: String?) {
-    guard History.getInstance().getRecent(url) == nil else { return }
-    guard toNotify[url] == nil else { return }
+    guard toNotify[url] == nil else {
+      Log.l("Abort, notification already scheduled for \(url)")
+      return
+    }
     
     if channel != nil && !subscriptions.exists(channel!) {
+      Log.l("Abort notification for \(url), user not subscribed to channel \(channel)")
       return
     }
     
