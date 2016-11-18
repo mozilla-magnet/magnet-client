@@ -83,10 +83,9 @@ public class Utils {
             return null;
         }
 
-
         Iterator<String> iterator = jsonObject.keys();
         if (!iterator.hasNext()) {
-            return null;
+            return writableMap;
         }
 
         while (iterator.hasNext()) {

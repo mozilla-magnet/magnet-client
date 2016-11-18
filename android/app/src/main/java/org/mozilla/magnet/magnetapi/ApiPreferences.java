@@ -28,7 +28,13 @@ class ApiPreferences extends Api {
      */
     @Override
     public void get(String aPath, Callback aCallback) {
-        aCallback.resolve(getCache().getJsonObject(PREFERENCES_STORE_KEY));
+        JSONObject json = getCache().getJsonObject(PREFERENCES_STORE_KEY);
+
+        if (json == null) {
+          json = new JSONObject();
+        }
+
+        aCallback.resolve(json);
     }
 
     /**
