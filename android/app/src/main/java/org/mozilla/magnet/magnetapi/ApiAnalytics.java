@@ -1,8 +1,5 @@
 package org.mozilla.magnet.magnetapi;
 
-import com.idehub.GoogleAnalyticsBridge.GA;
-import com.idehub.GoogleAnalyticsBridge.Optional;
-
 import android.content.Context;
 import android.util.Log;
 
@@ -20,16 +17,13 @@ public class ApiAnalytics extends Api {
     private final Context mContext;
 
     private final Api mApiPreferences;
-    private final GA mGa;
-
-    private final String mTrackerId;
+    private final Analytics mGa;
 
     ApiAnalytics(Context aContext) {
         super(aContext);
         mContext = aContext;
-        mGa = new GA(aContext);
+        mGa = new Analytics(aContext, BuildConfig.GA_TRACKER_ID);
         mApiPreferences = new ApiPreferences(aContext);
-        mTrackerId = BuildConfig.GA_TRACKER_ID;
     }
 
     @Override
@@ -46,7 +40,11 @@ public class ApiAnalytics extends Api {
                 boolean enableTelemetry = prefData.optBoolean("enableTelemetry");
 
                 if (enableTelemetry) {
-                    asCallableTracker(aData).call(mTrackerId, mGa);
+
+                    // Given the data, translate it to a 'CallableTracker'
+                    // instance. Will throw if the data can not be converted
+                    // into a tracker object.
+                    asCallableTracker(aData).call(mGa);
                 }
 
                 aCallback.resolve(true);
@@ -58,7 +56,6 @@ public class ApiAnalytics extends Api {
                 aCallback.reject(aError);
             }
         });
-        aCallback.resolve(true);
     }
 
     public static TrackEvent createEvent(String aCategory, String aAction) {
@@ -87,6 +84,8 @@ public class ApiAnalytics extends Api {
                 return TrackEvent.fromMap(data);
             case "timing":
                 return TrackTiming.fromMap(data);
+            case "screenview":
+                return TrackScreenView.fromMap(data);
             default:
                 throw new IllegalArgumentException("Unknown 'type' " + trackingType);
         }

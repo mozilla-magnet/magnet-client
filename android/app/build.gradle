@@ -162,13 +162,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.facebook.react:react-native:+'  // From node_modules
 
-    // don't include google-play-services 'transitive'
-    // dependency so that we can be sure that we get
-    // the exact version included in magnet-scanner-android
-    compile(project(':react-native-google-analytics-bridge')) {
-        exclude group: 'com.google.android.gms', module: 'play-services-analytics'
-    }
-
     // specify the same version as magnet-scanner-android
     compile 'com.google.android.gms:play-services-analytics:9.6.1'
 }
