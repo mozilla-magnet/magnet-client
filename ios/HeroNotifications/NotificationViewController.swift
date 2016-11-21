@@ -24,7 +24,7 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
       NotificationViewController.notification = notification
       
       let notifyTimer = NSTimer.init(
-        timeInterval: 1 ,
+        timeInterval: 1,
         target: self,
         selector: #selector(processNotification),
         userInfo: nil,

@@ -63,8 +63,8 @@ class NotificationsHelperIOS10: NSObject, UNUserNotificationCenterDelegate {
     content.title = title
     content.subtitle = subtitle
     content.body = body
-    if let image: String = image! {
-      content.launchImageName = image
+    if let _image: String = image! {
+      content.launchImageName = _image
     }
     content.categoryIdentifier = NotificationsHelperIOS10.CATEGORY
     
