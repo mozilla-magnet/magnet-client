@@ -16,6 +16,5 @@ class ApiMagnet: ApiBase {
     mount("subscriptions", api: ApiSubscriptions())
     mount("metadata", api: ApiMetadata())
     mount("preferences", api: ApiPreferences())
-    mount("tracking", api: ApiAnalytics())
   }
 }

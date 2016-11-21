@@ -7,51 +7,123 @@
 //
 
 import Foundation
+import SwiftyJSON
 
-// TODO:
 class Analytics {
   var tracker: GAITracker
+  let apiPreferences = ApiPreferences()
   
   init() {
     let gai = GAI.sharedInstance()
-    
-    // TODO: Replace this hardcoded value with a value grabbed from config at build time
     self.tracker = gai.trackerWithTrackingId(GA_TRACKER_ID)
   }
   
-  func trackEvent(category: String, action: String, label: String?, value: Int64?) {
+  // Wrap a tracking function around a preference check.
+  func doTrack(track: () -> Void,_ callback: ApiCallback) {
+    func onPreferencesReceived(json: JSON) {
+      // If telemetry is not enabled, return early.
+      if !asBoolean(json["enableTelemetry"].string) {
+        callback.onSuccess(true);
+        return
+      }
+    
+      track();
+      callback.onSuccess(true)
+    }
+    
+    apiPreferences.get("", callback:
+      ApiCallback(success: onPreferencesReceived, error: callback.onError));
+  }
+  
+  func trackEvent(data: JSON, callback: ApiCallback) {
+    doTrack({() in
+      self.doTrackEvent(data)
+    }, callback);
+  }
+  
+  func trackScreenView(data: JSON, callback: ApiCallback) {
+    doTrack({() in
+      self.doTrackScreenView(data)
+    }, callback);
+  }
+  
+  func trackTiming(data: JSON, callback: ApiCallback) {
+    doTrack({() in
+      self.doTrackTiming(data)
+    }, callback);
+  }
+  
+  func doTrackEvent(data: JSON) {
+    let category = data["category"].string!
+    let action = data["action"].string!
+    let label = data["label"].string
+    let value = data["value"].int64
+    
+    self.doTrackEvent(category, action: action, label: label, value: value)
+  }
+  
+  func doTrackEvent(category: String, action: String, label: String?, value: Int64?) {
     let hit = GAIDictionaryBuilder.createEventWithCategory(
       category, action: action, label: nil, value: nil)
-  
+      
     if let _label = label {
       hit.set(kGAIEventLabel, forKey: _label)
     }
-    
+      
     if let _value = value {
       hit.setValue(NSNumber(longLong: _value), forKey: kGAIEventValue)
     }
     
+    debugPrint("TRACKING EVENT")
     self.tracker.send(hit.build() as [NSObject : AnyObject])
-    
-    debugPrint("TRACK EVENT")
   }
   
-  func trackScreenView(screenName: String) {
+  func doTrackScreenView(data: JSON) {
+    let screenName = data["name"].string!
+    
+    self.doTrackScreenView(screenName)
+  }
+  
+  func doTrackScreenView(screenName: String) {
     self.tracker.set(kGAIScreenName, value: screenName)
     
     let hit = GAIDictionaryBuilder.createScreenView()
+    
+    debugPrint("TRACKING SCREEN VIEW")
     self.tracker.send(hit.build() as [NSObject : AnyObject])
-    debugPrint("TRACK SCREEN VIEW")
   }
   
-  func trackTiming(category: String, value: Double, name: String, label: String?) {
+  func doTrackTiming(data: JSON) {
+    let category = data["category"].string!
+    let value = data["value"].double!
+    let name = data["name"].string!
+    let label = data["label"].string
+    
+    self.doTrackTiming(category, value: value, name: name, label: label)
+  }
+  
+  func doTrackTiming(category: String, value: Double, name: String, label: String?) {
     let hit:GAIDictionaryBuilder = GAIDictionaryBuilder.createTimingWithCategory(category, interval: NSNumber(double: value), name: name, label: nil)
     
     if let _label = label {
       hit.set(kGAITimingLabel, forKey: _label)
     }
     
+    debugPrint("TRACKING TIMING")
     self.tracker.send(hit.build() as [NSObject : AnyObject])
-    debugPrint("TRACK TIMING")
   }
+}
+
+func asBoolean(string: String?) -> Bool {
+  if let _string = string {
+    switch(_string) {
+    case "0": return false
+    case "1": return true
+    case "true": return true
+    case "false": return false
+    default: return false
+    }
+  }
+  
+  return false
 }
