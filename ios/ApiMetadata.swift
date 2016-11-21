@@ -35,20 +35,25 @@ class ApiMetadata: ApiBase {
   //
   //  data["objects"] = elems
 
-  override func post(path: String, data: NSDictionary, callback: ApiCallback) {
+  override func post(path: String, data: NSArray, callback: ApiCallback) {
     guard System.connectedToNetwork() else {
       callback.onError("No internet connection")
       return
     }
     
     let url = NSURL(string: ApiMetadata.SERVER_URL)
+    var urls = Array<Dictionary<String,String>>();
     
-    let parameters = ["objects": (data.valueForKey("objects"))!]
+    for url in data {
+      urls.append(["url": url as! String]);
+    }
     
+    let body = ["objects": urls]
     let request = NSMutableURLRequest(URL: url!)
+    
     request.HTTPMethod = "POST"
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(parameters, options: [])
+    request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(body, options: [])
     
     Alamofire.request(request).responseJSON { response in
       guard response.result.value != nil else {

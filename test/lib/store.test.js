@@ -3,14 +3,15 @@
  * Dependencies
  */
 
-const actions = require('../../lib/store/actions').actions;
-const { createStore, bindActionCreators } = require('redux');
-const reducer = require('../../lib/store/reducer');
-const assert = require('assert');
+import { createStore, bindActionCreators, applyMiddleware } from 'redux';
+import actions from '../../lib/store/actions';
+import reducer from '../../lib/store/reducer';
+import thunk from 'redux-thunk';
+import assert from 'assert';
 
 describe('store', function() {
   beforeEach(function() {
-    this.store = createStore(reducer);
+    this.store = createStore(reducer, applyMiddleware(thunk));
     this.actions = bindActionCreators(actions, this.store.dispatch);
   });
 
@@ -19,7 +20,7 @@ describe('store', function() {
 
     describe('first', function() {
       beforeEach(function() {
-        this.actions.updateItem(url, {
+        this.actions.itemFound(url, {
           url,
           id: url,
           distance: 3,
@@ -27,80 +28,80 @@ describe('store', function() {
       });
 
       it('sets correct distance', function() {
-        var item = getItem(this.store.getState().items, url);
+        var item = getItem(this.store.getState().items, url).value;
         var expected = [3];
 
-        assert.deepEqual(item.distances, expected);
-        assert.equal(item.regulatedDistance, meanToNearest(expected, 2));
+        assert.deepEqual(item._distanceHistory, expected);
+        assert.equal(item.distance, meanToNearest(expected, 2));
       });
 
       describe('second', function() {
         beforeEach(function() {
-          this.actions.updateItem(url, { distance: 4 });
+          this.actions.itemFound(url, { distance: 4 });
         });
 
         it('sets correct distance', function() {
-          var item = getItem(this.store.getState().items, url);
+          var item = getItem(this.store.getState().items, url).value;
           var expected = [3, 4];
 
-          assert.deepEqual(item.distances, expected);
-          assert.equal(item.regulatedDistance, meanToNearest(expected, 2));
+          assert.deepEqual(item._distanceHistory, expected);
+          assert.equal(item.distance, meanToNearest(expected, 2));
         });
 
         describe('third', function() {
           beforeEach(function() {
-            this.actions.updateItem(url, {
+            this.actions.itemFound(url, {
               distance: 3,
             });
           });
 
           it('sets correct distance', function() {
-            var item = getItem(this.store.getState().items, url);
+            var item = getItem(this.store.getState().items, url).value;
             var expected = [3, 4, 3];
 
-            assert.deepEqual(item.distances, expected);
-            assert.equal(item.regulatedDistance, meanToNearest(expected, 2));
+            assert.deepEqual(item._distanceHistory, expected);
+            assert.equal(item.distance, meanToNearest(expected, 2));
           });
 
           describe('fourth', function() {
             beforeEach(function() {
-              this.actions.updateItem(url, {
+              this.actions.itemFound(url, {
                 distance: 7,
               });
             });
 
             it('sets correct distance', function() {
-              var item = getItem(this.store.getState().items, url);
+              var item = getItem(this.store.getState().items, url).value;
               var expected = [3, 4, 3, 7];
 
-              assert.deepEqual(item.distances, expected);
-              assert.equal(item.regulatedDistance, meanToNearest(expected, 2));
+              assert.deepEqual(item._distanceHistory, expected);
+              assert.equal(item.distance, meanToNearest(expected, 2));
             });
 
             describe('fifth', function() {
               beforeEach(function() {
-                this.actions.updateItem(url, { distance: 4 });
+                this.actions.itemFound(url, { distance: 4 });
               });
 
               it('sets correct distance', function() {
-                var item = getItem(this.store.getState().items, url);
+                var item = getItem(this.store.getState().items, url).value;
                 var expected = [3, 4, 3, 7, 4];
 
-                assert.deepEqual(item.distances, expected);
-                assert.equal(item.regulatedDistance, meanToNearest(expected, 2));
+                assert.deepEqual(item._distanceHistory, expected);
+                assert.equal(item.distance, meanToNearest(expected, 2));
               });
 
               describe('sixth', function() {
                 beforeEach(function() {
-                  this.actions.updateItem(url, { distance: 4 });
+                  this.actions.itemFound(url, { distance: 4 });
                 });
 
                 it('sets correct distance', function() {
-                  var item = getItem(this.store.getState().items, url);
+                  var item = getItem(this.store.getState().items, url).value;
                   var expected = [4, 3, 7, 4, 4];
 
-                  assert.deepEqual(item.distances, expected);
-                  assert.equal(item.regulatedDistance, meanToNearest(expected, 2));
+                  assert.deepEqual(item._distanceHistory, expected);
+                  assert.equal(item.distance, meanToNearest(expected, 2));
                 });
               });
             });
@@ -111,7 +112,7 @@ describe('store', function() {
   });
 
   function getItem(items, id) {
-    return items.find(item => item.id === id);
+    return items[id];
   }
 
   function meanToNearest(numbers, nearest) {

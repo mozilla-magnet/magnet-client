@@ -80,6 +80,7 @@ public class Api {
 
         if (match == null) {
             callback.reject("no matching route");
+            return;
         }
 
         match.post(path, data, callback);
@@ -96,6 +97,7 @@ public class Api {
 
         if (match == null) {
             callback.reject("no matching route");
+            return;
         }
 
         match.delete(path, data, callback);

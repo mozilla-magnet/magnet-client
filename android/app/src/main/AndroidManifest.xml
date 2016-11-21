@@ -10,13 +10,14 @@
     <uses-sdk tools:overrideLibrary="org.mozilla.magnet.net.scanner" />
 
     <application
-        android:name="org.mozilla.magnet.MainApplication"
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name="org.mozilla.magnet.MainActivity"
+            android:name=".MainActivity"
+            android:launchMode="singleTask"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
@@ -24,6 +25,16 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- handles URIs that begin with "mozilla-magnet://item” -->
+                <data android:scheme="mozilla-magnet"
+                    android:host="item" />
+            </intent-filter>
+
         </activity>
 
         <service

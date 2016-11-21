@@ -16,11 +16,6 @@ module.exports = {
       title: 'Show distance',
     },
 
-    'removeOldItems': {
-      value: false, // default
-      title: 'Remove old items',
-    },
-
     'enableTelemetry': {
       value: true, // default
       title: 'Telemetry',
@@ -40,6 +35,7 @@ module.exports = {
   'itemExpiring': 10000, // 10 secs
 
   'metadataServiceUrl': 'https://tengam.org/api/v1/metadata',
+  'searchServiceUrl': 'https://tengam.org/content/v1/search/url',
 
   'theme': {
     'colorBackground': '#f2f2f2',

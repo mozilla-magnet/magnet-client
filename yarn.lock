@@ -3537,10 +3537,9 @@ lru-cache@^4.0.0, lru-cache@^4.0.1:
     url "^0.11.0"
     xml2js "^0.4.16"
 
-magnet-scanner-android@mozilla-magnet/magnet-scanner-android#v4.0.1, mozilla-magnet/magnet-scanner-android#v4.0.1:
-  name magnet-scanner-android
-  version "4.0.1"
-  resolved "https://codeload.github.com/mozilla-magnet/magnet-scanner-android/tar.gz/ebed682910b46e646afe385df5c2397cc3f6a6e5"
+magnet-scanner-android@mozilla-magnet/magnet-scanner-android#v4.0.3:
+  version "4.0.3"
+  resolved "https://codeload.github.com/mozilla-magnet/magnet-scanner-android/tar.gz/155c7d338bd4d5b54d94beb582e11b24c6441fa4"
 
 makeerror@1.0.x:
   version "1.0.11"
@@ -4192,9 +4191,9 @@ react-deep-force-update@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.0.1.tgz#f911b5be1d2a6fe387507dd6e9a767aa2924b4c7"
 
-react-native-google-analytics-bridge@^3.0.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-google-analytics-bridge/-/react-native-google-analytics-bridge-3.1.0.tgz#4869db16e6e18d59f1f4ab6a33e483cc71872421"
+react-native-google-analytics-bridge@mozilla-magnet/react-native-google-analytics-bridge#master:
+  version "4.0.0"
+  resolved "https://codeload.github.com/mozilla-magnet/react-native-google-analytics-bridge/tar.gz/eb4543509e9ab96b1bcc9b7e19942e2716330259"
 
 react-native-linear-gradient@^1.5.13:
   version "1.5.14"
@@ -4305,7 +4304,7 @@ react-transform-hmr@^1.0.4:
     global "^4.3.0"
     react-proxy "^1.1.7"
 
-react@^15.3.1:
+react@15.3.x:
   version "15.3.2"
   resolved "https://registry.yarnpkg.com/react/-/react-15.3.2.tgz#a7bccd2fee8af126b0317e222c28d1d54528d09e"
   dependencies:
@@ -4435,6 +4434,10 @@ redeyed@~1.0.0:
 reduce-component@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/reduce-component/-/reduce-component-1.0.1.tgz#e0c93542c574521bea13df0f9488ed82ab77c5da"
+
+redux-thunk:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.1.0.tgz#c724bfee75dbe352da2e3ba9bc14302badd89a98"
 
 redux@^3.5.2:
   version "3.6.0"
