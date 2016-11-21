@@ -25,6 +25,7 @@ public class TrackTiming implements CallableTracker {
     public static TrackTiming fromMap(Map<String, Object> aMap) {
         Object category = aMap.get("category");
         Object value = aMap.get("value");
+        Object name = aMap.get("name");
 
         if (category == null) {
             throw new IllegalArgumentException("Type 'timing' should have a 'category' parameter");
@@ -34,9 +35,11 @@ public class TrackTiming implements CallableTracker {
             throw new IllegalArgumentException("Type 'timing' should have a numeric 'value' paramter");
         }
 
-        Object name = aMap.get("name");
-        Object label = aMap.get("label");
+        if (name == null) {
+          throw new IllegalArgumentException("Type 'timing' should have a 'name' parameter");
+        }
 
+        Object label = aMap.get("label");
         // TODO: These may be null, but null is 'OK' as we're pretty much using it as an
         // optional type... Android's Jack compiler supports Java 8 +
         // the Optional type so we should move to that when we support it.
