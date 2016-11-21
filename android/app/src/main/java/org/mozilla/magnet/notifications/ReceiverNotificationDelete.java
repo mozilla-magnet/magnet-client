@@ -1,8 +1,6 @@
 package org.mozilla.magnet.notifications;
 
-import org.mozilla.magnet.api.Api;
-import org.mozilla.magnet.magnetapi.ApiMagnet;
-import org.mozilla.magnet.magnetapi.ApiAnalytics;
+import org.mozilla.magnet.tracking.Analytics;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -27,12 +25,8 @@ public class ReceiverNotificationDelete extends BroadcastReceiver {
         clearNotification(context, id);
         sendBroadcast(context);
 
-        Api api = new ApiMagnet(context);
-        api.post(
-            "tracking",
-            ApiAnalytics.createEvent("system", "notification-dismiss"),
-            Api.NoopCallback
-        );
+        Analytics analytics = new Analytics(context);
+        analytics.trackEvent("system", "notification-dismiss", null, null);
     }
 
     private void clearNotification(Context context, int id) {

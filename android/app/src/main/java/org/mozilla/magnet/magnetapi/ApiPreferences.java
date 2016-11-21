@@ -11,14 +11,14 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.Map;
 import java.util.HashMap;
 
-class ApiPreferences extends Api {
+public class ApiPreferences extends Api {
 
     private static final String PREFERENCES_STORE_KEY = "preferences";
     private static final String PREFERENCES_KEY = "pref_key";
 
     private final Lock mWriteLock = new ReentrantLock();
 
-    ApiPreferences(Context aContext) {
+    public ApiPreferences(Context aContext) {
         super(aContext);
     }
 

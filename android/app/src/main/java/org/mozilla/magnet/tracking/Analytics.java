@@ -1,12 +1,19 @@
 package org.mozilla.magnet.tracking;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.analytics.ecommerce.Product;
 import com.google.android.gms.analytics.ecommerce.ProductAction;
+
+import org.mozilla.magnet.api.Api.Callback;
+import org.mozilla.magnet.BuildConfig;
+import org.mozilla.magnet.magnetapi.ApiPreferences;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,16 +29,65 @@ public class Analytics {
 
     private final Tracker mTracker;
 
-    public Analytics(Context aContext, String aTrackerId) {
-        mTracker = createTracker(aContext, aTrackerId);
+    private final ApiPreferences mPreferences;
+
+    public Analytics(Context aContext) {
+        mTracker = createTracker(aContext, BuildConfig.GA_TRACKER_ID);
+        mPreferences = new ApiPreferences(aContext);
     }
 
-    public void trackScreenView(String aScreenName) {
+    public void trackScreenView(final String aScreenName) {
+        doTrack(new Callback() {
+            @Override
+            public void resolve(Object aUnused) {
+              Analytics.this.doTrackScreenView(aScreenName);
+            }
+
+            @Override
+            public void reject(String aError) {
+                Log.e(TAG, aError);
+            }
+        });
+    }
+
+    public void trackEvent(
+        final String aCategory, final String aAction, final String aLabel, final Long aValue) {
+
+        doTrack(new Callback() {
+            @Override
+            public void resolve(Object aUnused) {
+              Analytics.this.doTrackEvent(aCategory, aAction, aLabel, aValue);
+            }
+
+            @Override
+            public void reject(String aError) {
+                Log.e(TAG, aError);
+            }
+        });
+    }
+
+    public void trackTiming(final String aCategory, final Double aValue,
+        final String aName, final String aLabel) {
+
+        doTrack(new Callback() {
+            @Override
+            public void resolve(Object aUnused) {
+              Analytics.this.doTrackTiming(aCategory, aValue, aName, aLabel);
+            }
+
+            @Override
+            public void reject(String aError) {
+                Log.e(TAG, aError);
+            }
+        });
+    }
+
+    private void doTrackScreenView(String aScreenName) {
         mTracker.setScreenName(aScreenName);
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
-    public void trackEvent(
+    private void doTrackEvent(
         String aCategory, String aAction, String aLabel, Long aValue) {
 
         HitBuilders.EventBuilder hit = new HitBuilders.EventBuilder()
@@ -49,7 +105,7 @@ public class Analytics {
         mTracker.send(hit.build());
     }
 
-    public void trackTiming(String aCategory, Double aValue,
+    private void doTrackTiming(String aCategory, Double aValue,
         String aName, String aLabel) {
 
         HitBuilders.TimingBuilder hit = new HitBuilders.TimingBuilder()
@@ -67,56 +123,6 @@ public class Analytics {
         mTracker.send(hit.build());
     }
 
-    public void trackScreenViewWithCustomDimensionValues(String aScreenName, Map<Integer, String> aDimensionIndexValues) {
-
-          mTracker.setScreenName(aScreenName);
-
-          HitBuilders.ScreenViewBuilder hit = new HitBuilders.ScreenViewBuilder();
-
-          for (Integer index : aDimensionIndexValues.keySet()) {
-              String value = aDimensionIndexValues.get(index);
-              hit.setCustomDimension(index, value);
-          }
-
-          mTracker.send(hit.build());
-    }
-
-    public void trackEventWithCustomDimensionValues(
-            String aCategory, String aAction, String aLabel,
-            Integer aValue,    Map<Integer, String> aDimensionIndexValues) {
-
-        HitBuilders.EventBuilder hit = new HitBuilders.EventBuilder()
-            .setCategory(aCategory)
-            .setAction(aAction);
-
-        if (aLabel != null) {
-            hit.setLabel(aLabel);
-        }
-
-        if (aValue != null) {
-            hit.setValue(aValue.intValue());
-        }
-
-        for (Integer index : aDimensionIndexValues.keySet()) {
-            String dimValue = aDimensionIndexValues.get(index);
-            hit.setCustomDimension(index, dimValue);
-        }
-
-        mTracker.send(hit.build());
-    }
-
-    public void setAnonymizeIp(Boolean aEnabled) {
-        mTracker.setAnonymizeIp(aEnabled);
-    }
-
-    public void setAppName(String aAppName) {
-        mTracker.setAppName(aAppName);
-    }
-
-    public void setAppVersion(String aAppVersion) {
-        mTracker.setAppVersion(aAppVersion);
-    }
-
     private static Tracker createTracker(Context aContext, String aTrackerId) {
         GoogleAnalytics analytics = GoogleAnalytics.getInstance(aContext);
         analytics.setLocalDispatchPeriod(LOCAL_DISPATCH_PERIOD);
@@ -125,5 +131,31 @@ public class Analytics {
         tracker.enableExceptionReporting(true);
 
         return tracker;
+    }
+
+    private void doTrack(final Callback aTrack) {
+        mPreferences.get("", new Callback() {
+            @Override
+            public void resolve(Object aPrefData) {
+                if (!(aPrefData instanceof JSONObject)) {
+                    this.reject("Expected JSONObject from preferences API");
+                    return;
+                }
+
+                JSONObject prefData = (JSONObject)aPrefData;
+
+                boolean enableTelemetry = prefData.optBoolean("enableTelemetry");
+
+                if (enableTelemetry) {
+                    aTrack.resolve(enableTelemetry);
+                }
+            }
+
+            @Override
+            public void reject(String aError) {
+                Log.d(TAG, "pref API call failed " + aError);
+                aTrack.reject(aError);
+            }
+        });
     }
 }
