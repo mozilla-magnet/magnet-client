@@ -40,7 +40,6 @@
     "buffer": "./node_modules/buffer/index.js"
   },
   "jest": {
-    "preset": "jest-react-native",
-    "setupFiles": "./test/setup.js"
+    "preset": "jest-react-native"
   }
 }
