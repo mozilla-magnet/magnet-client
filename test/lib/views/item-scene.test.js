@@ -1,4 +1,4 @@
-import ItemScene from '../../../lib/views/item/scene';
+import ItemScene from '../../../lib/views/item/item-scene';
 import { createStore, applyMiddleware } from 'redux';
 import reducer from '../../../lib/store/reducer';
 import renderer from 'react-test-renderer';
