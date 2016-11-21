@@ -22,6 +22,12 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		222D76421DD3AE4600E15D62 /* ApiPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222D76411DD3AE4600E15D62 /* ApiPreferences.swift */; };
+		22AE787B1DE2FD4200192FC0 /* CallableTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AE787A1DE2FD4200192FC0 /* CallableTracker.swift */; };
+		22AE787D1DE2FD7F00192FC0 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AE787C1DE2FD7F00192FC0 /* Analytics.swift */; };
+		22AE78801DE2FDCF00192FC0 /* TrackEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AE787F1DE2FDCF00192FC0 /* TrackEvent.swift */; };
+		22AE78821DE3009800192FC0 /* TrackTiming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AE78811DE3009800192FC0 /* TrackTiming.swift */; };
+		22AE78841DE3011800192FC0 /* TrackScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AE78831DE3011800192FC0 /* TrackScreenView.swift */; };
+		22AE78861DE301BD00192FC0 /* ApiAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AE78851DE301BD00192FC0 /* ApiAnalytics.swift */; };
 		55055CA81DCBA5A300EC736F /* ApiMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55055CA71DCBA5A300EC736F /* ApiMetadata.swift */; };
 		55055CDD1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55055CDC1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift */; };
 		550CECBF1D3536F80076D807 /* NotificationsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550CECBE1D3536F80076D807 /* NotificationsHelper.swift */; };
@@ -62,7 +68,6 @@
 		8DBAAAB81D67272500AC32C5 /* FiraSans-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8DBAAAB51D67272500AC32C5 /* FiraSans-Book.otf */; };
 		8DBAAAB91D67272500AC32C5 /* FiraSans-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8DBAAAB61D67272500AC32C5 /* FiraSans-LightItalic.otf */; };
 		8DBAAABA1D67272500AC32C5 /* FiraSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8DBAAAB71D67272500AC32C5 /* FiraSans-LightItalic.ttf */; };
-		8DF821771D5387E20081F56E /* libRCTGoogleAnalyticsBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF8216D1D53879A0081F56E /* libRCTGoogleAnalyticsBridge.a */; };
 		8DF821791D5387F20081F56E /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF821781D5387F20081F56E /* CoreData.framework */; };
 		8DF8217B1D5387FC0081F56E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF8217A1D5387FC0081F56E /* SystemConfiguration.framework */; };
 		8DF8217D1D5388090081F56E /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF8217C1D5388090081F56E /* libz.tbd */; };
@@ -203,6 +208,12 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Magnet/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		222D76411DD3AE4600E15D62 /* ApiPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiPreferences.swift; sourceTree = "<group>"; };
+		22AE787A1DE2FD4200192FC0 /* CallableTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallableTracker.swift; sourceTree = "<group>"; };
+		22AE787C1DE2FD7F00192FC0 /* Analytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
+		22AE787F1DE2FDCF00192FC0 /* TrackEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackEvent.swift; sourceTree = "<group>"; };
+		22AE78811DE3009800192FC0 /* TrackTiming.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackTiming.swift; sourceTree = "<group>"; };
+		22AE78831DE3011800192FC0 /* TrackScreenView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackScreenView.swift; sourceTree = "<group>"; };
+		22AE78851DE301BD00192FC0 /* ApiAnalytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiAnalytics.swift; sourceTree = "<group>"; };
 		55055CA71DCBA5A300EC736F /* ApiMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiMetadata.swift; sourceTree = "<group>"; };
 		55055CDC1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHelperIOS10.swift; sourceTree = "<group>"; };
 		550CECBE1D3536F80076D807 /* NotificationsHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHelper.swift; sourceTree = "<group>"; };
@@ -280,7 +291,6 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
-				8DF821771D5387E20081F56E /* libRCTGoogleAnalyticsBridge.a in Frameworks */,
 				559608C81DB918B100816CF1 /* Alamofire.framework in Frameworks */,
 				559608C91DB918B100816CF1 /* SwiftyJSON.framework in Frameworks */,
 				555A52AB1DDA3295005D4B98 /* BugfenderSDK.framework in Frameworks */,
@@ -368,6 +378,7 @@
 			isa = PBXGroup;
 			children = (
 				552E19851DDB3FFA00AA07F9 /* Location */,
+				22AE78791DE2FC2100192FC0 /* Analytics */,
 				55055CB51DCC9F3E00EC736F /* Notifications */,
 				55C013F51DC8EC5900154F76 /* Utils */,
 				55C013DD1DC8CBEE00154F76 /* Api */,
@@ -393,6 +404,26 @@
 				146834041AC3E56700842450 /* libReact.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		22AE78791DE2FC2100192FC0 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				22AE787E1DE2FDBE00192FC0 /* Trackers */,
+				22AE787A1DE2FD4200192FC0 /* CallableTracker.swift */,
+				22AE787C1DE2FD7F00192FC0 /* Analytics.swift */,
+			);
+			name = Analytics;
+			sourceTree = "<group>";
+		};
+		22AE787E1DE2FDBE00192FC0 /* Trackers */ = {
+			isa = PBXGroup;
+			children = (
+				22AE787F1DE2FDCF00192FC0 /* TrackEvent.swift */,
+				22AE78811DE3009800192FC0 /* TrackTiming.swift */,
+				22AE78831DE3011800192FC0 /* TrackScreenView.swift */,
+			);
+			name = Trackers;
 			sourceTree = "<group>";
 		};
 		55055CB51DCC9F3E00EC736F /* Notifications */ = {
@@ -444,6 +475,7 @@
 				552134401DCA30E600A562AC /* ApiSubscriptions.swift */,
 				55055CA71DCBA5A300EC736F /* ApiMetadata.swift */,
 				222D76411DD3AE4600E15D62 /* ApiPreferences.swift */,
+				22AE78851DE301BD00192FC0 /* ApiAnalytics.swift */,
 			);
 			name = Api;
 			sourceTree = "<group>";
@@ -887,6 +919,7 @@
 				5583EF101D3D565200852649 /* HistorySQLite.swift in Sources */,
 				552134411DCA30E600A562AC /* ApiSubscriptions.swift in Sources */,
 				55C013FD1DC8FFC600154F76 /* ApiMagnetReact.swift in Sources */,
+				22AE78861DE301BD00192FC0 /* ApiAnalytics.swift in Sources */,
 				8D57224A1CDCB16400480505 /* RNMagnetWebViewManagerExport.m in Sources */,
 				552E19871DDB400C00AA07F9 /* RegionManager.swift in Sources */,
 				55C013EB1DC8CC2600154F76 /* RequestStore.swift in Sources */,
@@ -895,10 +928,13 @@
 				8D589BE31DC0E1700069BB98 /* SubscriptionRecord.swift in Sources */,
 				8D589BF11DC0E6660069BB98 /* SubscriptionsReact.m in Sources */,
 				550CECBF1D3536F80076D807 /* NotificationsHelper.swift in Sources */,
+				22AE78801DE2FDCF00192FC0 /* TrackEvent.swift in Sources */,
 				8D589BF31DC0E6A80069BB98 /* Subscriptions.swift in Sources */,
 				8D589C0D1DC10E260069BB98 /* SubscriptionsReact.swift in Sources */,
+				22AE787B1DE2FD4200192FC0 /* CallableTracker.swift in Sources */,
 				8D75672D1D2BF33500315AEE /* MagnetScanner.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				22AE78841DE3011800192FC0 /* TrackScreenView.swift in Sources */,
 				55C013F01DC8DA2B00154F76 /* Api.swift in Sources */,
 				222D76421DD3AE4600E15D62 /* ApiPreferences.swift in Sources */,
 				8D589BC91DC0BFDE0069BB98 /* SubscriptionsDB.swift in Sources */,
@@ -910,11 +946,13 @@
 				8D57224B1CDCB16400480505 /* RNMagnetWebView.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				55C013F71DC8EC6800154F76 /* System.swift in Sources */,
+				22AE787D1DE2FD7F00192FC0 /* Analytics.swift in Sources */,
 				8D7567311D2BF7F300315AEE /* MagnetScannerReact.swift in Sources */,
 				555A52B91DDA32C5005D4B98 /* Log.swift in Sources */,
 				55C013F41DC8E99100154F76 /* ApiChannels.swift in Sources */,
 				8D5722491CDCB16400480505 /* RNMagnetWebViewManager.swift in Sources */,
 				55055CA81DCBA5A300EC736F /* ApiMetadata.swift in Sources */,
+				22AE78821DE3009800192FC0 /* TrackTiming.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
