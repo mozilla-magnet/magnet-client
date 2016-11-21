@@ -28,6 +28,7 @@
 		22AE78821DE3009800192FC0 /* TrackTiming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AE78811DE3009800192FC0 /* TrackTiming.swift */; };
 		22AE78841DE3011800192FC0 /* TrackScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AE78831DE3011800192FC0 /* TrackScreenView.swift */; };
 		22AE78861DE301BD00192FC0 /* ApiAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AE78851DE301BD00192FC0 /* ApiAnalytics.swift */; };
+		22AE78B01DE3302900192FC0 /* GoogleAnalyticsServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22AE78AF1DE3302900192FC0 /* GoogleAnalyticsServices.framework */; };
 		55055CA81DCBA5A300EC736F /* ApiMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55055CA71DCBA5A300EC736F /* ApiMetadata.swift */; };
 		55055CDD1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55055CDC1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift */; };
 		550CECBF1D3536F80076D807 /* NotificationsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550CECBE1D3536F80076D807 /* NotificationsHelper.swift */; };
@@ -214,6 +215,7 @@
 		22AE78811DE3009800192FC0 /* TrackTiming.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackTiming.swift; sourceTree = "<group>"; };
 		22AE78831DE3011800192FC0 /* TrackScreenView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackScreenView.swift; sourceTree = "<group>"; };
 		22AE78851DE301BD00192FC0 /* ApiAnalytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiAnalytics.swift; sourceTree = "<group>"; };
+		22AE78AF1DE3302900192FC0 /* GoogleAnalyticsServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleAnalyticsServices.framework; path = "3rdparty/GoogleAnalyticsSDK-iOS/GoogleAnalyticsServices.framework"; sourceTree = "<group>"; };
 		55055CA71DCBA5A300EC736F /* ApiMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiMetadata.swift; sourceTree = "<group>"; };
 		55055CDC1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHelperIOS10.swift; sourceTree = "<group>"; };
 		550CECBE1D3536F80076D807 /* NotificationsHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHelper.swift; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22AE78B01DE3302900192FC0 /* GoogleAnalyticsServices.framework in Frameworks */,
 				8DF821841D53B3830081F56E /* AdSupport.framework in Frameworks */,
 				85DF9A341D633665004DF3F1 /* MagnetScannerIOS.framework in Frameworks */,
 				8DF8217F1D5388190081F56E /* libsqlite3.0.tbd in Frameworks */,
@@ -456,6 +459,7 @@
 		559608B91DB918B100816CF1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				22AE78AF1DE3302900192FC0 /* GoogleAnalyticsServices.framework */,
 				555A52AA1DDA3295005D4B98 /* BugfenderSDK.framework */,
 				559608C61DB918B100816CF1 /* Alamofire.framework */,
 				559608C71DB918B100816CF1 /* SwiftyJSON.framework */,
@@ -669,7 +673,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = Mozilla;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -1021,6 +1025,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/3rdparty/BugfenderSDK-iOS",
+					"$(PROJECT_DIR)/3rdparty/GoogleAnalyticsSDK-iOS",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1060,6 +1065,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/3rdparty/BugfenderSDK-iOS",
+					"$(PROJECT_DIR)/3rdparty/GoogleAnalyticsSDK-iOS",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1098,8 +1104,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1109,6 +1117,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -1128,7 +1137,7 @@
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS/RCTLinkingManager.h",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1149,8 +1158,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1158,6 +1169,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -1171,9 +1183,11 @@
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS/RCTLinkingManager.h",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 2.3;
 				VALIDATE_PRODUCT = YES;
 			};
