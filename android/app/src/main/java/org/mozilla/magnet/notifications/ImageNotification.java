@@ -53,7 +53,7 @@ class ImageNotification extends MagnetNotification {
                 .setSmallIcon(R.drawable.ic_stat_notify)
                 .setAutoCancel(true)
                 .setDeleteIntent(dismissIntent)
-                .setContentIntent(createLaunchIntent());
+                .setContentIntent(createItemDeepLinkIntent(mItem.getUrl()));
 
         // add image if there is one
         if (bitmapImage != null) {

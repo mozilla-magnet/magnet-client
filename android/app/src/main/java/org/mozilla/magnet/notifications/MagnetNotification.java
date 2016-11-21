@@ -35,6 +35,7 @@ import java.util.Map;
 abstract class MagnetNotification extends AsyncTask<Void, Void, Map<String,Bitmap>> {
     private Context mContext;
     private MagnetScannerItem mItem;
+    private final String CUSTOM_SCHEME = "mozilla-magnet://";
     private int mId;
 
     MagnetNotification(Context context, int id) {
@@ -72,17 +73,18 @@ abstract class MagnetNotification extends AsyncTask<Void, Void, Map<String,Bitma
         }
     }
 
-    PendingIntent createLaunchIntent() {
-        Intent launchIntent = new Intent(mContext, MainActivity.class);
+    PendingIntent createItemDeepLinkIntent(String url) {
+        String deepLink = CUSTOM_SCHEME + "item?url=" + url;
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(deepLink));
         int uniqueRequestCode = (int) System.currentTimeMillis();
 
-        launchIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        launchIntent.putExtra("source", "notification");
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("source", "notification");
 
         return PendingIntent.getActivity(
                 mContext,
                 uniqueRequestCode,
-                launchIntent,
+                intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
