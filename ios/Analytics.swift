@@ -16,7 +16,7 @@ class Analytics {
     let gai = GAI.sharedInstance()
     
     // TODO: Replace this hardcoded value with a value grabbed from config at build time
-    self.tracker = gai.trackerWithTrackingId("UA-87693297-1")
+    self.tracker = gai.trackerWithTrackingId(GA_TRACKER_ID)
   }
   
   func trackEvent(category: String, action: String, label: String?, value: Int64?) {
