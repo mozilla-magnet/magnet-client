@@ -9,6 +9,7 @@ import Foundation
 
 class Subscriptions: NSObject {
   private var db: SubscriptionsDB!
+  private let lockQueue = dispatch_queue_create("com.mozilla.magnet.subscriptions.access", nil)
   
   override init() {
     super.init();
@@ -16,22 +17,42 @@ class Subscriptions: NSObject {
   }
   
   func add(channelName: String) -> Bool {
-    return db.add(channelName)
+    var opResult = false
+    dispatch_sync(lockQueue) {
+      opResult = db.add(channelName)
+    }
+    return opResult
   }
   
   func remove(channelName: String) -> Bool {
-    return db.remove(channelName)
+    var opResult = false
+    dispatch_sync(lockQueue) {
+      opResult = db.remove(channelName)
+    }
+    return opResult
   }
   
   func update(channelName: String, updates: Dictionary<String,AnyObject>) -> Bool {
-    return db.update(channelName, updates: updates)
+    var opResult = false
+    dispatch_sync(lockQueue) {
+      opResult = db.update(channelName, updates: updates)
+    }
+    return opResult
   }
   
   func get() -> [SubscriptionRecord] {
-    return db.get();
+    var subscriptions: [SubscriptionRecord] = []
+    dispatch_sync(lockQueue) {
+      subscriptions = db.get();
+    }
+    return subscriptions
   }
   
   func exists(channelName: String) -> Bool {
-    return db.exists(channelName)
+    var exists = false
+    dispatch_sync(lockQueue) {
+      exists = db.exists(channelName)
+    }
+    return exists
   }
 }
