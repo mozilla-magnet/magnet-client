@@ -35,6 +35,7 @@
   "itemExpiring": 10000,
 
   "metadataServiceUrl": "https://tengam.org/api/v1/metadata",
+  "searchServiceUrl": "https://tengam.org/content/v1/search/url",
 
   "theme": {
     "colorBackground": "#f2f2f2",
