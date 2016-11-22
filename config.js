@@ -14,6 +14,7 @@ module.exports = {
     'showDistance': {
       value: false, // default
       title: 'Show distance',
+      env: 'debug', // Show only on debug builds
     },
 
     'enableTelemetry': {
