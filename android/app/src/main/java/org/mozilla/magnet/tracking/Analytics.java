@@ -10,8 +10,9 @@ import com.google.android.gms.analytics.ecommerce.Product;
 import com.google.android.gms.analytics.ecommerce.ProductAction;
 
 import org.mozilla.magnet.api.Api.Callback;
+import org.mozilla.magnet.api.Api;
 import org.mozilla.magnet.BuildConfig;
-import org.mozilla.magnet.magnetapi.ApiPreferences;
+import org.mozilla.magnet.magnetapi.ApiMagnet;
 
 import org.json.JSONObject;
 
@@ -29,11 +30,11 @@ public class Analytics {
 
     private final Tracker mTracker;
 
-    private final ApiPreferences mPreferences;
+    private final Api mApi;
 
     public Analytics(Context aContext) {
         mTracker = createTracker(aContext, BuildConfig.GA_TRACKER_ID);
-        mPreferences = new ApiPreferences(aContext);
+        mApi = new ApiMagnet(aContext);
     }
 
     public void trackScreenView(final String aScreenName) {
@@ -134,7 +135,7 @@ public class Analytics {
     }
 
     private void doTrack(final Callback aTrack) {
-        mPreferences.get("", new Callback() {
+        mApi.get("preferences", new Callback() {
             @Override
             public void resolve(Object aPrefData) {
                 if (!(aPrefData instanceof JSONObject)) {
