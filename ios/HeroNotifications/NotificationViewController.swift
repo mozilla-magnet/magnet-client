@@ -42,6 +42,7 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
       
       // Start animating the spinner that is currently visible
       self.loadingSpinner.hidden = false
+      self.loadingSpinner.center = self.view.center
       self.loadingSpinner.startAnimating()
       
       self.imageView.stopAnimating()
