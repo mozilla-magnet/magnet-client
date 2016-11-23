@@ -13,7 +13,8 @@
 
     "showDistance": {
       "value": false,
-      "title": "Show distance"
+      "title": "Show distance",
+      "env": "debug"
     },
 
     "enableTelemetry": {
