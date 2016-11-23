@@ -42,6 +42,7 @@
             android:name=".notifications.NotificationService"
             android:enabled="true"
             android:exported="false"/>
+        <service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" />
 
         <receiver android:name=".notifications.ReceiverNotificationDelete"/>
 

@@ -179,6 +179,10 @@ class MagnetScannerReact extends ReactContextBaseJavaModule implements MagnetSca
         WritableMap data = Arguments.createMap();
         data.putString("url", item.getUrl());
         data.putDouble("distance", item.getDistance());
+        if (item.getLatitude() != null && item.getLongitude() != null) {
+            data.putDouble("latitude", item.getLatitude());
+            data.putDouble("longitude", item.getLongitude());
+        }
         emit("magnetscanner:itemfound", data);
     }
 
