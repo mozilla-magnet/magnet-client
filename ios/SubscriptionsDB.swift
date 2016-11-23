@@ -14,6 +14,9 @@ class SubscriptionsDB {
   private let columnChannelName = Expression<String>(SubscriptionRecord.CHANNEL_NAME);
   private let columnNotificationsEnabled = Expression<Bool>(SubscriptionRecord.NOTIFICATIONS_ENABLED)
   private var db: Connection
+  private static let TIMEOUT: Double = 5 // 5 seconds timeout
+  private static let RETRIES = 3 // Number of retries to connect to the DB
+  private static let DB_NAME = "subscriptions.sqlite3"
 
   static func get() -> SubscriptionsDB {
     let lockQueue = dispatch_queue_create("com.mozilla.magnet.subscriptions", nil)
@@ -36,10 +39,10 @@ class SubscriptionsDB {
       true).first!
     
     // get handle on database
-    db = try! Connection("\(path)/subscriptions.sqlite3")
-    db.busyTimeout = 5
+    db = try! Connection("\(path)/\(SubscriptionsDB.DB_NAME)")
+    db.busyTimeout = SubscriptionsDB.TIMEOUT
     db.busyHandler({ tries in
-      if tries >= 3 {
+      if tries >= SubscriptionsDB.RETRIES {
         return false
       }
       return true
