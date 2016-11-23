@@ -14,10 +14,9 @@ import SwiftyJSON
   
   @objc func trackEvent(data: NSDictionary, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
     let json = JSON(data);
-    
-    
+
     analytics.trackEvent(json, callback: ApiCallback(success: { result in
-      resolve(result.rawValue)
+        resolve(result.rawValue)
       },
       error: { (error) in
         let err = NSError(coder: NSCoder())
@@ -28,7 +27,7 @@ import SwiftyJSON
   @objc func trackScreenView(data: NSDictionary, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
     let json = JSON(data)
     analytics.trackScreenView(json, callback: ApiCallback(success: { result in
-      resolve(result.rawValue)
+        resolve(result.rawValue)
       },
       error: { (error) in
         let err = NSError(coder: NSCoder())
@@ -39,7 +38,7 @@ import SwiftyJSON
   @objc func trackTiming(data: NSDictionary, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
     let json = JSON(data)
     analytics.trackTiming(json, callback: ApiCallback(success: { result in
-      resolve(result.rawValue)
+        resolve(result.rawValue)
       },
       error: { (error) in
         let err = NSError(coder: NSCoder())
