@@ -42,3 +42,10 @@ android/keystores/debug.keystore
 
 # Carthage
 ios/Carthage/
+
+# ios generated
+ios/BuildConfig.h
+ios/Magnet.app/Headers/BuildConfig.h
+
+# vi
+*.swp

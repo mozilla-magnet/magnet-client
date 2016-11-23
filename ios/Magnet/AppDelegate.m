@@ -43,9 +43,9 @@
   self.bridge = [[RCTBridge alloc] initWithBundleURL:jsCodeLocation
                                             moduleProvider: nil
                                             launchOptions:launchOptions];
-  
+
   self.regionManager = [[RegionManager alloc] init];
-  
+
   // Remote logs
   #if DEBUG
     [Bugfender enableAllWithToken:@""];

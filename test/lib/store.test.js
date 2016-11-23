@@ -1,3 +1,4 @@
+jest.mock('../../lib/utils/tracker');
 
 /**
  * Dependencies

@@ -7,6 +7,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 
 import org.mozilla.magnet.magnetapi.ApiMagnetReact;
+import org.mozilla.magnet.tracking.AnalyticsReact;
 import org.mozilla.magnet.notifications.NotificationListenerReact;
 import org.mozilla.magnet.webview.MagnetWebViewManager;
 
@@ -23,6 +24,7 @@ public class MyAppPackage implements ReactPackage {
         modules.add(new MagnetScannerReact(reactContext));
         modules.add(new ApiMagnetReact(reactContext));
         modules.add(new NotificationListenerReact(reactContext));
+        modules.add(new AnalyticsReact(reactContext));
         return modules;
     }
 

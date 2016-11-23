@@ -1,5 +1,7 @@
 package org.mozilla.magnet.notifications;
 
+import org.mozilla.magnet.tracking.Analytics;
+
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -15,11 +17,16 @@ public class ReceiverNotificationDelete extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "on receive");
+
         String action = intent.getAction();
         if (!action.startsWith("notification-dismiss")) { return; }
         int id = (int) intent.getExtras().get("id");
+
         clearNotification(context, id);
         sendBroadcast(context);
+
+        Analytics analytics = new Analytics(context);
+        analytics.trackEvent("system", "notification-dismiss", null, null);
     }
 
     private void clearNotification(Context context, int id) {
