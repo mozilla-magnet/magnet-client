@@ -63,17 +63,21 @@ class Analytics {
   }
 
   func doTrackEvent(category: String, action: String, label: String?, value: Int64?) {
-    let hit = GAIDictionaryBuilder.createEventWithCategory(
-      category, action: action, label: nil, value: nil)
+    
+    var hit: GAIDictionaryBuilder
+    
+    if let _value = value {
+      hit = GAIDictionaryBuilder.createEventWithCategory(
+        category, action: action, label: nil, value: NSNumber(longLong: _value))
+    } else {
+      hit = GAIDictionaryBuilder.createEventWithCategory(
+        category, action: action, label: nil, value: nil)
+    }
 
     if let _label = label {
-      hit.set(kGAIEventLabel, forKey: _label)
+      hit.set(_label, forKey: kGAIEventLabel)
     }
-
-    if let _value = value {
-      hit.setValue(NSNumber(longLong: _value), forKey: kGAIEventValue)
-    }
-
+    
     self.tracker.send(hit.build() as [NSObject : AnyObject])
   }
 
