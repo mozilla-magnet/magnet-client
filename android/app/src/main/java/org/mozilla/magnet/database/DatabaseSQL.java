@@ -13,7 +13,6 @@ public class DatabaseSQL extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseSQL";
     private static final String DATABASE_NAME = "magnet.db";
     private static final int DATABASE_VERSION = 3;
-    private SubscriptionsSQLTable mSubscriptionsSQLTable;
     private HistorySQLTable mHistorySQLTable;
     private static DatabaseSQL mDB;
 
@@ -38,7 +37,6 @@ public class DatabaseSQL extends SQLiteOpenHelper {
      */
     public DatabaseSQL(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        mSubscriptionsSQLTable = new SubscriptionsSQLTable(this);
         mHistorySQLTable = new HistorySQLTable(this);
     }
 
@@ -52,7 +50,6 @@ public class DatabaseSQL extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, "on create");
-        mSubscriptionsSQLTable.onCreate(db);
         mHistorySQLTable.onCreate(db);
     }
 
@@ -71,7 +68,6 @@ public class DatabaseSQL extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d(TAG, "on upgrade");
-        mSubscriptionsSQLTable.onUpgrade(db, oldVersion, newVersion);
         mHistorySQLTable.onUpgrade(db, oldVersion, newVersion);
     }
 
@@ -82,15 +78,6 @@ public class DatabaseSQL extends SQLiteOpenHelper {
      */
     public HistoryStore getHistoryTable() {
         return mHistorySQLTable;
-    }
-
-    /**
-     * Get the history table interface from the database.
-     *
-     * @return HistoryStore
-     */
-    public SubscriptionsStore getSubscriptionsTable() {
-        return mSubscriptionsSQLTable;
     }
 
     public static interface Table {

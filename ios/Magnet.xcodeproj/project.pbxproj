@@ -21,8 +21,23 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		222D76421DD3AE4600E15D62 /* ApiPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222D76411DD3AE4600E15D62 /* ApiPreferences.swift */; };
+		2264B4BF1DE35090003C96A9 /* AnalyticsReact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2264B4BE1DE35090003C96A9 /* AnalyticsReact.swift */; };
+		2264B4CD1DE36D33003C96A9 /* AnalyticsReact.m in Sources */ = {isa = PBXBuildFile; fileRef = 2264B4CC1DE36D33003C96A9 /* AnalyticsReact.m */; };
+		22AE787D1DE2FD7F00192FC0 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AE787C1DE2FD7F00192FC0 /* Analytics.swift */; };
+		22AE78B01DE3302900192FC0 /* GoogleAnalyticsServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22AE78AF1DE3302900192FC0 /* GoogleAnalyticsServices.framework */; };
+		55055CA81DCBA5A300EC736F /* ApiMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55055CA71DCBA5A300EC736F /* ApiMetadata.swift */; };
+		55055CDD1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55055CDC1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift */; };
 		550CECBF1D3536F80076D807 /* NotificationsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550CECBE1D3536F80076D807 /* NotificationsHelper.swift */; };
-		553647D81DBE206000ADFBB3 /* LocationChangeReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553647D71DBE206000ADFBB3 /* LocationChangeReceiver.swift */; };
+		552134411DCA30E600A562AC /* ApiSubscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552134401DCA30E600A562AC /* ApiSubscriptions.swift */; };
+		552E19871DDB400C00AA07F9 /* RegionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552E19861DDB400C00AA07F9 /* RegionManager.swift */; };
+		555A52AB1DDA3295005D4B98 /* BugfenderSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 555A52AA1DDA3295005D4B98 /* BugfenderSDK.framework */; };
+		555A52B91DDA32C5005D4B98 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555A52B81DDA32C5005D4B98 /* Log.swift */; };
+		558015611DDE43600068CB8B /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 558015601DDE43600068CB8B /* UserNotifications.framework */; };
+		558015631DDE43600068CB8B /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 558015621DDE43600068CB8B /* UserNotificationsUI.framework */; };
+		558015661DDE43600068CB8B /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558015651DDE43600068CB8B /* NotificationViewController.swift */; };
+		558015691DDE43600068CB8B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 558015671DDE43600068CB8B /* MainInterface.storyboard */; };
+		5580156D1DDE43600068CB8B /* HeroNotifications.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5580155F1DDE43600068CB8B /* HeroNotifications.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5583EF0E1D3D55AD00852649 /* HistoryRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF0D1D3D55AD00852649 /* HistoryRecord.swift */; };
 		5583EF101D3D565200852649 /* HistorySQLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF0F1D3D565200852649 /* HistorySQLite.swift */; };
 		5583EF121D3E36C300852649 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583EF111D3E36C300852649 /* History.swift */; };
@@ -31,6 +46,14 @@
 		559608C91DB918B100816CF1 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559608C71DB918B100816CF1 /* SwiftyJSON.framework */; };
 		559608CA1DB918CC00816CF1 /* Alamofire.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 559608C61DB918B100816CF1 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		559608CB1DB918CC00816CF1 /* SwiftyJSON.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 559608C71DB918B100816CF1 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		55C013EB1DC8CC2600154F76 /* RequestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C013EA1DC8CC2600154F76 /* RequestStore.swift */; };
+		55C013EE1DC8CE9100154F76 /* RequestStoreSQLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C013ED1DC8CE9100154F76 /* RequestStoreSQLite.swift */; };
+		55C013F01DC8DA2B00154F76 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C013EF1DC8DA2B00154F76 /* Api.swift */; };
+		55C013F41DC8E99100154F76 /* ApiChannels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C013F31DC8E99100154F76 /* ApiChannels.swift */; };
+		55C013F71DC8EC6800154F76 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C013F61DC8EC6800154F76 /* System.swift */; };
+		55C013F91DC8FB7C00154F76 /* ApiMagnet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C013F81DC8FB7C00154F76 /* ApiMagnet.swift */; };
+		55C013FD1DC8FFC600154F76 /* ApiMagnetReact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C013FC1DC8FFC600154F76 /* ApiMagnetReact.swift */; };
+		55C013FF1DC9037D00154F76 /* ApiMagnetReact.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C013FE1DC9037D00154F76 /* ApiMagnetReact.m */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		85767A351D6339BD009F400A /* MagnetScannerIOS.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		85DF9A341D633665004DF3F1 /* MagnetScannerIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */; };
@@ -42,13 +65,12 @@
 		8D589BF11DC0E6660069BB98 /* SubscriptionsReact.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D589BF01DC0E6660069BB98 /* SubscriptionsReact.m */; };
 		8D589BF31DC0E6A80069BB98 /* Subscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D589BF21DC0E6A80069BB98 /* Subscriptions.swift */; };
 		8D589C0D1DC10E260069BB98 /* SubscriptionsReact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D589C0C1DC10E260069BB98 /* SubscriptionsReact.swift */; };
-		8D7567201D2BF30400315AEE /* MagnetScannerReactExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D75671F1D2BF30400315AEE /* MagnetScannerReactExport.m */; };
+		8D7567201D2BF30400315AEE /* MagnetScannerReact.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D75671F1D2BF30400315AEE /* MagnetScannerReact.m */; };
 		8D75672D1D2BF33500315AEE /* MagnetScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D75672C1D2BF33500315AEE /* MagnetScanner.swift */; };
 		8D7567311D2BF7F300315AEE /* MagnetScannerReact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D7567301D2BF7F300315AEE /* MagnetScannerReact.swift */; };
 		8DBAAAB81D67272500AC32C5 /* FiraSans-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8DBAAAB51D67272500AC32C5 /* FiraSans-Book.otf */; };
 		8DBAAAB91D67272500AC32C5 /* FiraSans-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8DBAAAB61D67272500AC32C5 /* FiraSans-LightItalic.otf */; };
 		8DBAAABA1D67272500AC32C5 /* FiraSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8DBAAAB71D67272500AC32C5 /* FiraSans-LightItalic.ttf */; };
-		8DF821771D5387E20081F56E /* libRCTGoogleAnalyticsBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF8216D1D53879A0081F56E /* libRCTGoogleAnalyticsBridge.a */; };
 		8DF821791D5387F20081F56E /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF821781D5387F20081F56E /* CoreData.framework */; };
 		8DF8217B1D5387FC0081F56E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF8217A1D5387FC0081F56E /* SystemConfiguration.framework */; };
 		8DF8217D1D5388090081F56E /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF8217C1D5388090081F56E /* libz.tbd */; };
@@ -121,6 +143,13 @@
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
 		};
+		5580156B1DDE43600068CB8B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5580155E1DDE43600068CB8B;
+			remoteInfo = HeroNotifications;
+		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -152,6 +181,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		5580157D1DDE43600068CB8B /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				5580156D1DDE43600068CB8B /* HeroNotifications.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		85DF9A271D632FED004DF3F1 /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -188,15 +228,39 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Magnet/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Magnet/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		222D76411DD3AE4600E15D62 /* ApiPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiPreferences.swift; sourceTree = "<group>"; };
+		2264B4BE1DE35090003C96A9 /* AnalyticsReact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsReact.swift; sourceTree = "<group>"; };
+		2264B4CC1DE36D33003C96A9 /* AnalyticsReact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsReact.m; sourceTree = "<group>"; };
+		22AE787C1DE2FD7F00192FC0 /* Analytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
+		22AE78AF1DE3302900192FC0 /* GoogleAnalyticsServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleAnalyticsServices.framework; path = "3rdparty/GoogleAnalyticsSDK-iOS/GoogleAnalyticsServices.framework"; sourceTree = "<group>"; };
+		55055CA71DCBA5A300EC736F /* ApiMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiMetadata.swift; sourceTree = "<group>"; };
+		55055CDC1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHelperIOS10.swift; sourceTree = "<group>"; };
 		550CECBE1D3536F80076D807 /* NotificationsHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHelper.swift; sourceTree = "<group>"; };
-		553647D71DBE206000ADFBB3 /* LocationChangeReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationChangeReceiver.swift; sourceTree = "<group>"; };
+		552134401DCA30E600A562AC /* ApiSubscriptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiSubscriptions.swift; sourceTree = "<group>"; };
+		552E19861DDB400C00AA07F9 /* RegionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionManager.swift; sourceTree = "<group>"; };
 		555800951CBE5F7800A21868 /* Magnet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Magnet-Bridging-Header.h"; sourceTree = "<group>"; };
+		555A52AA1DDA3295005D4B98 /* BugfenderSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BugfenderSDK.framework; path = "3rdparty/BugfenderSDK-iOS/BugfenderSDK.framework"; sourceTree = "<group>"; };
+		555A52B81DDA32C5005D4B98 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		5580155F1DDE43600068CB8B /* HeroNotifications.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HeroNotifications.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		558015601DDE43600068CB8B /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		558015621DDE43600068CB8B /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
+		558015651DDE43600068CB8B /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		558015681DDE43600068CB8B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		5580156A1DDE43600068CB8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5583EF0D1D3D55AD00852649 /* HistoryRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryRecord.swift; sourceTree = "<group>"; };
 		5583EF0F1D3D565200852649 /* HistorySQLite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistorySQLite.swift; sourceTree = "<group>"; };
 		5583EF111D3E36C300852649 /* History.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		5583EF151D3E4A8400852649 /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = Carthage/Build/iOS/SQLite.framework; sourceTree = "<group>"; };
 		559608C61DB918B100816CF1 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		559608C71DB918B100816CF1 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
+		55C013EA1DC8CC2600154F76 /* RequestStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestStore.swift; sourceTree = "<group>"; };
+		55C013ED1DC8CE9100154F76 /* RequestStoreSQLite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestStoreSQLite.swift; sourceTree = "<group>"; };
+		55C013EF1DC8DA2B00154F76 /* Api.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
+		55C013F31DC8E99100154F76 /* ApiChannels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiChannels.swift; sourceTree = "<group>"; };
+		55C013F61DC8EC6800154F76 /* System.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
+		55C013F81DC8FB7C00154F76 /* ApiMagnet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiMagnet.swift; sourceTree = "<group>"; };
+		55C013FC1DC8FFC600154F76 /* ApiMagnetReact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiMagnetReact.swift; sourceTree = "<group>"; };
+		55C013FE1DC9037D00154F76 /* ApiMagnetReact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiMagnetReact.m; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MagnetScannerIOS.framework; path = Carthage/Build/iOS/MagnetScannerIOS.framework; sourceTree = "<group>"; };
@@ -208,7 +272,7 @@
 		8D589BF01DC0E6660069BB98 /* SubscriptionsReact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubscriptionsReact.m; sourceTree = "<group>"; };
 		8D589BF21DC0E6A80069BB98 /* Subscriptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subscriptions.swift; sourceTree = "<group>"; };
 		8D589C0C1DC10E260069BB98 /* SubscriptionsReact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionsReact.swift; sourceTree = "<group>"; };
-		8D75671F1D2BF30400315AEE /* MagnetScannerReactExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MagnetScannerReactExport.m; sourceTree = "<group>"; };
+		8D75671F1D2BF30400315AEE /* MagnetScannerReact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MagnetScannerReact.m; sourceTree = "<group>"; };
 		8D75672C1D2BF33500315AEE /* MagnetScanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagnetScanner.swift; sourceTree = "<group>"; };
 		8D7567301D2BF7F300315AEE /* MagnetScannerReact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagnetScannerReact.swift; sourceTree = "<group>"; };
 		8DBAAAB51D67272500AC32C5 /* FiraSans-Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FiraSans-Book.otf"; path = "fonts/FiraSans-Book.otf"; sourceTree = "<group>"; };
@@ -235,6 +299,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22AE78B01DE3302900192FC0 /* GoogleAnalyticsServices.framework in Frameworks */,
 				8DF821841D53B3830081F56E /* AdSupport.framework in Frameworks */,
 				85DF9A341D633665004DF3F1 /* MagnetScannerIOS.framework in Frameworks */,
 				8DF8217F1D5388190081F56E /* libsqlite3.0.tbd in Frameworks */,
@@ -252,10 +317,19 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
-				8DF821771D5387E20081F56E /* libRCTGoogleAnalyticsBridge.a in Frameworks */,
 				559608C81DB918B100816CF1 /* Alamofire.framework in Frameworks */,
 				559608C91DB918B100816CF1 /* SwiftyJSON.framework in Frameworks */,
+				555A52AB1DDA3295005D4B98 /* BugfenderSDK.framework in Frameworks */,
 				AA85BDA14B4C4D9A8524DCAD /* libBVLinearGradient.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5580155C1DDE43600068CB8B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				558015631DDE43600068CB8B /* UserNotificationsUI.framework in Frameworks */,
+				558015611DDE43600068CB8B /* UserNotifications.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,6 +412,11 @@
 		13B07FAE1A68108700A75B9A /* Magnet */ = {
 			isa = PBXGroup;
 			children = (
+				552E19851DDB3FFA00AA07F9 /* Location */,
+				22AE78791DE2FC2100192FC0 /* Analytics */,
+				55055CB51DCC9F3E00EC736F /* Notifications */,
+				55C013F51DC8EC5900154F76 /* Utils */,
+				55C013DD1DC8CBEE00154F76 /* Api */,
 				8D589BBB1DC0BFAE0069BB98 /* Subscriptions */,
 				5583EF0A1D3D519D00852649 /* History */,
 				8D5722441CDCAF6B00480505 /* Scanner */,
@@ -350,8 +429,6 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				555800951CBE5F7800A21868 /* Magnet-Bridging-Header.h */,
-				550CECBE1D3536F80076D807 /* NotificationsHelper.swift */,
-				553647D71DBE206000ADFBB3 /* LocationChangeReceiver.swift */,
 			);
 			name = Magnet;
 			sourceTree = "<group>";
@@ -362,6 +439,43 @@
 				146834041AC3E56700842450 /* libReact.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		22AE78791DE2FC2100192FC0 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				22AE787C1DE2FD7F00192FC0 /* Analytics.swift */,
+				2264B4BE1DE35090003C96A9 /* AnalyticsReact.swift */,
+				2264B4CC1DE36D33003C96A9 /* AnalyticsReact.m */,
+			);
+			name = Analytics;
+			sourceTree = "<group>";
+		};
+		55055CB51DCC9F3E00EC736F /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				550CECBE1D3536F80076D807 /* NotificationsHelper.swift */,
+				55055CDC1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift */,
+			);
+			name = Notifications;
+			sourceTree = "<group>";
+		};
+		552E19851DDB3FFA00AA07F9 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				552E19861DDB400C00AA07F9 /* RegionManager.swift */,
+			);
+			name = Location;
+			sourceTree = "<group>";
+		};
+		558015641DDE43600068CB8B /* HeroNotifications */ = {
+			isa = PBXGroup;
+			children = (
+				558015651DDE43600068CB8B /* NotificationViewController.swift */,
+				558015671DDE43600068CB8B /* MainInterface.storyboard */,
+				5580156A1DDE43600068CB8B /* Info.plist */,
+			);
+			path = HeroNotifications;
 			sourceTree = "<group>";
 		};
 		5583EF0A1D3D519D00852649 /* History */ = {
@@ -377,10 +491,48 @@
 		559608B91DB918B100816CF1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				22AE78AF1DE3302900192FC0 /* GoogleAnalyticsServices.framework */,
+				555A52AA1DDA3295005D4B98 /* BugfenderSDK.framework */,
 				559608C61DB918B100816CF1 /* Alamofire.framework */,
 				559608C71DB918B100816CF1 /* SwiftyJSON.framework */,
+				558015601DDE43600068CB8B /* UserNotifications.framework */,
+				558015621DDE43600068CB8B /* UserNotificationsUI.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		55C013DD1DC8CBEE00154F76 /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				55C013EC1DC8CC8200154F76 /* RequestStore */,
+				55C013EF1DC8DA2B00154F76 /* Api.swift */,
+				55C013F31DC8E99100154F76 /* ApiChannels.swift */,
+				55C013F81DC8FB7C00154F76 /* ApiMagnet.swift */,
+				55C013FC1DC8FFC600154F76 /* ApiMagnetReact.swift */,
+				55C013FE1DC9037D00154F76 /* ApiMagnetReact.m */,
+				552134401DCA30E600A562AC /* ApiSubscriptions.swift */,
+				55055CA71DCBA5A300EC736F /* ApiMetadata.swift */,
+				222D76411DD3AE4600E15D62 /* ApiPreferences.swift */,
+			);
+			name = Api;
+			sourceTree = "<group>";
+		};
+		55C013EC1DC8CC8200154F76 /* RequestStore */ = {
+			isa = PBXGroup;
+			children = (
+				55C013EA1DC8CC2600154F76 /* RequestStore.swift */,
+				55C013ED1DC8CE9100154F76 /* RequestStoreSQLite.swift */,
+			);
+			name = RequestStore;
+			sourceTree = "<group>";
+		};
+		55C013F51DC8EC5900154F76 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				55C013F61DC8EC6800154F76 /* System.swift */,
+				555A52B81DDA32C5005D4B98 /* Log.swift */,
+			);
+			name = Utils;
 			sourceTree = "<group>";
 		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
@@ -432,6 +584,7 @@
 				13B07FAE1A68108700A75B9A /* Magnet */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* MagnetTests */,
+				558015641DDE43600068CB8B /* HeroNotifications */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				559608B91DB918B100816CF1 /* Frameworks */,
 			);
@@ -444,6 +597,7 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* Magnet.app */,
 				00E356EE1AD99517003FC87E /* MagnetTests.xctest */,
+				5580155F1DDE43600068CB8B /* HeroNotifications.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -469,7 +623,7 @@
 		8D5722441CDCAF6B00480505 /* Scanner */ = {
 			isa = PBXGroup;
 			children = (
-				8D75671F1D2BF30400315AEE /* MagnetScannerReactExport.m */,
+				8D75671F1D2BF30400315AEE /* MagnetScannerReact.m */,
 				8D7567301D2BF7F300315AEE /* MagnetScannerReact.swift */,
 				8D75672C1D2BF33500315AEE /* MagnetScanner.swift */,
 			);
@@ -531,6 +685,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Magnet" */;
 			buildPhases = (
+				22AE78B21DE33D3800192FC0 /* ShellScript */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
@@ -538,15 +693,34 @@
 				5583EF141D3E46FC00852649 /* ShellScript */,
 				85DF9A271D632FED004DF3F1 /* Copy Files */,
 				55AE10ED1D67664900CAD0E0 /* ShellScript */,
+				5580157D1DDE43600068CB8B /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				5580156C1DDE43600068CB8B /* PBXTargetDependency */,
 			);
 			name = Magnet;
 			productName = "Hello World";
 			productReference = 13B07F961A680F5B00A75B9A /* Magnet.app */;
 			productType = "com.apple.product-type.application";
+		};
+		5580155E1DDE43600068CB8B /* HeroNotifications */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5580157C1DDE43600068CB8B /* Build configuration list for PBXNativeTarget "HeroNotifications" */;
+			buildPhases = (
+				5580155B1DDE43600068CB8B /* Sources */,
+				5580155C1DDE43600068CB8B /* Frameworks */,
+				5580155D1DDE43600068CB8B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HeroNotifications;
+			productName = HeroNotifications;
+			productReference = 5580155F1DDE43600068CB8B /* HeroNotifications.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -554,6 +728,8 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0810;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Project Magnet";
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -562,6 +738,11 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 4MGJ5F755P;
+					};
+					5580155E1DDE43600068CB8B = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = 43AQ936H96;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -630,6 +811,7 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* Magnet */,
 				00E356ED1AD99517003FC87E /* MagnetTests */,
+				5580155E1DDE43600068CB8B /* HeroNotifications */,
 			);
 		};
 /* End PBXProject section */
@@ -741,6 +923,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5580155D1DDE43600068CB8B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				558015691DDE43600068CB8B /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -757,6 +947,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/packager/react-native-xcode.sh";
+		};
+		22AE78B21DE33D3800192FC0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/BuildConfig.h",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "../build-scripts/ios/gen_build_config.js > $SRCROOT/BuildConfig.h";
 		};
 		5583EF141D3E46FC00852649 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -801,23 +1005,47 @@
 			buildActionMask = 2147483647;
 			files = (
 				5583EF101D3D565200852649 /* HistorySQLite.swift in Sources */,
+				552134411DCA30E600A562AC /* ApiSubscriptions.swift in Sources */,
+				55C013FD1DC8FFC600154F76 /* ApiMagnetReact.swift in Sources */,
 				8D57224A1CDCB16400480505 /* RNMagnetWebViewManagerExport.m in Sources */,
+				552E19871DDB400C00AA07F9 /* RegionManager.swift in Sources */,
+				55C013EB1DC8CC2600154F76 /* RequestStore.swift in Sources */,
+				55C013EE1DC8CE9100154F76 /* RequestStoreSQLite.swift in Sources */,
 				5583EF0E1D3D55AD00852649 /* HistoryRecord.swift in Sources */,
 				8D589BE31DC0E1700069BB98 /* SubscriptionRecord.swift in Sources */,
 				8D589BF11DC0E6660069BB98 /* SubscriptionsReact.m in Sources */,
+				2264B4CD1DE36D33003C96A9 /* AnalyticsReact.m in Sources */,
 				550CECBF1D3536F80076D807 /* NotificationsHelper.swift in Sources */,
 				8D589BF31DC0E6A80069BB98 /* Subscriptions.swift in Sources */,
 				8D589C0D1DC10E260069BB98 /* SubscriptionsReact.swift in Sources */,
 				8D75672D1D2BF33500315AEE /* MagnetScanner.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				55C013F01DC8DA2B00154F76 /* Api.swift in Sources */,
+				222D76421DD3AE4600E15D62 /* ApiPreferences.swift in Sources */,
 				8D589BC91DC0BFDE0069BB98 /* SubscriptionsDB.swift in Sources */,
 				5583EF121D3E36C300852649 /* History.swift in Sources */,
-				8D7567201D2BF30400315AEE /* MagnetScannerReactExport.m in Sources */,
+				55C013FF1DC9037D00154F76 /* ApiMagnetReact.m in Sources */,
+				8D7567201D2BF30400315AEE /* MagnetScannerReact.m in Sources */,
+				55C013F91DC8FB7C00154F76 /* ApiMagnet.swift in Sources */,
+				55055CDD1DCCBBBB00EC736F /* NotificationsHelperIOS10.swift in Sources */,
 				8D57224B1CDCB16400480505 /* RNMagnetWebView.swift in Sources */,
+				2264B4BF1DE35090003C96A9 /* AnalyticsReact.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				55C013F71DC8EC6800154F76 /* System.swift in Sources */,
+				22AE787D1DE2FD7F00192FC0 /* Analytics.swift in Sources */,
 				8D7567311D2BF7F300315AEE /* MagnetScannerReact.swift in Sources */,
-				553647D81DBE206000ADFBB3 /* LocationChangeReceiver.swift in Sources */,
+				555A52B91DDA32C5005D4B98 /* Log.swift in Sources */,
+				55C013F41DC8E99100154F76 /* ApiChannels.swift in Sources */,
 				8D5722491CDCB16400480505 /* RNMagnetWebViewManager.swift in Sources */,
+				55055CA81DCBA5A300EC736F /* ApiMetadata.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5580155B1DDE43600068CB8B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				558015661DDE43600068CB8B /* NotificationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -829,6 +1057,11 @@
 			target = 13B07F861A680F5B00A75B9A /* Magnet */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
+		5580156C1DDE43600068CB8B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5580155E1DDE43600068CB8B /* HeroNotifications */;
+			targetProxy = 5580156B1DDE43600068CB8B /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -839,6 +1072,14 @@
 			);
 			name = LaunchScreen.xib;
 			path = Magnet;
+			sourceTree = "<group>";
+		};
+		558015671DDE43600068CB8B /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				558015681DDE43600068CB8B /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -876,6 +1117,7 @@
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CLANG_ENABLE_MODULES = YES;
@@ -885,12 +1127,15 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/3rdparty/BugfenderSDK-iOS",
+					"$(PROJECT_DIR)/3rdparty/GoogleAnalyticsSDK-iOS",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS",
 				);
 				INFOPLIST_FILE = Magnet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -898,7 +1143,10 @@
 				OTHER_LDFLAGS = (
 					"-lc++",
 					"-ObjC",
+					"$(inherited)",
 				);
+				"OTHER_LDFLAGS[arch=*]" = "$(inherited)";
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = org.project.magnet.ios.Magnet;
 				PRODUCT_NAME = Magnet;
 				PROVISIONING_PROFILE = "";
@@ -911,6 +1159,7 @@
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CLANG_ENABLE_MODULES = YES;
@@ -919,12 +1168,15 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/3rdparty/BugfenderSDK-iOS",
+					"$(PROJECT_DIR)/3rdparty/GoogleAnalyticsSDK-iOS",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS",
 				);
 				INFOPLIST_FILE = Magnet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -932,12 +1184,62 @@
 				OTHER_LDFLAGS = (
 					"-lc++",
 					"-ObjC",
+					"$(inherited)",
 				);
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-DRELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = org.project.magnet.ios.Magnet;
 				PRODUCT_NAME = Magnet;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Magnet-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		5580156E1DDE43600068CB8B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 43AQ936H96;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = HeroNotifications/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.project.magnet.ios.Magnet.HeroNotifications;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
+			};
+			name = Debug;
+		};
+		5580156F1DDE43600068CB8B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 43AQ936H96;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = HeroNotifications/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.project.magnet.ios.Magnet.HeroNotifications;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
@@ -954,8 +1256,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -965,6 +1269,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -982,8 +1287,9 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS/RCTLinkingManager.h",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1004,8 +1310,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1013,6 +1321,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -1024,10 +1333,13 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS/RCTLinkingManager.h",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 2.3;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1050,6 +1362,15 @@
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
 				13B07F951A680F5B00A75B9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5580157C1DDE43600068CB8B /* Build configuration list for PBXNativeTarget "HeroNotifications" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5580156E1DDE43600068CB8B /* Debug */,
+				5580156F1DDE43600068CB8B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -6,3 +6,8 @@
 #import "RCTBridgeModule.h"
 #import "RCTEventDispatcher.h"
 #import "RCTViewManager.h"
+#import <BugfenderSDK/BugfenderSDK.h>
+#import "BuildConfig.h"
+#import <GoogleAnalyticsServices/GAI.h>
+#import <GoogleAnalyticsServices/GAIFields.h>
+#import <GoogleAnalyticsServices/GAIDictionaryBuilder.h>

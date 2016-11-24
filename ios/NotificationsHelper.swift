@@ -12,7 +12,10 @@ import UserNotifications
 @objc(NotificationsHelper) class NotificationsHelper: NSObject {
   static var enabled: Bool = true
   static var notifyTimer: NSTimer!
-  static var toNotify: [String] = []
+  static var toNotify: Dictionary<String, String> = [:]
+  static let subscriptions: Subscriptions = Subscriptions()
+  @available(iOS 10.0, *)
+  static let ios10Helper: NotificationsHelperIOS10 = NotificationsHelperIOS10()
   
   @objc class func register() {
     let notificationsSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge], categories: nil)
@@ -21,6 +24,13 @@ import UserNotifications
   
   class func updateNotifications() {
     guard enabled else { return }
+    
+    if #available(iOS 10, *) {
+      ios10Helper.processNotifications(toNotify)
+      return;
+    }
+    
+    // Normal ios9 notifications
     
     clearNotifications()
     
@@ -51,11 +61,18 @@ import UserNotifications
   
   // Throttles the notification process, waiting for 10 seconds until
   // setting up the badge with the number of elements nearby.
-  class func notifyUser(url: String) {
-    guard History.getInstance().getRecent(url) == nil else { return }
-    guard toNotify.contains(url) == false else { return }
+  class func notifyUser(url: String, channel: String?) {
+    guard toNotify[url] == nil else {
+      Log.l("Abort, notification already scheduled for \(url)")
+      return
+    }
     
-    toNotify.append(url)
+    if channel != nil && !subscriptions.exists(channel!) {
+      Log.l("Abort notification for \(url), user not subscribed to channel \(channel)")
+      return
+    }
+    
+    toNotify[url] = channel
     if (notifyTimer != nil) {
       notifyTimer.invalidate();
     }
@@ -65,7 +82,7 @@ import UserNotifications
     // this case doNotifyUser, that notifies depending on the number of web pages found
     // during the waiting period.
     notifyTimer = NSTimer.init(
-      timeInterval: 10 ,
+      timeInterval: 5 ,
       target: self,
       selector: #selector(doNotifyUser),
       userInfo: nil,
@@ -81,7 +98,7 @@ import UserNotifications
   
   @objc private class func doNotifyUser() {
     NotificationsHelper.updateNotifications();
-    toNotify = [];
+    toNotify = [:];
   }
   
   @objc class func enable() {

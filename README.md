@@ -26,4 +26,6 @@ If you already have Carthage installed, this step has been added as part of the 
 
 6. Follow the ['running on device' instructions](https://facebook.github.io/react-native/docs/running-on-device-ios.html#content).
 
+7. If you want to run the local development server, which hosts the JavaScript bundle for React native, you need to update `didFinishLaunchingWithOptions` to load from the server instead of from a bundle. There is a line commented out.
+
 If you don't have a team certificate for the Mozilla organization choose your own developer certificate (or create one) and change the bundle indentifier.

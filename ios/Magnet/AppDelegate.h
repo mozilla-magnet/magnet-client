@@ -16,6 +16,6 @@
 
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong) RCTBridge *bridge;
-@property (nonatomic, strong) LocationChangeReceiver *locationReceiver;
+@property (nonatomic, strong) RegionManager *regionManager;
 
 @end

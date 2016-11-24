@@ -9,12 +9,14 @@ import Foundation
     scanner = MagnetScanner(callback: onItemFound)
   }
   
-  @objc func start() {
+  @objc func start(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
     scanner.start()
+    resolve(true)
   }
   
-  @objc func stop() {
+  @objc func stop(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
     scanner.stop()
+    resolve(true)
   }
   
   func onItemFound(item: Dictionary<String, AnyObject>) {
@@ -23,6 +25,10 @@ import Foundation
       .sendDeviceEventWithName("magnetscanner:itemfound", body: item)
     
     let url = item["url"] as! String
-    NotificationsHelper.notifyUser(url)
+    var channel: String? = nil
+    if item["channel_id"] != nil {
+      channel = item["channel_id"] as! String
+    }
+    NotificationsHelper.notifyUser(url, channel: channel)
   }
 }

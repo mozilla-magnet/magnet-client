@@ -5,21 +5,20 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission
-        android:name="android.permission.SYSTEM_ALERT_WINDOW"
-        tools:remove="${excludeSystemAlertWindowPermission}" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <uses-sdk tools:overrideLibrary="org.mozilla.magnet.net.scanner" />
 
     <application
-        android:name="org.mozilla.magnet.MainApplication"
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name="org.mozilla.magnet.MainActivity"
+            android:name=".MainActivity"
+            android:launchMode="singleTask"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
@@ -27,18 +26,24 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- handles URIs that begin with "mozilla-magnet://item” -->
+                <data android:scheme="mozilla-magnet"
+                    android:host="item" />
+            </intent-filter>
+
         </activity>
 
         <service
-            android:name=".NotificationService"
+            android:name=".notifications.NotificationService"
             android:enabled="true"
             android:exported="false"/>
 
-        <receiver android:name=".ReceiverNotificationDelete">
-            <intent-filter>
-                <action android:name="notification_delete" />
-            </intent-filter>
-        </receiver>
+        <receiver android:name=".notifications.ReceiverNotificationDelete"/>
 
         <receiver android:name=".ReceiverMagnetScannerItemsFound">
             <intent-filter>
