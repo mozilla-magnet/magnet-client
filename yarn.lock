@@ -4216,10 +4216,6 @@ react-deep-force-update@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.0.1.tgz#f911b5be1d2a6fe387507dd6e9a767aa2924b4c7"
 
-react-native-google-analytics-bridge@mozilla-magnet/react-native-google-analytics-bridge#master:
-  version "4.0.0"
-  resolved "https://codeload.github.com/mozilla-magnet/react-native-google-analytics-bridge/tar.gz/eb4543509e9ab96b1bcc9b7e19942e2716330259"
-
 react-native-linear-gradient@^1.5.13:
   version "1.5.15"
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-1.5.15.tgz#4413111934dc1d8f5e0572ca96e60b1a2cf41f4d"
