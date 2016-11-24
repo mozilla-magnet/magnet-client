@@ -16,8 +16,9 @@ import Foundation
         resolve(result.object)
       },
       error: { (error) in
-        let err = NSError(coder: NSCoder())
-        reject("get_error", "Error resolving \(path)", err)
+        let errorMsg = "Error resolving \(path)"
+        let err: NSError = NSError(domain: errorMsg, code: 0, userInfo: nil)
+        reject("get_error", errorMsg, err)
     }))
   }
   
@@ -26,8 +27,9 @@ import Foundation
         resolve(result.rawValue)
       },
       error: { (error) in
-        let err = NSError(coder: NSCoder())
-        reject("get_error", "Error resolving \(path) with \(data)", err)
+        let errorMsg = "Error resolving \(path) with \(data)"
+        let err: NSError = NSError(domain: errorMsg, code: 0, userInfo: nil)
+        reject("post_error", errorMsg, err)
     }))
   }
   
@@ -36,8 +38,9 @@ import Foundation
       resolve(result.rawValue)
       },
       error: { (error) in
-        let err = NSError(coder: NSCoder())
-        reject("get_error", "Error resolving \(path) with \(data)", err)
+        let errorMsg = "Error resolving \(path) with \(data)"
+        let err: NSError = NSError(domain: errorMsg, code: 0, userInfo: nil)
+        reject("postArray_error", errorMsg, err)
     }))
   }
   
@@ -46,8 +49,9 @@ import Foundation
         resolve(result.rawValue)
       },
       error: { (error) in
-        let err = NSError(coder: NSCoder())
-        reject("get_error", "Error resolving \(path) with \(data)", err)
+        let errorMsg = "Error resolving \(path) with \(data)"
+        let err: NSError = NSError(domain: errorMsg, code: 0, userInfo: nil)
+        reject("put_error", errorMsg, err)
     }))
   }
   
@@ -56,8 +60,9 @@ import Foundation
         resolve(result.rawValue)
       },
       error: { (error) in
-        let err = NSError(coder: NSCoder())
-        reject("get_error", "Error resolving \(path)", err)
+        let errorMsg = "Error resolving \(path) with \(data)"
+        let err: NSError = NSError(domain: errorMsg, code: 0, userInfo: nil)
+        reject("delete_error", errorMsg, err)
     }))
   }
 }
