@@ -88,7 +88,7 @@ class NotificationsHelperIOS10: NSObject, UNUserNotificationCenterDelegate {
     } else {
       // We were clicked but not the visit (go to browser) action
       // so we navigate to the deep link inside the app
-      let url = NSURL(string: "mozilla-magnet:item?url=\(response.notification.request.identifier)")
+      let url = NSURL(string: "mozilla-magnet://item?url=\(response.notification.request.identifier)")
       UIApplication.sharedApplication().openURL(url!, options: [:], completionHandler: nil)
     }
   }
