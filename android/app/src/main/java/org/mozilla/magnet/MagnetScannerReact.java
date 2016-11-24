@@ -44,7 +44,6 @@ class MagnetScannerReact extends ReactContextBaseJavaModule implements MagnetSca
         mPermissionChecker = new PermissionChecker();
         mMagnetScanner = new MagnetScanner(context)
                 .useBle()
-                .useMdns()
                 .useGeolocation();
     }
 
