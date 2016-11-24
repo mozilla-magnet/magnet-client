@@ -3,6 +3,7 @@ apply plugin: "com.android.application"
 import com.android.build.OutputFile
 import groovy.json.JsonSlurper;
 
+
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
  * and bundleReleaseJsAndAssets).
@@ -122,7 +123,8 @@ android {
         }
     }
     buildTypes {
-        def inputFile = file(new File("../../config.json"));
+        generateConfig()
+        def inputFile = file(new File("../../config.android.json"))
         def json = new JsonSlurper().parseText(inputFile.text)
 
         debug {
@@ -139,6 +141,8 @@ android {
                 signingConfig signingConfigs.release
             }
         }
+
+        cleanGeneratedConfig()
     }
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
@@ -171,4 +175,26 @@ dependencies {
 task copyDownloadableDepsToLibs(type: Copy) {
   from configurations.compile
   into 'libs'
+}
+
+def generateConfig() {
+  execShell("./build-scripts/android/gen_build_config_json.js > config.android.json")
+}
+
+def cleanGeneratedConfig() {
+  execShell("rm ./config.android.json")
+}
+
+def execShell(command) {
+  def rootDir = file(new File("../../"))
+  def proc = new ProcessBuilder(['sh', '-c', command])
+    .redirectErrorStream(true)
+    .directory(rootDir)
+    .start()
+
+  proc.inputStream.eachLine { println it }
+
+  if (proc.waitFor() != 0) {
+    throw new StopActionException("Failed to run " + command);
+  }
 }

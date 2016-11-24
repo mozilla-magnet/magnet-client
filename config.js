@@ -1,3 +1,4 @@
+/*global process*/
 const staticConfig = require('./config.json');
 
 module.exports = Object.assign(
