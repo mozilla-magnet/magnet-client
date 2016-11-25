@@ -15,7 +15,7 @@ class Analytics {
 
   init() {
     let gai = GAI.sharedInstance()
-    self.tracker = gai.trackerWithTrackingId(GA_TRACKER_ID)
+    self.tracker = gai.trackerWithTrackingId(kGaTrackerId)
   }
 
   // Wrap a tracking function around a preference check.
