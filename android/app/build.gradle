@@ -125,12 +125,23 @@ android {
         def inputFile = file(new File("../../config.json"));
         def json = new JsonSlurper().parseText(inputFile.text)
 
+        def preferences = "{"
+
+        for (item in json.userFlags) {
+            preferences += "{ \"" + item.key + "\", \"" + item.value.value + "\" },"
+        }
+
+        preferences += "}"
+
+
         debug {
             buildConfigField "String", "GA_TRACKER_ID", "\"" + json.analyticsTrackerId.development + "\""
+            buildConfigField  "String[][]", "DEFAULT_PREFS", preferences
         }
 
         release {
             buildConfigField "String", "GA_TRACKER_ID", "\"" + json.analyticsTrackerId.production + "\""
+            buildConfigField  "String[][]", "DEFAULT_PREFS", preferences
 
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"

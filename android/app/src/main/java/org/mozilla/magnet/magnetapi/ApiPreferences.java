@@ -5,6 +5,7 @@ import android.content.Context;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mozilla.magnet.api.Api;
+import org.mozilla.magnet.BuildConfig;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -20,6 +21,28 @@ class ApiPreferences extends Api {
 
     ApiPreferences(Context aContext) {
         super(aContext);
+
+        initializeDefaults();
+    }
+
+    private void initializeDefaults() {
+        for (String[] defaultRecord : BuildConfig.DEFAULT_PREFS) {
+            Map<String, String> defaultPref = new HashMap<String, String>();
+            defaultPref.put(PREFERENCES_KEY, defaultRecord[0]);
+            defaultPref.put("value", defaultRecord[1]);
+
+            this.post("", defaultPref, new Callback() {
+                @Override
+                public void resolve(Object aResult) {
+                    // Noop
+                }
+
+                @Override
+                public void reject(String aError) {
+                    // Noop
+                }
+            });
+        }
     }
 
     /**
