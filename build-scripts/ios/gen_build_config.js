@@ -2,13 +2,20 @@
 
 const config = require('../../config.json');
 
+const prefs = JSON.stringify(Object.keys(config.userFlags)
+  .map((key) => {
+    return [key, config.userFlags[key].value.toString()];
+  }));
+
 const defs =
 `
 #if DEBUG
-  #define GA_TRACKER_ID "${config.analyticsTrackerId.development}"
+let kGaTrackerId = "${config.analyticsTrackerId.development}";
 #else
-  #define GA_TRACKER_ID "${config.analyticsTrackerId.production}"
+let kGaTrackerId = "${config.analyticsTrackerId.production}";
 #endif
+
+let kDefaultPreferences = ${prefs};
 `;
 
 process.stdout.write(defs.trim());

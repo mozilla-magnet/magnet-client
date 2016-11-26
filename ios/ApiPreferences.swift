@@ -13,17 +13,30 @@ class ApiPreferences: ApiBase {
   private let store: RequestStore
   private static let PATH = "content://preferences"
   private let lockQueue = dispatch_queue_create("com.mozilla.magnet.apipreferences", nil)
-
+  
   override init() {
     store = RequestStore.getInstance()
     super.init()
   }
 
+  private func mergeDefaults(inout json: JSON) {
+    for pref in kDefaultPreferences {
+      if !json[pref[0]].exists() {
+        json[pref[0]].string = pref[1];
+      }
+    }
+  }
+  
   override func get(path: String, callback: ApiCallback) {
-    if let json = store.getJSON(ApiPreferences.PATH) {
+    if var json = store.getJSON(ApiPreferences.PATH) {
+      
+      mergeDefaults(&json)
       callback.onSuccess(json)
     } else {
-      callback.onSuccess(JSON(""))
+      
+      var json = JSON("");
+      mergeDefaults(&json);
+      callback.onSuccess(json)
     }
   }
 

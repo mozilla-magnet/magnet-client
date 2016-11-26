@@ -22,6 +22,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		222D76421DD3AE4600E15D62 /* ApiPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222D76411DD3AE4600E15D62 /* ApiPreferences.swift */; };
+		226323AE1DE8C63400FFF5F7 /* BuildConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226323AD1DE8C63400FFF5F7 /* BuildConfig.swift */; };
 		2264B4BF1DE35090003C96A9 /* AnalyticsReact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2264B4BE1DE35090003C96A9 /* AnalyticsReact.swift */; };
 		2264B4CD1DE36D33003C96A9 /* AnalyticsReact.m in Sources */ = {isa = PBXBuildFile; fileRef = 2264B4CC1DE36D33003C96A9 /* AnalyticsReact.m */; };
 		22AE787D1DE2FD7F00192FC0 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AE787C1DE2FD7F00192FC0 /* Analytics.swift */; };
@@ -229,6 +230,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Magnet/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		222D76411DD3AE4600E15D62 /* ApiPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiPreferences.swift; sourceTree = "<group>"; };
+		226323AD1DE8C63400FFF5F7 /* BuildConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildConfig.swift; sourceTree = "<group>"; };
 		2264B4BE1DE35090003C96A9 /* AnalyticsReact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsReact.swift; sourceTree = "<group>"; };
 		2264B4CC1DE36D33003C96A9 /* AnalyticsReact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsReact.m; sourceTree = "<group>"; };
 		22AE787C1DE2FD7F00192FC0 /* Analytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
@@ -573,6 +575,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				226323AD1DE8C63400FFF5F7 /* BuildConfig.swift */,
 				85DF9A331D633665004DF3F1 /* MagnetScannerIOS.framework */,
 				8DF821831D53B3830081F56E /* AdSupport.framework */,
 				8DF8217E1D5388190081F56E /* libsqlite3.0.tbd */,
@@ -954,13 +957,14 @@
 			files = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/../config.json",
 			);
 			outputPaths = (
-				"$(SRCROOT)/BuildConfig.h",
+				"$(SRCROOT)/BuildConfig.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "../build-scripts/ios/gen_build_config.js > $SRCROOT/BuildConfig.h";
+			shellScript = "../build-scripts/ios/gen_build_config.js > $SRCROOT/BuildConfig.swift";
 		};
 		5583EF141D3E46FC00852649 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1004,6 +1008,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				226323AE1DE8C63400FFF5F7 /* BuildConfig.swift in Sources */,
 				5583EF101D3D565200852649 /* HistorySQLite.swift in Sources */,
 				552134411DCA30E600A562AC /* ApiSubscriptions.swift in Sources */,
 				55C013FD1DC8FFC600154F76 /* ApiMagnetReact.swift in Sources */,
@@ -1373,6 +1378,7 @@
 				5580156F1DDE43600068CB8B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Magnet" */ = {
 			isa = XCConfigurationList;
