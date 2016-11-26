@@ -8,7 +8,8 @@
   "userFlags": {
     "sortByDistance": {
       "value": false,
-      "title": "Sort by distance"
+      "title": "Sort by distance",
+      "env": "debug"
     },
 
     "showDistance": {
