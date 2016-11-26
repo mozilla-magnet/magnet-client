@@ -5,6 +5,7 @@ import android.content.Context;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mozilla.magnet.api.Api;
+import org.mozilla.magnet.BuildConfig;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -22,6 +23,20 @@ class ApiPreferences extends Api {
         super(aContext);
     }
 
+    private JSONObject mergeDefaults(JSONObject aJson) {
+          for (String[] defaultRecord : BuildConfig.DEFAULT_PREFS) {
+              if (!aJson.has(defaultRecord[0])) {
+                  try {
+                      aJson.put(defaultRecord[0], defaultRecord[1]);
+                  } catch (JSONException e) {
+                      // Ignore
+                  }
+              }
+          }
+
+          return aJson;
+    }
+
     /**
      * Get user's preferences.
      *
@@ -33,6 +48,8 @@ class ApiPreferences extends Api {
         if (json == null) {
           json = new JSONObject();
         }
+
+        json = mergeDefaults(json);
 
         aCallback.resolve(json);
     }
