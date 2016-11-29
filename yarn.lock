@@ -4241,6 +4241,10 @@ react-native-mapbox-gl@^5.0.0:
     babel-eslint "^6.1.2"
     lodash "^4.13.1"
 
+react-native-maps:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.11.0.tgz#8baa56eef83e9f2f04a70b192624b7bc9c56289d"
+
 react-native@^0.35.0:
   version "0.35.0"
   resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.35.0.tgz#59a53e80109a728a7f6c7c9f0f0899c8b14c13b2"

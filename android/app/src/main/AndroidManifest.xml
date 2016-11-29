@@ -35,14 +35,12 @@
                 <data android:scheme="mozilla-magnet"
                     android:host="item" />
             </intent-filter>
-
         </activity>
 
         <service
             android:name=".notifications.NotificationService"
             android:enabled="true"
             android:exported="false"/>
-        <service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" />
 
         <receiver android:name=".notifications.ReceiverNotificationDelete"/>
 
@@ -53,5 +51,9 @@
         </receiver>
 
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAiPMYpPaqJNfEISBeZJqdQMt96cYcfruU"/>
     </application>
 </manifest>

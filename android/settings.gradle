@@ -1,11 +1,9 @@
 rootProject.name = 'Project Magnet'
 
 include ':app'
-include ':react-native-google-analytics-bridge'
-project(':react-native-google-analytics-bridge').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-google-analytics-bridge/android')
+include ':react-native-maps'
+project(':react-native-maps').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-maps/android')
 include ':react-native-linear-gradient'
 project(':react-native-linear-gradient').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-linear-gradient/android')
 include ':magnet-scanner-android'
 project(':magnet-scanner-android').projectDir = new File(rootProject.projectDir, '../node_modules/magnet-scanner-android')
-include ':reactnativemapboxgl'
-project(':reactnativemapboxgl').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-mapbox-gl/android')
