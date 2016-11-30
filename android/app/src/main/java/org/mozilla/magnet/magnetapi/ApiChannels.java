@@ -7,6 +7,7 @@ import com.android.volley.Request;
 
 import org.json.JSONArray;
 import org.mozilla.magnet.api.Api;
+import org.mozilla.magnet.BuildConfig;
 
 /**
  * Created by wilsonpage on 28/10/2016.
@@ -30,7 +31,7 @@ class ApiChannels extends Api {
             return;
         }
 
-        requestJsonArray("https://tengam.org/content/v1/channel", new Callback() {
+        requestJsonArray(BuildConfig.CHANNEL_LIST_URL, new Callback() {
             @Override
             public void resolve(Object result) {
                 getCache().set("channels", (JSONArray) result);

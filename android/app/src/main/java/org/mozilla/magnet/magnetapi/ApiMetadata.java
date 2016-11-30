@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mozilla.magnet.api.Api;
+import org.mozilla.magnet.BuildConfig;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.List;
 
 class ApiMetadata extends Api {
     private static final String TAG = "ApiMetadata";
-    private static final String SERVICE_URL = "https://tengam.org/api/v1/metadata";
+    private static final String SERVICE_URL = BuildConfig.METADATA_SERVICE_URL;
 
     ApiMetadata(Context context) {
         super(context);

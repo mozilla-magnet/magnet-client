@@ -95,7 +95,7 @@ android {
         applicationId "org.mozilla.magnet"
         minSdkVersion 18
         targetSdkVersion 23
-        versionCode 10 
+        versionCode 10
         versionName "1.3.1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
@@ -136,13 +136,19 @@ android {
 
         debug {
             buildConfigField "String", "GA_TRACKER_ID", "\"" + json.analyticsTrackerId.development + "\""
-            buildConfigField  "String[][]", "DEFAULT_PREFS", preferences
+            buildConfigField "String[][]", "DEFAULT_PREFS", preferences
+            buildConfigField "String", "METADATA_SERVICE_URL", "\"" + json.metadataServiceUrl + "\""
+            buildConfigField "String", "SEARCH_SERVICE_URL", "\"" + json.searchServiceUrl + "\""
+            buildConfigField "String", "CHANNEL_LIST_URL", "\"" + json.channelListUrl + "\""
+
         }
 
         release {
             buildConfigField "String", "GA_TRACKER_ID", "\"" + json.analyticsTrackerId.production + "\""
-            buildConfigField  "String[][]", "DEFAULT_PREFS", preferences
-
+            buildConfigField "String[][]", "DEFAULT_PREFS", preferences
+            buildConfigField "String", "METADATA_SERVICE_URL", "\"" + json.metadataServiceUrl + "\""
+            buildConfigField "String", "SEARCH_SERVICE_URL", "\"" + json.searchServiceUrl + "\""
+            buildConfigField "String", "CHANNEL_LIST_URL", "\"" + json.channelListUrl + "\""
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
 

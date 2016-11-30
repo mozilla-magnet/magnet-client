@@ -16,6 +16,8 @@ let kGaTrackerId = "${config.analyticsTrackerId.production}";
 #endif
 
 let kDefaultPreferences = ${prefs};
+let kMetadataServiceUrl = "${config.metadataServiceUrl}";
+let kChannelListUrl = "${config.channelListUrl}";
 `;
 
 process.stdout.write(defs.trim());
