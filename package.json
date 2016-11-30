@@ -7,7 +7,8 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "node node_modules/.bin/jest --verbose",
     "pretest": "npm run lint",
-    "postinstall": "cd ios && carthage bootstrap --platform iOS >/dev/null 2>&1 || { echo >&2 \"I require Carthage to build the iOS dependenices. Follow README to learn more about this.\";}"
+    "postinstall": "cd ios && carthage bootstrap --platform iOS >/dev/null 2>&1 || { echo >&2 \"I require Carthage to build the iOS dependenices. Follow README to learn more about this.\";}",
+    "test-android-deep-link": "adb shell am start -W -a android.intent.action.VIEW -d mozilla-magnet://item?url=https://twitter.com/wilsonpage org.mozilla.magnet"
   },
   "dependencies": {
     "buffer": "^4.5.1",
