@@ -77,6 +77,7 @@
 		8DF8217D1D5388090081F56E /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF8217C1D5388090081F56E /* libz.tbd */; };
 		8DF8217F1D5388190081F56E /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF8217E1D5388190081F56E /* libsqlite3.0.tbd */; };
 		8DF821841D53B3830081F56E /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF821831D53B3830081F56E /* AdSupport.framework */; };
+		8DF84D3F1DECE161001CF20C /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF84D3E1DECE13F001CF20C /* libAirMaps.a */; };
 		AA85BDA14B4C4D9A8524DCAD /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0097C20A4D7D4123BF8820C5 /* libBVLinearGradient.a */; };
 /* End PBXBuildFile section */
 
@@ -172,12 +173,12 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = BVLinearGradient;
 		};
-		8DF8216C1D53879A0081F56E /* PBXContainerItemProxy */ = {
+		8DF84D3D1DECE13F001CF20C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8DF821651D53879A0081F56E /* RCTGoogleAnalyticsBridge.xcodeproj */;
+			containerPortal = 8DF84D391DECE13F001CF20C /* AirMaps.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = A79185C61C30694E001236A6;
-			remoteInfo = RCTGoogleAnalyticsBridge;
+			remoteGlobalIDString = 11FA5C511C4A1296003AC2EE;
+			remoteInfo = AirMaps;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -281,12 +282,12 @@
 		8DBAAAB61D67272500AC32C5 /* FiraSans-LightItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FiraSans-LightItalic.otf"; path = "fonts/FiraSans-LightItalic.otf"; sourceTree = "<group>"; };
 		8DBAAAB71D67272500AC32C5 /* FiraSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FiraSans-LightItalic.ttf"; path = "fonts/FiraSans-LightItalic.ttf"; sourceTree = "<group>"; };
 		8DF6981FBE0A4B8D8545B9A5 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
-		8DF821651D53879A0081F56E /* RCTGoogleAnalyticsBridge.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTGoogleAnalyticsBridge.xcodeproj; path = "../node_modules/react-native-google-analytics-bridge/ios/RCTGoogleAnalyticsBridge/RCTGoogleAnalyticsBridge.xcodeproj"; sourceTree = "<group>"; };
 		8DF821781D5387F20081F56E /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8DF8217A1D5387FC0081F56E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		8DF8217C1D5388090081F56E /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		8DF8217E1D5388190081F56E /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		8DF821831D53B3830081F56E /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		8DF84D391DECE13F001CF20C /* AirMaps.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -309,6 +310,7 @@
 				8DF8217B1D5387FC0081F56E /* SystemConfiguration.framework in Frameworks */,
 				8DF821791D5387F20081F56E /* CoreData.framework in Frameworks */,
 				5583EF161D3E4A8400852649 /* SQLite.framework in Frameworks */,
+				8DF84D3F1DECE161001CF20C /* libAirMaps.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
@@ -493,9 +495,9 @@
 		559608B91DB918B100816CF1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				22AE78AF1DE3302900192FC0 /* GoogleAnalyticsServices.framework */,
-				555A52AA1DDA3295005D4B98 /* BugfenderSDK.framework */,
 				559608C61DB918B100816CF1 /* Alamofire.framework */,
+				555A52AA1DDA3295005D4B98 /* BugfenderSDK.framework */,
+				22AE78AF1DE3302900192FC0 /* GoogleAnalyticsServices.framework */,
 				559608C71DB918B100816CF1 /* SwiftyJSON.framework */,
 				558015601DDE43600068CB8B /* UserNotifications.framework */,
 				558015621DDE43600068CB8B /* UserNotificationsUI.framework */,
@@ -548,8 +550,8 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				8DF821651D53879A0081F56E /* RCTGoogleAnalyticsBridge.xcodeproj */,
-				146833FF1AC3E56700842450 /* React.xcodeproj */,
+				8DF84D391DECE13F001CF20C /* AirMaps.xcodeproj */,
+				8DF6981FBE0A4B8D8545B9A5 /* BVLinearGradient.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
 				00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */,
 				00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */,
@@ -559,7 +561,7 @@
 				832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */,
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
-				8DF6981FBE0A4B8D8545B9A5 /* BVLinearGradient.xcodeproj */,
+				146833FF1AC3E56700842450 /* React.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -655,10 +657,10 @@
 			name = Subscriptions;
 			sourceTree = "<group>";
 		};
-		8DF821661D53879A0081F56E /* Products */ = {
+		8DF84D3A1DECE13F001CF20C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8DF8216D1D53879A0081F56E /* libRCTGoogleAnalyticsBridge.a */,
+				8DF84D3E1DECE13F001CF20C /* libAirMaps.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -697,6 +699,7 @@
 				85DF9A271D632FED004DF3F1 /* Copy Files */,
 				55AE10ED1D67664900CAD0E0 /* ShellScript */,
 				5580157D1DDE43600068CB8B /* Embed App Extensions */,
+				0E1D582B1DE62B0400DA918E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -749,7 +752,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Magnet" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "magnet" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -762,6 +765,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 8DF84D3A1DECE13F001CF20C /* Products */;
+					ProjectRef = 8DF84D391DECE13F001CF20C /* AirMaps.xcodeproj */;
+				},
+				{
 					ProductGroup = 8D2FD7881D42607500D8FCE8 /* Products */;
 					ProjectRef = 8DF6981FBE0A4B8D8545B9A5 /* BVLinearGradient.xcodeproj */;
 				},
@@ -772,10 +779,6 @@
 				{
 					ProductGroup = 00C302B61ABCB90400DB3ED1 /* Products */;
 					ProjectRef = 00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */;
-				},
-				{
-					ProductGroup = 8DF821661D53879A0081F56E /* Products */;
-					ProjectRef = 8DF821651D53879A0081F56E /* RCTGoogleAnalyticsBridge.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302BC1ABCB91800DB3ED1 /* Products */;
@@ -897,11 +900,11 @@
 			remoteRef = 8D2FD78B1D42607500D8FCE8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8DF8216D1D53879A0081F56E /* libRCTGoogleAnalyticsBridge.a */ = {
+		8DF84D3E1DECE13F001CF20C /* libAirMaps.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libRCTGoogleAnalyticsBridge.a;
-			remoteRef = 8DF8216C1D53879A0081F56E /* PBXContainerItemProxy */;
+			path = libAirMaps.a;
+			remoteRef = 8DF84D3D1DECE13F001CF20C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1131,7 +1134,9 @@
 				DEAD_CODE_STRIPPING = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/3rdparty",
 					"$(PROJECT_DIR)/3rdparty/BugfenderSDK-iOS",
 					"$(PROJECT_DIR)/3rdparty/GoogleAnalyticsSDK-iOS",
 				);
@@ -1172,7 +1177,9 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/3rdparty",
 					"$(PROJECT_DIR)/3rdparty/BugfenderSDK-iOS",
 					"$(PROJECT_DIR)/3rdparty/GoogleAnalyticsSDK-iOS",
 				);
@@ -1380,7 +1387,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Magnet" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "magnet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

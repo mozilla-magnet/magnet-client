@@ -167,6 +167,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-maps')
     compile project(':react-native-linear-gradient')
     compile project(':magnet-scanner-android')
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -174,7 +175,7 @@ dependencies {
     compile 'com.facebook.react:react-native:+'  // From node_modules
 
     // specify the same version as magnet-scanner-android
-    compile 'com.google.android.gms:play-services-analytics:9.6.1'
+    compile 'com.google.android.gms:play-services-analytics:9.4.0'
 }
 
 // Run this once to be able to run the application with BUCK
