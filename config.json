@@ -1,8 +1,7 @@
 {
   "flags": {
     "injectTestUrls": false,
-    "itemsExpandable": true,
-    "itemsSwipable": false
+    "itemsExpandable": true
   },
 
   "userFlags": {
