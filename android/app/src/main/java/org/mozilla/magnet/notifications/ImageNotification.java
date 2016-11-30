@@ -68,7 +68,6 @@ class ImageNotification extends MagnetNotification {
         }
 
         addAction(builder, R.drawable.dismiss, "Dismiss", dismissIntent);
-        addAction(builder, R.drawable.visit, "Visit", createVisitIntent(mItem.getUrl()));
 
         notify(builder);
     }
