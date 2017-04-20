@@ -68,7 +68,7 @@
 }
 
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
-  [self.bridge.eventDispatcher sendDeviceEventWithName:@"notification:applaunch" body:nil];
+  [self.bridge.eventDispatcher sendDeviceEventWithName:@"applaunch" body:nil];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
