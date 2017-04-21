@@ -30,7 +30,8 @@
       "about": "https://trymagnet.org",
       "privacy": "https://trymagnet.org/privacy/",
       "feedback": "https://trymagnet.org/#contact"
-    }
+    },
+    "mapboxAccessToken": "pk.eyJ1IjoiZ21hcnR5IiwiYSI6ImNpdm1lanB1azAwNm8yb3A0OXZ6bmUxM2oifQ.i2HycDMBdPoatAB-ONR6FQ"
   },
 
   "itemExpires": 60000,
